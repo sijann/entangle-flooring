@@ -5,5 +5,243 @@
         "theme_version": "1.0.0",
         "theme_author": "Entangle Commerce",
         "theme_documentation_url": "https:\/\/entanglecommerce.com\/themes\/documentation",
-        "theme_support_url": "https:\/\/entanglecommerce.com\/themes\/support"    }
+        "theme_support_url": "https:\/\/entanglecommerce.com\/themes\/support"
+    },
+    {
+        "name": "Logo",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "logo",
+                "label": "Logo"
+            },
+            {
+                "type": "range",
+                "id": "logo_width",
+                "min": 50,
+                "max": 300,
+                "step": 10,
+                "default": 100,
+                "unit": "px",
+                "label": "Logo width"
+            },
+            {
+                "type": "image_picker",
+                "id": "favicon",
+                "label": "Favicon"
+            }
+        ]
+    },
+    {
+        "name": "Typography",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Headings"
+            },
+            {
+                "type": "font_picker",
+                "id": "type_header_font",
+                "default": "assistant_n4",
+                "label": "Header font"
+            },
+            {
+                "type": "range",
+                "id": "heading_scale",
+                "min": 100,
+                "max": 150,
+                "step": 5,
+                "unit": "%",
+                "label": "Font size scale",
+                "default": 100
+            },
+            {
+                "type": "header",
+                "content": "Body"
+            },
+            {
+                "type": "font_picker",
+                "id": "type_body_font",
+                "default": "assistant_n4",
+                "label": "Font"
+            },
+            {
+                "type": "range",
+                "id": "body_scale",
+                "min": 100,
+                "max": 130,
+                "step": 5,
+                "unit": "%",
+                "label": "Font size scale",
+                "default": 100
+            }
+        ]
+    },
+    {
+        "name": "Colors",
+        "settings": [
+            {
+                "type": "header",
+                "content": "General"
+            },
+            {
+                "type": "color",
+                "id": "background_color",
+                "label": "Background color",
+                "default": "#FFFFFF"
+            },
+            {
+                "type": "color",
+                "id": "text_color",
+                "label": "Text color",
+                "default": "#000000"
+            },
+            {
+                "type": "color",
+                "id": "lines_color",
+                "label": "Lines color",
+                "default": "#D5D9DF"
+            },
+            {
+                "type": "header",
+                "content": "Primary Button"
+            },
+            {
+                "type": "color",
+                "id": "primary_button_color",
+                "label": "Color",
+                "default": "#FFFFFF"
+            },
+            {
+                "type": "color",
+                "id": "primary_button_background",
+                "label": "Background",
+                "default": "#000000"
+            },
+            {
+                "type": "header",
+                "content": "Secondary Button"
+            },
+            {
+                "type": "color",
+                "id": "secondary_button_text_color",
+                "label": "Color",
+                "default": "#000000"
+            },
+            {
+                "type": "color",
+                "id": "secondary_button_background_color",
+                "label": "Background",
+                "default": "#FFFFFF"
+            },
+            {
+                "type": "header",
+                "content": "Cards"
+            },
+            {
+                "type": "color",
+                "id": "card_background_color",
+                "label": "Background color",
+                "default": "#FFFFFF"
+            },
+            {
+                "type": "color",
+                "id": "card_text_color",
+                "label": "Text color",
+                "default": "#000000"
+            }
+        ]
+    },
+    {
+        "name": "Appearance",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Sections"
+            },
+            {
+                "type": "range",
+                "id": "max_width",
+                "min": 1200,
+                "max": 2400,
+                "step": 100,
+                "unit": "px",
+                "label": "Max width",
+                "default": 1600
+            },
+            {
+                "type": "range",
+                "id": "section_spacing",
+                "min": 10,
+                "max": 100,
+                "step": 5,
+                "unit": "px",
+                "label": "Section spacing",
+                "default": 50
+            }
+        ]
+    },
+    {
+        "name": "t:settings_schema.social-media.name",
+        "settings": [
+            {
+                "type": "header",
+                "content": "t:settings_schema.social-media.settings.header.content"
+            },
+            {
+                "type": "text",
+                "id": "social_facebook_link",
+                "label": "t:settings_schema.social-media.settings.social_facebook_link.label",
+                "info": "t:settings_schema.social-media.settings.social_facebook_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_instagram_link",
+                "label": "t:settings_schema.social-media.settings.social_instagram_link.label",
+                "info": "t:settings_schema.social-media.settings.social_instagram_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_youtube_link",
+                "label": "t:settings_schema.social-media.settings.social_youtube_link.label",
+                "info": "t:settings_schema.social-media.settings.social_youtube_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_tiktok_link",
+                "label": "t:settings_schema.social-media.settings.social_tiktok_link.label",
+                "info": "t:settings_schema.social-media.settings.social_tiktok_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_twitter_link",
+                "label": "t:settings_schema.social-media.settings.social_twitter_link.label",
+                "info": "t:settings_schema.social-media.settings.social_twitter_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_snapchat_link",
+                "label": "t:settings_schema.social-media.settings.social_snapchat_link.label",
+                "info": "t:settings_schema.social-media.settings.social_snapchat_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_pinterest_link",
+                "label": "t:settings_schema.social-media.settings.social_pinterest_link.label",
+                "info": "t:settings_schema.social-media.settings.social_pinterest_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_tumblr_link",
+                "label": "t:settings_schema.social-media.settings.social_tumblr_link.label",
+                "info": "t:settings_schema.social-media.settings.social_tumblr_link.info"
+            },
+            {
+                "type": "text",
+                "id": "social_vimeo_link",
+                "label": "t:settings_schema.social-media.settings.social_vimeo_link.label",
+                "info": "t:settings_schema.social-media.settings.social_vimeo_link.info"
+            }
+        ]
+    }
 ]
