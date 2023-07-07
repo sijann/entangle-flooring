@@ -1,0 +1,50 @@
+body,
+html {
+    color: var(--textColor);
+    background-color: var(--backgroundColor);
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: var(--bodyFontFamily);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--headingFontFamily);
+}
+
+.en-btn-primary {
+    border: 1px solid var(--primaryBackgroundColor);
+    background-color: var(--primaryBackgroundColor);
+    color: var(--primaryTextColor);
+}
+
+.en-btn-secondary {
+    border: 1px solid var(--secondaryBackgroundColor);
+    background-color: var(--secondaryBackgroundColor);
+    color: var(--secondaryTextColor);
+}
+
+.en-width {
+    max-width: var(--pageWidth);
+}
+
+.en-section {
+    margin-bottom: var(--sectionSpacing);
+}
+
+.en-btn {
+    padding: 0.3rem 1rem;
+}
+
+.en-btn-outline {
+    border: 1px solid;
+}

@@ -1,13 +1,69 @@
 <!doctype html>
-<html>
+<html lang="{{ request.locale.iso_code }}">
   <head>
     <title>{{ page_title }}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="{{ page_description | escape }}">
     <link rel="canonical" href="{{ canonical_url }}">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
     {{ content_for_header }}
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+    {% style %}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+      :root{
+        --bodyFontFamily: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+        --bodyFontStyle: {{ settings.type_body_font.style }};
+        --bodyFontWeight: {{ settings.type_body_font.weight }};
+        --bodyFontWeightBold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+
+        --headingFontFamily: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+        --headingFontStyle: {{ settings.type_header_font.style }};
+        --headingFontWeight: {{ settings.type_header_font.weight }};
+
+        --bodyFontScale: {{ settings.body_scale | divided_by: 100.0 }};
+        --headingFontScale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+        --backgroundColor: {{ settings.background_color }};
+        --textColor: {{ settings.text_color }};
+
+        --primaryBackgroundColor: {{ settings.primary_button_background }};
+        --primaryTextColor: {{ settings.primary_button_color }};
+        --secondaryBackgroundColor: {{ settings.secondary_button_background_color }};
+        --secondaryTextColor: {{ settings.secondary_button_text_color }};
+
+        --cardBackgroundColor: {{ settings.card_background_color }};
+        --cardTextColor: {{ settings.card_text_color }};
+
+        --pageWidth: {{ settings.max_width }};
+        --sectionSpacing: {{ settings.section_spacing }};
+
+      }
+    {% endstyle %}
     {{ 'en-base.css' | asset_url | stylesheet_tag }}
     {{ 'en-output.css' | asset_url | stylesheet_tag }}
   </head>
