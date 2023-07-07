@@ -1,3 +1,12 @@
 {
-    
+    "name": "Header",
+    "type": "header",
+    "sections": {
+        "header": {
+            "type": "en-header"
+        }
+    },
+    "order": [
+        "header"
+    ]
 }

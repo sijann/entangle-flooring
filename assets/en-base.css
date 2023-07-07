@@ -35,6 +35,7 @@ h6 {
 
 .en-width {
     max-width: var(--pageWidth);
+    margin: 0 auto;
 }
 
 .en-section {
@@ -47,4 +48,16 @@ h6 {
 
 .en-btn-outline {
     border: 1px solid;
+}
+
+.en-menu-item {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    transition: all ease 300ms;
+}
+
+.en-menu-item:hover,
+.en-menu-item-active {
+    background-color: var(--textColor);
+    color: var(--backgroundColor);
 }

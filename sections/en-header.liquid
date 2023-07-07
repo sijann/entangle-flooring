@@ -1,0 +1,370 @@
+{% liquid
+  assign main_class = ''
+  assign menu_class = ''
+  assign logo_class = ''
+  case section.settings.header_type
+    when 'llml'
+      assign main_class = 'en-justify-betweeen en-gap-10'
+      assign menu_class = ' en-max-w-full'
+      assign logo_class = ''
+    when 'llmc'
+      assign main_class = 'en-justify-betweeen en-gap-10'
+      assign menu_class = 'en-justify-center  en-mx-auto'
+      assign logo_class = ''
+    when 'ltmb'
+      assign main_class = 'en-justify-between en-flex-wrap en-gap-2'
+      assign menu_class = ''
+      assign logo_class = 'en-w-full en-justify-center'
+    when 'llmd'
+      assign main_class = 'en-justify-betweeen'
+      assign menu_class = ''
+      assign logo_class = ''
+  endcase
+%}
+
+<div class="color-{{ section.settings.color_scheme }} en-relative">
+  <div
+    id="en-menu-drawer"
+    class="en-hidden en-absolute en-w-full color-{{ section.settings.color_scheme }} en-top-full en-z-100"
+  >
+    {% render 'en-menu-drawer', menu: section.settings.menu.links %}
+  </div>
+  <div
+    id="en-search-heading"
+    class="color-{{ section.settings.color_scheme }} en-absolute en-w-full en-h-full en-hidden en-z-10"
+  >
+    {% render 'en-header-search' %}
+  </div>
+  <div class="nerd-page-width en-pb-4 en-px-2">
+    <nav class="en-flex en-justify-betweeen en-items-center {{ main_class }}">
+      <div class="logo-wrapper en-flex {{ logo_class }}">
+        <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+          {%- if settings.logo != blank -%}
+            <div class="en-logo-wrapper">
+              {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+              {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+              {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+              {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+              {{
+                settings.logo
+                | image_url: width: 600
+                | image_tag:
+                  class: 'en-logo',
+                  widths: widths,
+                  height: logo_height,
+                  width: settings.logo_width,
+                  alt: logo_alt,
+                  sizes: sizes,
+                  preload: true
+              }}
+            </div>
+          {%- else -%}
+            <span class="en-text-[3rem] en-uppercase">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+      <div class="menu en-flex en-gap-16 {{ menu_class }}">
+        <div
+          id="en-bars-icon"
+          class="md:en-hidden icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center"
+        >
+          {% render 'icon-bars' %}
+        </div>
+        <div
+          id="en-close-drawer-icon"
+          class="en-hidden icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center"
+        >
+          {% render 'icon-close' %}
+        </div>
+
+        <div class="list-menu list-menu--inline en-hidden md:en-flex" role="list">
+          {%- for link in section.settings.menu.links -%}
+            <div>
+              {%- if link.links != blank -%}
+                <header-menu>
+                  <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+                    <summary
+                      id="HeaderMenu-{{ link.handle }}"
+                      class="header__menu-item list-menu__item link focus-inset"
+                    >
+                      <span
+                        {%- if link.child_active %}
+                          class="header__active-menu-item"
+                        {% endif %}
+                      >
+                        {{- link.title | escape -}}
+                      </span>
+                      {% render 'icon-caret' %}
+                    </summary>
+                    <div
+                      id="MegaMenu-Content-{{ forloop.index }}"
+                      class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                        role="list"
+                      >
+                        {%- for childlink in link.links -%}
+                          <div>
+                            <a
+                              id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
+                              href="{{ childlink.url }}"
+                              class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                              {% if childlink.current %}
+                                aria-current="page"
+                              {% endif %}
+                            >
+                              {{ childlink.title | escape }}
+                            </a>
+                            {%- if childlink.links != blank -%}
+                              <div class="list-unstyled" role="list">
+                                {%- for grandchildlink in childlink.links -%}
+                                  <div>
+                                    <a
+                                      id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
+                                      href="{{ grandchildlink.url }}"
+                                      class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
+                                      {% if grandchildlink.current %}
+                                        aria-current="page"
+                                      {% endif %}
+                                    >
+                                      {{ grandchildlink.title | escape }}
+                                    </a>
+                                  </div>
+                                {%- endfor -%}
+                              </div>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </details>
+                </header-menu>
+              {%- else -%}
+                <a
+                  id="HeaderMenu-{{ link.handle }}"
+                  href="{{ link.url }}"
+                  class="header__menu-item list-menu__item link link--text focus-inset"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span
+                    {%- if link.current %}
+                      class="header__active-menu-item"
+                    {% endif %}
+                  >
+                    {{- link.title | escape -}}
+                  </span>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="icons en-flex en-items-center en-gap-4 en-order-3 en-ml-auto">
+        <div class="desktop-localization-wrapper">
+          {%- if section.settings.enable_country_selector and localization.available_countries.size >= 0 -%}
+            <noscript class="small-hide medium-hide">
+              {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
+                <div class="localization-form__select">
+                  <h2 class="visually-hidden" id="HeaderCountryMobileLabelNoScript">
+                    {{ 'localization.country_label' | t }}
+                  </h2>
+                  <select
+                    class="localization-selector link"
+                    name="country_code"
+                    aria-labelledby="HeaderCountryMobileLabelNoScript"
+                  >
+                    {%- for country in localization.available_countries -%}
+                      <option
+                        value="{{ country.iso_code }}"
+                        {%- if country.iso_code == localization.country.iso_code %}
+                          selected
+                        {% endif %}
+                      >
+                        {{ country.name }} ({{ country.currency.iso_code }}
+                        {{ country.currency.symbol }})
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  {% render 'icon-caret' %}
+                </div>
+                <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
+              {%- endform -%}
+            </noscript>
+
+            <localization-form class="small-hide medium-hide no-js-hidden">
+              {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+                <div>
+                  <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                  {% comment %} {%- render 'country-localization', localPosition: 'HeaderCountry' -%} {% endcomment %}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {% endif %}
+
+          {%- if section.settings.enable_language_selector and localization.available_languages.size >= 0 -%}
+            <noscript class="small-hide medium-hide">
+              {%- form 'localization', id: 'HeaderLanguageMobileFormNoScript', class: 'localization-form' -%}
+                <div class="localization-form__select">
+                  <h2 class="visually-hidden" id="HeaderLanguageMobileLabelNoScript">
+                    {{ 'localization.language_label' | t }}
+                  </h2>
+                  <select
+                    class="localization-selector link"
+                    name="locale_code"
+                    aria-labelledby="HeaderLanguageMobileLabelNoScript"
+                  >
+                    {%- for language in localization.available_languages -%}
+                      <option
+                        value="{{ language.iso_code }}"
+                        lang="{{ language.iso_code }}"
+                        {%- if language.iso_code == localization.language.iso_code %}
+                          selected
+                        {% endif %}
+                      >
+                        {{ language.endonym_name | capitalize }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  {% render 'icon-caret' %}
+                </div>
+                <button class="button button--tertiary">{{ 'localization.update_language' | t }}</button>
+              {%- endform -%}
+            </noscript>
+
+            <localization-form class="small-hide medium-hide no-js-hidden">
+              {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+                <div>
+                  <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                  {% comment %} {%- render 'language-localization', localPosition: 'HeaderLanguage' -%} {% endcomment %}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {%- endif -%}
+        </div>
+        <a href="{{ routes.cart_url }}">
+          {% unless section.settings.icon_style == 'text' %}
+            <div class="icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center en-relative">
+              {% render 'icon-cart',
+                items: cart.item_count,
+                color_scheme: section.settings.color_scheme,
+                style: section.settings.icon_style
+              %}
+            </div>
+          {% else %}
+            Cart
+          {% endunless %}
+        </a>
+
+        <a href="{{ routes.account_url }}">
+          {% unless section.settings.icon_style == 'text' %}
+            <div class="icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center">
+              {% comment %} {% render 'en-icon-account' %} {% endcomment %}
+            </div>
+          {% else %}
+            Account
+          {% endunless %}
+        </a>
+        {% unless section.settings.icon_style == 'text' %}
+          <div
+            id="en-search-icon"
+            class="icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center"
+          >
+            {% comment %} {% render 'en-icon-search' %} {% endcomment %}
+          </div>
+        {% else %}
+          Search
+        {% endunless %}
+      </div>
+    </nav>
+  </div>
+</div>
+
+<script>
+  document.getElementById('en-search-icon').addEventListener('click', () => {
+    document.getElementById('en-search-heading').style.display = 'block';
+  });
+  document.getElementById('en-close-icon').addEventListener('click', () => {
+    document.getElementById('en-search-heading').style.display = 'none';
+  });
+  document.getElementById('en-bars-icon').addEventListener('click', () => {
+    document.getElementById('en-menu-drawer').classList.remove('en-hidden');
+    document.getElementById('en-bars-icon').classList.add('en-hidden');
+    document.getElementById('en-close-drawer-icon').classList.remove('en-hidden');
+  });
+
+  document.getElementById('en-close-drawer-icon').addEventListener('click', () => {
+    document.getElementById('en-menu-drawer').classList.add('en-hidden');
+    document.getElementById('en-close-drawer-icon').classList.add('en-hidden');
+    document.getElementById('en-bars-icon').classList.remove('en-hidden');
+  });
+</script>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "select",
+      "id": "header_type",
+      "options": [
+        {
+          "value": "llml",
+          "label": "Logo left, menu left"
+        },
+        {
+          "value": "llmc",
+          "label": "Logo left, menu center"
+        },
+        {
+          "value": "ltmb",
+          "label": "Logo top, menu bottom"
+        }
+      ],
+      "default": "ltmb",
+      "label": "Header type"
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "default": "classic",
+      "label": "Icon style",
+      "options": [
+        {
+          "label": "Classic",
+          "value": "classic"
+        },
+        {
+          "label": "Modern",
+          "value": "modern"
+        },
+        {
+          "label": "Text",
+          "value": "text"
+        }
+      ]
+    },
+
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "Enable country selector"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "background-3"
+    }
+  ]
+}
+{% endschema %}

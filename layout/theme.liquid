@@ -59,13 +59,21 @@
         --cardBackgroundColor: {{ settings.card_background_color }};
         --cardTextColor: {{ settings.card_text_color }};
 
-        --pageWidth: {{ settings.max_width }};
-        --sectionSpacing: {{ settings.section_spacing }};
+        --pageWidth: {{ settings.max_width }}px;
+        --sectionSpacing: {{ settings.section_spacing }}px;
 
       }
     {% endstyle %}
     {{ 'en-base.css' | asset_url | stylesheet_tag }}
     {{ 'en-output.css' | asset_url | stylesheet_tag }}
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     {% sections 'header-group' %}
