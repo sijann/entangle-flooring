@@ -11,13 +11,13 @@
         ></span>
       </div>
       {% unless section.settings.menu_style == 'drawer' %}
-        <div class="hidden md:block relative">
+        <div class="hidden relative md:flex items-center">
           <form action="{{ routes.search_url }}">
             <input
               type="text"
               name="q"
               value="{{ search.terms | escape }}"
-              class="en-input px-2 py-2 w- text-sm placeholder:uppercase placeholder:text-sm"
+              class="en-input px-2 py-2 text-sm bg-transparent placeholder:uppercase placeholder:text-sm"
               placeholder="Search"
             >
             <input type="hidden" name="type" value="product,page">
@@ -32,10 +32,10 @@
         </div>
       {% endunless %}
 
-      <div class="logo-wrapper flex">
-        <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+      <div class="flex items-center justify-center flex-grow">
+        <a href="{{ routes.root_url }}" class="">
           {%- if settings.logo != blank -%}
-            <div class="logo-wrapper">
+            <div class="">
               {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
               {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
               {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
@@ -59,7 +59,9 @@
         </a>
       </div>
       <div class="icons flex items-center gap-2">
-        {% render 'language-localization' %}
+        {% if section.settings.enable_language_selector %}
+          {% render 'language-localization' %}
+        {% endif %}
         <div class="en-menu-icon md:hidden">
           {% render 'icon-search' %}
         </div>
@@ -171,6 +173,12 @@
           "label": "Text"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "Enable language selector"
     }
   ]
 }

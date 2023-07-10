@@ -1,0 +1,106 @@
+{% comment %}
+  usage:
+  render 'product-card',
+  card_product: product,
+  show_vendor: true,
+{% endcomment %}
+
+<div class="w-full py-4">
+  <div class="relative w-full overflow-hidden">
+    <div class="relative group w-full">
+      <a href="{{ card_product.url }}">
+        {% if card_product.featured_image %}
+          <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+            {{
+              card_product.featured_image
+              | image_url: width: 700
+              | image_tag:
+                class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform group-hover:opacity-[0.5]',
+                loading: 'lazy'
+            }}
+          </div>
+
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover ' }}
+        {% endif %}
+      </a>
+
+      {% comment %} For quick add  {% endcomment %}
+
+      <div class="quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        {%- liquid
+          assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
+          assign qty_rules = false
+          if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+            assign qty_rules = true
+          endif
+        -%}
+        <div class="flex items-center justify-center p-4 cursor-pointer bg-[var(--primaryBackgroundColor)] text-[var(--primaryTextColor)]">
+          {%- if card_product.variants.size > 1 or qty_rules -%}
+            <a href="{{ card_product.url }}">
+              {% render 'icon-link' %}
+            </a>
+          {% else %}
+            {%- form 'product',
+              card_product,
+              id: product_form_id,
+              class: 'flex items-center justify-center',
+              novalidate: 'novalidate',
+              data-type: 'add-to-cart-form'
+            -%}
+              <input
+                type="hidden"
+                name="id"
+                value="{{ card_product.selected_or_first_available_variant.id }}"
+                disabled
+              >
+              <button
+                id="{{ product_form_id }}-submit"
+                type="submit"
+                name="add"
+                class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
+                aria-haspopup="dialog"
+                aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+                aria-live="polite"
+                data-sold-out-message="true"
+                {% if card_product.selected_or_first_available_variant.available == false %}
+                  disabled
+                {% endif %}
+              >
+                {% render 'icon-plus' %}
+              </button>
+            {%- endform -%}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col py-4">
+      {% if show_vendor %}
+        <span class="text-sm">{{ card_product.vendor }}</span>
+      {% endif %}
+
+      <a href="{{ card_product.url }}" class="text-gray-700 uppercase font-medium">{{ card_product.title }}</a>
+
+      {% render 'price', product: card_product %}
+    </div>
+
+    {% comment %} For card badges {% endcomment %}
+
+    <div class="absolute top-1 right-1">
+      {%- if card_product.available == false -%}
+        <span
+          class="bg-red-400 px-2 py-1"
+        >
+          Sold out
+        </span>
+      {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
+        <span
+          class="bg-green-400 px-2 py-1"
+        >
+          Sale
+        </span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

@@ -62,11 +62,13 @@
         --pageWidth: {{ settings.max_width }}px;
         --sectionSpacing: {{ settings.section_spacing }}px;
 
-        --inputBorderColor: #b8aa83;
+        --inputBorderColor: #4b5563;
         --inputBorderWidth: 1px;
 
       }
     {% endstyle %}
+    {{ 'flickity.min.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'flickity.pkgd.min.js' | asset_url }}" defer></script>
     {{ 'en-base.css' | asset_url | stylesheet_tag }}
     {{ 'en-output.css' | asset_url | stylesheet_tag }}
   </head>

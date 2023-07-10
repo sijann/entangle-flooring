@@ -73,13 +73,13 @@
                     name="contact[tags]"
                     value="newsletter"
                   >
-                  <div class="newsletter-form__field-wrapper">
-                    <div class="field">
+                  <div class="">
+                    <div class="">
                       <input
                         id="NewsletterForm--{{ section.id }}"
                         type="email"
                         name="contact[email]"
-                        class="field__input"
+                        class="en-input"
                         value="{{ form.email }}"
                         aria-required="true"
                         autocorrect="off"
@@ -92,24 +92,22 @@
                         {% elsif form.posted_successfully? %}
                           aria-describedby="ContactFooter-success"
                         {% endif %}
-                        placeholder="{{ 'newsletter.label' | t }}"
+                        placeholder="Email"
                         required
                       >
-                      <label class="field__label" for="NewsletterForm--{{ section.id }}">
-                        {{ 'newsletter.label' | t }}
-                      </label>
+
                       <button
                         type="submit"
                         class="newsletter-form__button field__button"
                         name="commit"
                         id="Subscribe"
-                        aria-label="{{ 'newsletter.button_label' | t }}"
+                        aria-label="Subscribe"
                       >
                         {% render 'icon-arrow' %}
                       </button>
                     </div>
                     {%- if form.errors -%}
-                      <small class="newsletter-form__message form__message" id="ContactFooter-error">
+                      <small class="" id="ContactFooter-error">
                         {%- render 'icon-error' -%}
                         {{- form.errors.translated_fields.email | capitalize }}
                         {{ form.errors.messages.email -}}
@@ -118,13 +116,13 @@
                   </div>
                   {%- if form.posted_successfully? -%}
                     <h3
-                      class="newsletter-form__message newsletter-form__message--success form__message"
+                      class=""
                       id="ContactFooter-success"
                       tabindex="-1"
                       autofocus
                     >
                       {% render 'icon-success' -%}
-                      {{- 'newsletter.success' | t }}
+                      Thank you for subscribing.
                     </h3>
                   {%- endif -%}
                 {%- endform -%}
@@ -215,7 +213,7 @@
         <div class="footer__column footer__column--info">
           {%- if section.settings.payment_enable -%}
             <div class="footer__payment">
-              <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+              <span class="visually-hidden"> Payment options </span>
               <ul class="list list-payment" role="list">
                 {%- for type in shop.enabled_payment_types -%}
                   <li class="list-payment__item">
@@ -258,126 +256,106 @@
 
 {% schema %}
 {
-  "name": "t:sections.footer.name",
+  "name": "Footer",
   "blocks": [
     {
       "type": "@app"
     },
     {
       "type": "link_list",
-      "name": "t:sections.footer.blocks.link_list.name",
+      "name": "Menu",
       "settings": [
         {
           "type": "inline_richtext",
           "id": "heading",
           "default": "Quick links",
-          "label": "t:sections.footer.blocks.link_list.settings.heading.label"
+          "label": "Heading"
         },
         {
           "type": "link_list",
           "id": "menu",
           "default": "footer",
-          "label": "t:sections.footer.blocks.link_list.settings.menu.label",
-          "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+          "label": "Menu"
         }
       ]
     },
     {
       "type": "text",
-      "name": "t:sections.footer.blocks.text.name",
+      "name": "Text",
       "settings": [
         {
           "type": "inline_richtext",
           "id": "heading",
           "default": "Heading",
-          "label": "t:sections.footer.blocks.text.settings.heading.label"
+          "label": "Heading"
         },
         {
           "type": "richtext",
           "id": "subtext",
           "default": "<p>Share contact information, store details, and brand content with your customers.</p>",
-          "label": "t:sections.footer.blocks.text.settings.subtext.label"
+          "label": "Text"
         }
       ]
     }
   ],
   "settings": [
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "background-3"
-    },
-    {
       "type": "header",
-      "content": "t:sections.footer.settings.header__1.content",
-      "info": "t:sections.footer.settings.header__1.info"
+      "content": "Header content"
     },
     {
       "type": "checkbox",
       "id": "newsletter_enable",
       "default": false,
-      "label": "t:sections.footer.settings.newsletter_enable.label"
+      "label": "Enable newsletter"
     },
     {
       "type": "inline_richtext",
       "id": "newsletter_heading",
       "default": "Subscribe to our emails",
-      "label": "t:sections.footer.settings.newsletter_heading.label"
+      "label": "Newsletter heading"
     },
     {
       "type": "header",
-      "content": "t:sections.footer.settings.header__9.content",
-      "info": "t:sections.footer.settings.header__9.info"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.footer.settings.header__2.content",
-      "info": "t:sections.footer.settings.header__2.info"
+      "content": "Social media"
     },
     {
       "type": "checkbox",
       "id": "show_social",
       "default": true,
-      "label": "t:sections.footer.settings.show_social.label"
+      "label": "Show social icons"
     },
     {
       "type": "header",
-      "content": "t:sections.footer.settings.header__3.content",
-      "info": "t:sections.footer.settings.header__4.info"
+      "content": "Localization"
     },
     {
       "type": "checkbox",
       "id": "enable_country_selector",
       "default": true,
-      "label": "t:sections.footer.settings.enable_country_selector.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.footer.settings.header__5.content",
-      "info": "t:sections.footer.settings.header__6.info"
+      "label": "Enable country selector"
     },
     {
       "type": "checkbox",
       "id": "enable_language_selector",
       "default": true,
-      "label": "t:sections.footer.settings.enable_language_selector.label"
+      "label": "Enable language selector"
     },
     {
       "type": "header",
-      "content": "t:sections.footer.settings.header__7.content"
+      "content": "Payment options"
     },
     {
       "type": "checkbox",
       "id": "payment_enable",
       "default": true,
-      "label": "t:sections.footer.settings.payment_enable.label"
+      "label": "Show payment options"
     },
     {
       "type": "checkbox",
       "id": "show_policy",
       "default": false,
-      "label": "t:sections.footer.settings.show_policy.label"
+      "label": "Show policy links"
     },
     {
       "type": "range",

@@ -42,7 +42,7 @@
             {
                 "type": "font_picker",
                 "id": "type_header_font",
-                "default": "assistant_n4",
+                "default": "cabin_n4",
                 "label": "Header font"
             },
             {
@@ -62,7 +62,7 @@
             {
                 "type": "font_picker",
                 "id": "type_body_font",
-                "default": "assistant_n4",
+                "default": "cabin_n4",
                 "label": "Font"
             },
             {
@@ -142,7 +142,7 @@
                 "type": "color",
                 "id": "card_background_color",
                 "label": "Background color",
-                "default": "#FFFFFF"
+                "default": "#cbd5e1"
             },
             {
                 "type": "color",

@@ -1,0 +1,62 @@
+{% liquid
+  assign desktop_columns_class = 'lg:grid-cols-3'
+  if section.settings.columns_desktop == '3'
+    assign desktop_columns_class = 'lg:grid-cols-3'
+  elsif section.settings.columns_desktop == '4'
+    assign desktop_columns_class = 'lg:grid-cols-4'
+  elsif section.settings.columns_desktop == '5'
+    assign desktop_columns_class = 'lg:grid-cols-5'
+  endif
+%}
+
+<div class="flex flex-col items-center my-8">
+  <h1 class="text-3xl font-medium">{{ section.settings.title }}</h1>
+
+  <div class="mx-auto my-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-3">
+      {% for collection in collections %}
+        {% render 'collection-card', collection: collection, count: section.settings.show_count %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "List Collections Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Collections",
+      "label": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "default": true,
+      "label": "Show products count"
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "default": "4",
+      "label": "No of columns on desktop",
+      "options": [
+        {
+          "label": "3",
+          "value": "3"
+        },
+        {
+          "label": "4",
+          "value": "4"
+        },
+        {
+          "label": "5",
+          "value": "5"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

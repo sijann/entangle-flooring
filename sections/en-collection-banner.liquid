@@ -1,0 +1,36 @@
+<div class="en-container relative max-h-64">
+  <h1 class="text-3xl text-center">{{ collection.title }}</h1>
+  {% if section.settings.show_collection_image and collection.featured_image %}
+    <div class="absolute h-64 w-full overflow-hidden">
+      {{
+        collection.featured_image
+        | image_url: width: 700
+        | image_tag:
+          class: 'h-full w-full object-cover transition duration-700 ease-in-out transform hover:scale-105',
+          loading: 'lazy'
+      }}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection banner",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show collection description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": true,
+      "label": "Show collection image",
+      "info": "Use an image with 16:9 ratio for best result."
+    }
+  ]
+}
+{% endschema %}

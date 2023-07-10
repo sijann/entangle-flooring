@@ -1,4 +1,4 @@
-<div class="en-menu-drawer absolute top-full left-0  w-full md:w-64 py-2 flex flex-col gap-4 justify-center items-center transition duration-300 origin-top scale-y-0 overflow-hidden">
+<div class="en-menu-drawer absolute top-full left-0  w-full md:w-64 py-2 flex flex-col gap-4 justify-center items-center transition duration-300 origin-top scale-y-0 overflow-hidden z-[100]">
   {%- for link in menu.links -%}
     {%- if link.links != blank -%}
       <div class="en-menu-item w-full {% if link.child_active -%} en-menu-item-active {%- endif %} px-4 py-2 relative flex items-center gap-1 ">
