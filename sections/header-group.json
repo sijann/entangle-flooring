@@ -3,7 +3,7 @@
     "type": "header",
     "sections": {
         "header": {
-            "type": "en-header"
+            "type": "header"
         }
     },
     "order": [

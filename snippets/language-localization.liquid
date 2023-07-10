@@ -1,0 +1,32 @@
+<script src="{{ 'localization.js' | asset_url }}" defer></script>
+{% if localization.available_languages.size > 1 %}
+  <localization-form>
+    {% form 'localization' %}
+      <div class="">
+        <button type="button" class="" aria-expanded="false" aria-controls="LanguageList">
+          {{ localization.language.endonym_name | capitalize }}
+        </button>
+
+        <ul id="LanguageList" role="list" class="absolute" hidden>
+          {% for language in localization.available_languages %}
+            <li class="" tabindex="-1">
+              <a
+                href="#"
+                {% if language.iso_code == localization.language.iso_code %}
+                  aria-current="true"
+                {% endif %}
+                hreflang="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                data-value="{{ language.iso_code }}"
+              >
+                {{ language.endonym_name | capitalize }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}

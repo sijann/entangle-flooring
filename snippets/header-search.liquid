@@ -1,5 +1,5 @@
-<div class="en-absolute en--absolute-center en-w-full en-p-4">
-  <div class="en-flex en-w-full en-gap-4 en-items-center en-justify-center">
+<div class="absolute -absolute-center w-full p-4">
+  <div class="flex w-full gap-4 items-center justify-center">
     <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
       <div class="field">
         <input
@@ -30,16 +30,16 @@
           aria-label="{{ 'general.search.reset' | t }}"
         >
           <div
-            class="icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center"
+            class="icon-wrapper cursor-pointer w-10 h-10 flex items-center justify-center"
           >
-            {% render 'en-icon-close' %}
+            {% render 'icon-close' %}
           </div>
         </button>
         <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
           <div
-            class="icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center"
+            class="icon-wrapper cursor-pointer w-10 h-10 flex items-center justify-center"
           >
-            {% render 'en-icon-search' %}
+            {% render 'icon-search' %}
           </div>
         </button>
       </div>
@@ -63,10 +63,10 @@
       {%- endif -%}
     </form>
     <div
-      id="en-close-icon"
-      class="icon-wrapper en-cursor-pointer en-w-10 en-h-10 en-flex en-items-center en-justify-center"
+      id="close-icon"
+      class="icon-wrapper cursor-pointer w-10 h-10 flex items-center justify-center"
     >
-      {% render 'en-icon-close' %}
+      {% render 'icon-close' %}
     </div>
   </div>
 </div>

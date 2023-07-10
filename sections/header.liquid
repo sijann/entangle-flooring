@@ -1,0 +1,177 @@
+<div class="en-container ">
+  <div class="en-width relative flex flex-col gap-8">
+    <div class="flex justify-between items-center">
+      <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
+        <span
+          class="en-line-1 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300 origin-left"
+        ></span
+        ><span class="en-line-2 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300"></span
+        ><span
+          class="en-line-3 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300 origin-left"
+        ></span>
+      </div>
+      {% unless section.settings.menu_style == 'drawer' %}
+        <div class="hidden md:block relative">
+          <form action="{{ routes.search_url }}">
+            <input
+              type="text"
+              name="q"
+              value="{{ search.terms | escape }}"
+              class="en-input px-2 py-2 w- text-sm placeholder:uppercase placeholder:text-sm"
+              placeholder="Search"
+            >
+            <input type="hidden" name="type" value="product,page">
+            <input type="hidden" name="options[unavailable_products]" value="hide">
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="submit">
+              <div class="en-search-small absolute top-0 right-1 translate-y-2 pr-1">
+                {% render 'icon-search' %}
+              </div>
+            </button>
+          </form>
+        </div>
+      {% endunless %}
+
+      <div class="logo-wrapper flex">
+        <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+          {%- if settings.logo != blank -%}
+            <div class="logo-wrapper">
+              {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+              {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+              {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+              {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+              {{
+                settings.logo
+                | image_url: width: 600
+                | image_tag:
+                  class: 'logo',
+                  widths: widths,
+                  height: logo_height,
+                  width: settings.logo_width,
+                  alt: logo_alt,
+                  sizes: sizes,
+                  preload: true
+              }}
+            </div>
+          {%- else -%}
+            <span class="text-[2rem] uppercase">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+      </div>
+      <div class="icons flex items-center gap-2">
+        {% render 'language-localization' %}
+        <div class="en-menu-icon md:hidden">
+          {% render 'icon-search' %}
+        </div>
+        <div class="icon-wrapper">
+          {% unless section.settings.icon_style == 'text' %}
+            {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
+          {% else %}
+            Cart
+          {% endunless %}
+        </div>
+      </div>
+    </div>
+    {% unless section.settings.menu_style == 'drawer' %}
+      <div class="en-menu hidden md:flex gap-4 justify-center items-center">
+        {%- for link in section.settings.menu.links -%}
+          {%- if link.links != blank -%}
+            <div class="en-menu-item {% if link.child_active -%} en-menu-item-active {%- endif %} px-4 py-2 relative flex items-center gap-1 ">
+              {{- link.title | escape -}}
+              {% render 'icon-caret' %}
+
+              <div class="en-submenu hidden absolute top-full left-0">
+                <div class="flex flex-col gap-4 w-32">
+                  {% for childlink in link.links %}
+                    <a href="{{ childlink.url }}">
+                      <div class=" px-4 py-2">{{- childlink.title | escape -}}</div>
+                    </a>
+
+                    {%- if childlink.links != blank -%}
+                      <div class="flex flex-col gap-4 w-32">
+                        {%- for grandchildlink in childlink.links -%}
+                          <a href="{{ grandchildlink.url }}">
+                            <div class=" px-4 py-2">{{- grandchildlink.title | escape -}}</div>
+                          </a>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ link.url }}">
+              <div class="en-menu-item {% if link.active -%} en-menu-item-active {%- endif %} px-4 py-2">
+                {{- link.title | escape -}}
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endunless %}
+    {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
+  </div>
+</div>
+
+<script>
+  const menuIcon = document.querySelector('.en-menu-icon');
+  if (menuIcon) {
+    menuIcon.addEventListener('click', () => {
+      document.querySelector('.en-menu-drawer').classList.toggle('scale-y-0');
+      document.querySelector('.en-line-1').classList.toggle('open');
+      document.querySelector('.en-line-2').classList.toggle('open');
+      document.querySelector('.en-line-3').classList.toggle('open');
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "select",
+      "id": "menu_style",
+      "default": "standard",
+      "label": "Menu style",
+      "options": [
+        {
+          "label": "Standard",
+          "value": "standard"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "default": "standard",
+      "label": "Icon style",
+      "options": [
+        {
+          "label": "Standard",
+          "value": "standard"
+        },
+        {
+          "value": "modern",
+          "label": "Modern"
+        },
+        {
+          "value": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

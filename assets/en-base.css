@@ -8,7 +8,8 @@ body,
 button,
 input,
 select,
-textarea {
+textarea,
+input::placeholder {
     font-family: var(--bodyFontFamily);
 }
 
@@ -38,6 +39,9 @@ h6 {
     margin: 0 auto;
 }
 
+.en-container{
+    padding: 10px ;
+}
 .en-section {
     margin-bottom: var(--sectionSpacing);
 }
@@ -50,14 +54,70 @@ h6 {
     border: 1px solid;
 }
 
+.en-menu-drawer{
+    background-color: var(--backgroundColor);
+}
+
+.en-submenu{
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+
+}
+
 .en-menu-item {
     display: inline-block;
     padding: 0.3rem 1rem;
     transition: all ease 300ms;
+    cursor: pointer;
 }
 
 .en-menu-item:hover,
 .en-menu-item-active {
     background-color: var(--textColor);
     color: var(--backgroundColor);
+}
+
+.en-input{
+    border-width: var(--inputBorderWidth);
+    border-color: var(--inputBorderColor);
+}
+
+.en-input:focus{
+    outline: none;
+}
+
+.en-search-small svg{
+    height: 20px;
+    width: 20px;
+    color: var(--inputBorderColor);;
+}
+
+.en-menu-item svg{
+    height: 15px;
+    width: 15px;
+}
+
+.en-menu-item:hover .en-submenu{
+    display: block;
+}
+
+.en-line-1.open, .en-line-3.open{
+    
+    transform-origin: left;
+
+}
+.en-line-1.open{
+    margin: 0 4px;
+    transform: rotate(45deg);
+}
+
+.en-line-2.open{
+    opacity: 0;
+}
+
+
+
+.en-line-3.open{
+    margin: 1px 4px;
+    transform: rotate(-45deg);
 }
