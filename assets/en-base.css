@@ -112,7 +112,7 @@ h6 {
 }
 
 .en-line-1.open {
-    margin: 0 4px;
+    margin: 1 4px;
     transform: rotate(45deg);
 }
 
@@ -224,4 +224,18 @@ h6 {
     left: 50%;
     top: 0;
     transform: translateX(-50%);
+}
+
+.en-varient-selector-item:has(> .en-varient-selector-radio:checked) {
+    border: 2px solid;
+}
+
+/* Flickity  */
+.is-selected.is-nav-selected img {
+    transition: all ease-in-out 300ms;
+    border-bottom: 4px solid;
+}
+
+.flickity-prev-next-button:disabled {
+    display: none;
 }

@@ -1,4 +1,10 @@
 {
-    "sections": {},
-    "order": []
+    "sections": {
+        "cart_main": {
+            "type": "en-cart"
+        }
+    },
+    "order": [
+        "cart_main"
+    ]
 }

@@ -1,7 +1,7 @@
-<div class="en-container ">
-  <div class="en-width relative flex flex-col gap-8">
-    <div class="flex justify-between items-center">
-      <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
+<div class="en-container bg-[var(--headerBackgroundColor)] text-[var(--headerTextColor)]">
+  <div class="en-width relative flex flex-col gap-8 py-6">
+    <div class="grid grid-cols-3">
+      <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
         <span
           class="en-line-1 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300 origin-left"
         ></span
@@ -11,24 +11,26 @@
         ></span>
       </div>
       {% unless section.settings.menu_style == 'drawer' %}
-        <div class="hidden relative md:flex items-center">
-          <form action="{{ routes.search_url }}">
-            <input
-              type="text"
-              name="q"
-              value="{{ search.terms | escape }}"
-              class="en-input px-2 py-2 text-sm bg-transparent placeholder:uppercase placeholder:text-sm"
-              placeholder="Search"
-            >
-            <input type="hidden" name="type" value="product,page">
-            <input type="hidden" name="options[unavailable_products]" value="hide">
-            <input type="hidden" name="options[prefix]" value="last">
-            <button type="submit">
-              <div class="en-search-small absolute top-0 right-1 translate-y-2 pr-1">
-                {% render 'icon-search' %}
-              </div>
-            </button>
-          </form>
+        <div class="hidden md:flex items-center">
+          <div class="relative">
+            <form action="{{ routes.search_url }}">
+              <input
+                type="text"
+                name="q"
+                value="{{ search.terms | escape }}"
+                class="en-input px-2 py-2 text-sm bg-transparent placeholder:uppercase placeholder:text-sm"
+                placeholder="Search"
+              >
+              <input type="hidden" name="type" value="product,page">
+              <input type="hidden" name="options[unavailable_products]" value="hide">
+              <input type="hidden" name="options[prefix]" value="last">
+              <button type="submit">
+                <div class="en-search-small absolute top-0 right-1 translate-y-2 pr-1">
+                  {% render 'icon-search' %}
+                </div>
+              </button>
+            </form>
+          </div>
         </div>
       {% endunless %}
 
@@ -58,7 +60,7 @@
           {%- endif -%}
         </a>
       </div>
-      <div class="icons flex items-center gap-2">
+      <div class="icons flex items-center justify-end gap-2">
         {% if section.settings.enable_language_selector %}
           {% render 'language-localization' %}
         {% endif %}
@@ -66,11 +68,13 @@
           {% render 'icon-search' %}
         </div>
         <div class="icon-wrapper">
-          {% unless section.settings.icon_style == 'text' %}
-            {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
-          {% else %}
-            Cart
-          {% endunless %}
+          <a href="{{ routes.cart_url }}">
+            {% unless section.settings.icon_style == 'text' %}
+              {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
+            {% else %}
+              Cart
+            {% endunless %}
+          </a>
         </div>
       </div>
     </div>

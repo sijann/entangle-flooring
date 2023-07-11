@@ -104,6 +104,22 @@
             },
             {
                 "type": "header",
+                "content": "Header"
+            },
+            {
+                "type": "color",
+                "id": "header_background_color",
+                "label": "Background color",
+                "default": "#f1f5f9"
+            },
+            {
+                "type": "color",
+                "id": "header_text_color",
+                "label": "Text color",
+                "default": "#000000"
+            },
+            {
+                "type": "header",
                 "content": "Primary Button"
             },
             {
@@ -167,7 +183,7 @@
                 "step": 100,
                 "unit": "px",
                 "label": "Max width",
-                "default": 1600
+                "default": 1200
             },
             {
                 "type": "range",
