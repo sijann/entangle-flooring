@@ -9,21 +9,27 @@
   endif
 %}
 
-<div class="en-width en-container">
+<div class="en-width en-container relative">
   {% paginate collection.products by section.settings.number_of_products_per_page %}
-    <div class="facets relative flex items-center justify-between">
-      {% render 'filters', collection: collection, type: 'drawer' %}
-      {% render 'facets', collection: collection, position: 'left' %}
-    </div>
-    <div class="w-full">
-      <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4">
-        {% for product in collection.products %}
-          {% render 'product-card', card_product: product, show_vendor: true %}
-        {% else %}
-          <div class="mx-auto col-span-3 py-32">There are no products inside of this collection.</div>
-        {% endfor %}
+    {% if collection.all_products_count > 0 %}
+      <div class="facets relative flex items-center justify-between">
+        {% render 'filters', collection: collection, type: 'drawer' %}
+        {% render 'facets', collection: collection, position: 'left' %}
       </div>
-    </div>
+      <div class="w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4">
+          {% for product in collection.products %}
+            {% render 'product-card',
+              card_product: product,
+              show_vendor: section.settings.show_vendor,
+              quick_add: section.settings.quick_add
+            %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="text-xl py-32 text-center">There are no products inside of this collection.</div>
+    {% endif %}
 
     {% render 'pagination', pagination: paginate %}
   {% endpaginate %}
@@ -31,13 +37,25 @@
 
 {% schema %}
 {
-  "name": "Template Collection",
+  "name": "Products grid",
   "settings": [
     {
       "type": "number",
       "id": "number_of_products_per_page",
       "default": 6,
       "label": "Number of products per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "default": true,
+      "label": "Enable quick add"
     },
     {
       "type": "select",

@@ -1,5 +1,5 @@
-<div class="w-full py-6 px-3 ">
-  <div class="overflow-hidden bg-[var(--cardBackgroundColor)] text-[var(--cardTextColor)]">
+<div class="w-full py-4">
+  <div class="w-full overflow-hidden">
     <a href="{{ collection.url }}">
       {% if collection.featured_image != blank %}
         {% assign collection_image = collection.featured_image %}
@@ -7,7 +7,7 @@
         {% assign collection_image = collection.products.first.image %}
       {% endif %}
       {% if collection_image %}
-        <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+        <div class="group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
           {{
             collection_image
             | image_url: width: 700
@@ -26,7 +26,7 @@
     </a>
 
     <div class="p-4">
-      <h1 class="text-xl uppercase">
+      <h1 class="text-lg uppercase">
         {{ collection.title }}
         {% if count %}
           ({{ collection.all_products_count }})

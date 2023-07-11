@@ -120,7 +120,7 @@
               <span>({{ filter.active_values.size }})</span>
             {%- endif -%}
           </div>
-          <div class="en-filter-caret ">
+          <div class="en-filter-caret duration-300 -rotate-90">
             {% render 'icon-caret' %}
           </div>
         </div>
@@ -168,7 +168,7 @@
                   <div class="flex justify-between">
                     <input
                       type="number"
-                      class="border"
+                      class="border px-2 py-1"
                       id="range1"
                       name="{{ filter.min_value.param_name }}"
                       oninput="changeSlide1()"
@@ -183,7 +183,7 @@
                     <span>-</span>
                     <input
                       type="number"
-                      class="border"
+                      class="border px-2 py-1"
                       id="range2"
                       name="{{ filter.max_value.param_name }}"
                       oninput="changeSlide2()"
@@ -211,7 +211,14 @@
                         {%- else -%}
                           max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                         {% endif %}
-                        value="0"
+                        {%- if filter.min_value.value -%}
+                          {%- if uses_comma_decimals -%}
+                            value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                          {%- else -%}
+                            value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                          {%- endif %}
+                        {%- endif -%}
+
                         id="slider-1"
                         oninput="slideOne()"
                         name="{{ filter.min_value.param_name }}"
@@ -226,7 +233,13 @@
                         {%- else -%}
                           max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                         {% endif %}
-                        value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        {%- if filter.max_value.value -%}
+                          {%- if uses_comma_decimals -%}
+                            value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                          {%- else -%}
+                            value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                          {%- endif %}
+                        {%- endif -%}
                         id="slider-2"
                         oninput="slideTwo()"
                         name="{{ filter.max_value.param_name }}"
@@ -248,7 +261,7 @@
                   </div>
 
                   <div class="en-btn en-btn-outline inline-block mx-auto">
-                    <input type="submit" value="Apply">
+                    <input class="cursor-pointer" type="submit" value="Apply">
                   </div>
                 </div>
             {%- endcase -%}
@@ -275,6 +288,7 @@
         var filterOptions = toggle.closest('.filter-group').querySelector('.en-filter-options');
         filterOptions.classList.toggle('open');
         filterOptions.querySelector('.en-collapsible-inner').classList.toggle('scale-y-0');
+        toggle.querySelector('.en-filter-caret').classList.toggle('-rotate-90');
       });
     });
 
