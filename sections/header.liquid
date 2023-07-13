@@ -1,4 +1,4 @@
-<div class="en-container bg-[var(--headerBackgroundColor)] text-[var(--headerTextColor)]">
+<div class="en-container bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))]">
   <div class="en-width relative flex flex-col gap-8 py-6">
     <div class="grid grid-cols-3">
       <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
@@ -67,15 +67,14 @@
         <div class="en-menu-icon md:hidden">
           {% render 'icon-search' %}
         </div>
-        <div class="icon-wrapper">
-          <a href="{{ routes.cart_url }}">
-            {% unless section.settings.icon_style == 'text' %}
-              {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
-            {% else %}
-              Cart
-            {% endunless %}
-          </a>
+        <div class="en-collapsible">
+          {% unless section.settings.icon_style == 'text' %}
+            {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
+          {% else %}
+            Cart
+          {% endunless %}
         </div>
+        {% render 'cart-drawer' %}
       </div>
     </div>
     {% unless section.settings.menu_style == 'drawer' %}

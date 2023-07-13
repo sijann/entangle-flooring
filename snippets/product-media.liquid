@@ -1,6 +1,6 @@
 {% case media.media_type %}
   {% when 'image' %}
-    <div class=" group {% if thumbnail %} w-[50px] md:w-[80px] mr-2 {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+    <div class=" group mx-auto {% if thumbnail %} w-[50px] md:w-[80px] mr-2 {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
       {{
         media
         | image_url: width: media.width
@@ -29,7 +29,7 @@
     </div>
 
   {% when 'model' %}
-    <product-model data-media-id="{{ media.id }}">
+    <product-model data-media-id="{{ media.id }}" class="{% unless thumbnail %} h-full w-full relative {% endunless %}">
       <div>
         <button
           id="productModelOpenButton_{{ media.id }}"

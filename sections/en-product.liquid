@@ -5,32 +5,24 @@
 <script src="{{ 'product-model.js' | asset_url }}" defer></script>
 
 <style>
-  .swiper-button-prev,
-  .swiper-button-next {
-    color: black;
-    top: auto !important;
-    height: 20px;
-  }
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 20px;
-  }
-  .swiper-pagination {
-    color: black;
-    bottom: 0 !important;
-  }
-  .swiper-pagination-bullet-active {
-    background: black !important;
-  }
   .product--information {
     height: fit-content;
   }
 </style>
 
+{% liquid
+  assign media_width = 'md:w-[60%]'
+  if section.settings.media_width == 'small'
+    assign media_width = 'md:w-[50%]'
+  elsif section.settings.media_width == 'large'
+    assign media_width = 'md:w-[70%]'
+  endif
+%}
+
 <div class="en-width en-container" x-data="{ productModalOpen: false }">
   <div class="mx-auto my-8">
     <div class="flex flex-col md:flex-row gap-8">
-      <div class="product--medias w-full md:w-[60%] {% if section.settings.media_position == "right" %} order-last {% endif %}">
+      <div class="product--medias w-full {{ media_width }} {% if section.settings.media_position == "right" %} order-last {% endif %}">
         {% comment %}
           <div class="hidden md:block">
             {% for media in product.media %}
@@ -73,28 +65,31 @@
                   <h1 class="text-3xl text-gray-900">{{ product.title }}</h1>
                 </div>
               {% when 'price' %}
-                <div class="my-3" id="price-{{ section.id }}">
-                  <span class="text-base text-red-400 line-through">
-                    {{- selected_variant.compare_at_price | money -}}
-                  </span>
-                  <span class="text-lg">{{ selected_variant.price | money }}</span>
+                <div class="price-wrap flex flex-col">
+                  <div class="my-3 flex gap-2 items-center flex-wrap" id="price-{{ section.id }}">
+                    <span class="text-base text-red-400 line-through">
+                      {{- selected_variant.compare_at_price | money -}}
+                    </span>
+                    <span class="text-lg">{{ selected_variant.price | money }}</span>
 
-                  <div class="absolute top-1 right-1">
-                    {%- if product.available == false -%}
-                      <span
-                        class="bg-red-400 px-2 py-1"
-                      >
-                        Sold out
-                      </span>
-                    {%- elsif product.compare_at_price > product.price and product.available -%}
-                      <span
-                        class="bg-green-400 px-2 py-1"
-                      >
-                        Sale
-                      </span>
-                    {%- endif -%}
+                    <div class="">
+                      {%- if product.available == false -%}
+                        <span
+                          class="bg-red-400 px-2 py-1"
+                        >
+                          Sold out
+                        </span>
+                      {%- elsif product.compare_at_price > product.price and product.available -%}
+                        <span
+                          class="bg-green-400 px-2 py-1"
+                        >
+                          Sale
+                        </span>
+                      {%- endif -%}
+                    </div>
                   </div>
-                  }
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  {{ form | payment_terms }}
                 </div>
 
                 {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
@@ -152,23 +147,22 @@
                       var variantSelector = document.querySelector('variant-selector');
                       var imagesSlider = document.querySelector('.en-images-slider');
                       var variantImages = JSON.parse('{{ product.media | json }}');
-                      console.log(variantImages);
                       variantSelector.addEventListener('change', function () {
-                        var variantId = variantSelector.currentVariant.featured_media.id;
-                        console.log(variantSelector.currentVariant, '------current---------');
-                        var variantImageIndex;
-
-                        for (var i = 0; i < variantImages.length; i++) {
-                          var variantImage = variantImages[i];
-                          let variantImageId = variantImage.id;
-                          console.log(variantId, variantImageId);
-                          if (variantImageId == variantId) {
-                            variantImageIndex = i;
-                            console.log(variantImageIndex);
-                            break;
-                          }
-                          if (variantImageIndex !== undefined) {
-                            break;
+                        var variantId = variantSelector?.currentVariant?.featured_media?.id;
+                        if (variantId) {
+                          var variantImageIndex;
+                          for (var i = 0; i < variantImages.length; i++) {
+                            var variantImage = variantImages[i];
+                            let variantImageId = variantImage.id;
+                            console.log(variantId, variantImageId);
+                            if (variantImageId == variantId) {
+                              variantImageIndex = i;
+                              console.log(variantImageIndex);
+                              break;
+                            }
+                            if (variantImageIndex !== undefined) {
+                              break;
+                            }
                           }
                         }
 
@@ -204,11 +198,13 @@
                 {%- assign current_variant = product.selected_or_first_available_variant -%}
                 <span class="opacity-60">SKU: {{ current_variant.sku }}</span>
               {% when 'checkout_buttons' %}
-                <div class="my-3 py-2 en-btn en-btn-primary">
+
+              {% when 'checkout_buttons' %}
+                <div class="my-3">
                   <button
                     type="submit"
                     name="add"
-                    class="w-full"
+                    class="w-full en-btn-full en-btn-primary my-2"
                     {% if selected_variant.available == false %}
                       disabled
                     {% endif %}
@@ -220,9 +216,7 @@
                     {% endif %}
                   </button>
                 </div>
-                {% if block.settings.show_dynamic_checkout %}
-                  {% comment %} {{ form | payment_button }} {% endcomment %}
-                {% endif %}
+                {{ form | payment_button }}
               {% else %}
 
             {% endcase %}
@@ -346,12 +340,14 @@
       });
 
       var elem1 = document.querySelector('.en-images-slider-thumbnail');
-      var flkty1 = new Flickity(elem1, {
-        asNavFor: '.en-images-slider',
-        pageDots: false,
-        contain: true,
-        prevNextButtons: false,
-      });
+      if (elem1) {
+        var flkty1 = new Flickity(elem1, {
+          asNavFor: '.en-images-slider',
+          pageDots: false,
+          contain: true,
+          prevNextButtons: false,
+        });
+      }
     } catch (e) {
       console.log('SwiperJS is not defined');
     }
@@ -380,9 +376,9 @@
     },
     {
       "type": "select",
-      "id": "media_size",
+      "id": "media_width",
       "default": "medium",
-      "label": "Media size",
+      "label": "Media width (desktop)",
       "options": [
         {
           "label": "Small",
@@ -396,7 +392,8 @@
           "label": "Large",
           "value": "large"
         }
-      ]
+      ],
+      "info": "Width is automatically adjusted for mobile devices."
     }
   ],
   "blocks": [
@@ -439,7 +436,7 @@
           "type": "checkbox",
           "id": "show_dynamic_checkout",
           "label": "Show dynamic checkout buttons",
-          "default": false
+          "default": true
         }
       ]
     },

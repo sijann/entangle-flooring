@@ -48,16 +48,16 @@
         --bodyFontScale: {{ settings.body_scale | divided_by: 100.0 }};
         --headingFontScale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
 
-        --headerBackgroundColor: {{ settings.header_background_color }};
-        --headerTextColor: {{ settings.header_text_color }};
+        --headerBackgroundColor: {{ settings.header_background_color.red }}, {{ settings.header_background_color.green }}, {{ settings.header_background_color.blue }};
+        --headerTextColor: {{ settings.header_text_color.red }}, {{ settings.header_text_color.green }}, {{ settings.header_text_color.red }};
 
-        --backgroundColor: {{ settings.background_color }};
-        --textColor: {{ settings.text_color }};
+        --backgroundColor: {{ settings.background_color.red }}, {{ settings.background_color.green }}, {{ settings.background_color.blue }};
+        --textColor: {{ settings.text_color.red }},{{ settings.text_color.green }}, {{ settings.text_color.blue }};
 
-        --primaryBackgroundColor: {{ settings.primary_button_background }};
-        --primaryTextColor: {{ settings.primary_button_color }};
-        --secondaryBackgroundColor: {{ settings.secondary_button_background_color }};
-        --secondaryTextColor: {{ settings.secondary_button_text_color }};
+        --primaryBackgroundColor: {{ settings.primary_button_background.red }}, {{ settings.primary_button_background.green }}, {{ settings.primary_button_background.blue }};
+        --primaryTextColor: {{ settings.primary_button_color.red }}, {{ settings.primary_button_color.green }}, {{ settings.primary_button_color.blue }};
+        --secondaryBackgroundColor: {{ settings.secondary_button_background_color.red }}, {{ settings.secondary_button_background_color.green }}, {{ settings.secondary_button_background_color.blue }};
+        --secondaryTextColor: {{ settings.secondary_button_text_color.red }}, {{ settings.secondary_button_text_color.green }}, {{ settings.secondary_button_text_color.blue }};
 
         --cardBackgroundColor: {{ settings.card_background_color }};
         --cardTextColor: {{ settings.card_text_color }};
@@ -72,8 +72,9 @@
     {% endstyle %}
     {{ 'flickity.min.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'flickity.pkgd.min.js' | asset_url }}" defer></script>
-    {{ 'en-base.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'en-theme.js' | asset_url }}" defer></script>
     {{ 'en-output.css' | asset_url | stylesheet_tag }}
+    {{ 'en-base.css' | asset_url | stylesheet_tag }}
   </head>
   <body>
     {% sections 'header-group' %}

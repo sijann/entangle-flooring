@@ -36,7 +36,7 @@
               assign qty_rules = true
             endif
           -%}
-          <div class="flex items-center justify-center p-4 cursor-pointer bg-[var(--primaryBackgroundColor)] text-[var(--primaryTextColor)]">
+          <div class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]">
             {%- if card_product.variants.size > 1 or qty_rules -%}
               <a href="{{ card_product.url }}">
                 {% render 'icon-link' %}
