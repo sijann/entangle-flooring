@@ -9,8 +9,11 @@
   }
 {% endstylesheet %}
 
+<script src="{{ 'cart.js' | asset_url }}" defer></script>
+"
+
 {% if cart.item_count > 0 %}
-  <div class="p-4">
+  <div class="p-4" data-money-format="{{ shop.money_format }}">
     <div class="max-w-6xl flex flex-col my-10 mx-auto">
       <div class="flex items-end justify-between my-5">
         <h1 class="text-3xl">Your cart</h1>
@@ -32,7 +35,7 @@
           </thead>
           <tbody>
             {% for item in cart.items %}
-              <tr class="table-row">
+              <tr class="table-row cart-item" data-key="{{ item.key }}">
                 <td class="py-4 px-2 flex flex-col md:flex-row gap-4 md:items-center">
                   <a href="{{ item.url }}">
                     {% if item.image %}
@@ -62,30 +65,28 @@
                 </td>
                 <td class="py-4 px-2 flex flex-col justify-center"></td>
                 <td class="py-4 px-2 ">
-                  <div class="w-20 md:w-32 h-full relative border md:py-2">
+                  <div class="cart-quantity-selector w-20 md:w-32 h-full relative border md:py-2">
                     <input
                       type="number"
                       name="updates[]"
                       value="{{ item.quantity }}"
                       min="1"
                       id="updates_{{ forloop.index }}"
-                      class="w-full h-full p-2 px-6 text-center focus:outline-none"
+                      class="minus w-full h-full p-2 px-6 text-center focus:outline-none"
                     >
-                    <div
-                      id="itemMinusOne"
-                      class="absolute text-xl left-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
+                    <button
+                      class="minus absolute text-xl left-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
                     >
                       -
-                    </div>
-                    <div
-                      id="itemPlusOne"
-                      class="absolute text-xl right-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
+                    </button>
+                    <button
+                      class="plus absolute text-xl right-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
                     >
                       +
-                    </div>
+                    </button>
                   </div>
                 </td>
-                <td class="py-4 px-2">
+                <td class="line-item-price py-4 px-2">
                   {{ item.line_price | money }}
                 </td>
               </tr>
@@ -112,7 +113,12 @@
             </div>
           </div>
           <div class="w-full my-4 md:w-80">
-            <h3 class="text-xl">Subtotal: {{ cart.total_price | money }}</h3>
+            <h3 class="text-xl">
+              Discounts: <span id="total-discount"> {{ cart.total_discount | money }} </span>
+            </h3>
+            <h3 class="text-xl">
+              Subtotal: <span id="total-price"> {{ cart.total_price | money }} </span>
+            </h3>
 
             <small class="">
               {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}

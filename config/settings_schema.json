@@ -183,7 +183,7 @@
                 "step": 100,
                 "unit": "px",
                 "label": "Max width",
-                "default": 1200
+                "default": 1600
             },
             {
                 "type": "range",

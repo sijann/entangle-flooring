@@ -12,7 +12,7 @@
     assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105 group-hover:opacity-70'
   endif
 %}
-<div class="w-full py-4">
+<div class="w-full bg-gray-200 my-4">
   <div class="relative w-full overflow-hidden">
     <div class="relative group w-full">
       <a href="{{ card_product.url }}">
@@ -77,7 +77,7 @@
       {% endif %}
     </div>
 
-    <div class="flex flex-col py-4">
+    <div class="flex flex-col py-4 px-2">
       {% if show_vendor %}
         <span class="text-sm">{{ card_product.vendor }}</span>
       {% endif %}

@@ -67,7 +67,7 @@
         <div class="en-menu-icon md:hidden">
           {% render 'icon-search' %}
         </div>
-        <div class="en-collapsible">
+        <div class="en-collapsible en-cart-collapsible">
           {% unless section.settings.icon_style == 'text' %}
             {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
           {% else %}

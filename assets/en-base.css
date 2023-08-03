@@ -102,8 +102,6 @@ h6 {
 }
 
 
-
-
 .en-menu-drawer {
     background-color: rgba(var(--backgroundColor));
 }
@@ -285,4 +283,11 @@ h6 {
 
 .flickity-prev-next-button:disabled {
     display: none;
+}
+
+@media screen and (min-width: 750px) {
+    .en-width {
+        padding: 0 1rem;
+    }
+
 }
