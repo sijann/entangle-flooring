@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .en-button-outline {
+      @apply inline-block px-6 md:px-12 py-2 md:py-3 text-sm font-medium  border border-[rgba(var(--textColor))] hover:bg-[rgba(var(--primaryBackgroundColor))]/[0.7] hover:text-white active:bg-[rgba(var(--textColor))]/[0.8] focus:outline-none focus:ring duration-300;
+    }
+
+    .en-button-primary{
+        @apply inline-block px-6 md:px-12 py-2 md:py-3 text-sm font-medium text-[rgba(var(--primaryTextColor))] bg-[rgba(var(--primaryBackgroundColor))] border border-[rgba(var(--primaryBackgroundColor))] active:text-[rgba(var(--primaryBackgroundColor))] hover:bg-[rgba(var(--primaryTextColor))]/[0.7] hover:text-[rgba(var(--primaryBackgroundColor))]/[0.9] hover:border-[rgba(var(--primaryBackgroundColor))]/[0.9]  focus:outline-none focus:ring duration-300
+    }
+
+    .en-button-secondary{
+        @apply inline-block px-6 md:px-12 py-2 md:py-3 text-sm font-medium text-[rgba(var(--secondaryTextColor))] bg-[rgba(var(--secondaryBackgroundColor))] border border-[rgba(var(--secondaryBackgroundColor))] active:text-[rgba(var(--secondaryBackgroundColor))] hover:bg-[rgba(var(--secondaryTextColor))]/[0.7] hover:text-[rgba(var(--secondaryBackgroundColor))]/[0.9] hover:border-[rgba(var(--secondaryBackgroundColor))]/[0.9]  focus:outline-none focus:ring duration-300
+    }
+
+    .en-title-xl{
+        @apply text-[2rem] lg:text-[3rem] block font-bold uppercase;
+    }
+
+  }

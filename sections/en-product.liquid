@@ -110,7 +110,7 @@
                         <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
                         <div class="my-2 flex gap-4 flex-wrap">
                           {% for value in option.values %}
-                            <div class="en-varient-selector-item px-4 py-1 border-2  min-w-[40px] border relative">
+                            <div class="en-varient-selector-item px-4 py-1 border-2  min-w-[40px] relative">
                               <input
                                 type="radio"
                                 name="options[{{ option.name | escape }}]"
@@ -196,7 +196,9 @@
 
               {% when 'sku' %}
                 {%- assign current_variant = product.selected_or_first_available_variant -%}
-                <span class="opacity-60">SKU: {{ current_variant.sku }}</span>
+                <span class="opacity-60"
+                  >SKU: <span class="sku--text">{{ current_variant.sku }}</span>
+                </span>
               {% when 'checkout_buttons' %}
 
               {% when 'checkout_buttons' %}
@@ -204,7 +206,7 @@
                   <button
                     type="submit"
                     name="add"
-                    class="w-full en-btn-full en-btn-primary my-2"
+                    class="addtocart__button w-full en-btn-full en-btn-primary my-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     {% if selected_variant.available == false %}
                       disabled
                     {% endif %}
@@ -274,6 +276,8 @@
         this.updateURL();
         this.updateFormID();
         this.updatePrice();
+        this.updateSKU();
+        this.updateButtton();
       }
     }
 
@@ -306,6 +310,21 @@
     updateFormID() {
       const form_input = document.querySelector('#product-form').querySelector('input[name="id"]');
       form_input.value = this.currentVariant.id;
+    }
+
+    updateSKU() {
+      console.log(this.currentVariant, '----currentV------');
+      const sku = document.querySelector('.sku--text');
+      sku.textContent = this.currentVariant.sku;
+    }
+
+    updateButtton() {
+      const addtocartbtn = document.querySelector('.addtocart__button');
+      if (!this.currentVariant.available) {
+        addtocartbtn.disabled = true;
+      } else {
+        addtocartbtn.disabled = false;
+      }
     }
 
     updatePrice() {

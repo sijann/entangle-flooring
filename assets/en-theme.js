@@ -11,8 +11,30 @@ if (coll) {
                 content.style.maxHeight = null;
             } else {
                 content.style.maxHeight = content.scrollHeight + "px";
-                content.style.overflowY = "scroll";
+            }
+
+            let closeCollapsibleButton = content.querySelector(".en-collapsible-close")
+            
+            if(closeCollapsibleButton){
+                closeCollapsibleButton.addEventListener("click", ()=>{
+                    content.style.maxHeight = null;
+                })
             }
         });
+
+       
     }
 }
+
+
+// Input Field
+
+const inputs = document.querySelectorAll('.form-control input');
+const labels = document.querySelectorAll('.form-control label');
+
+labels.forEach(label => {
+	label.innerHTML = label.innerText
+		.split('')
+		.map((letter, idx) => `<span>${letter}</span>`)
+		.join('');
+});

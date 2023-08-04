@@ -1,4 +1,10 @@
 {
-    "sections": {},
-    "order": []
+    "sections": {
+        "banner" : {
+            "type": "image-banner"
+        }
+    },
+    "order": [
+        "banner"
+    ]
 }

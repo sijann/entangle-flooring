@@ -1,4 +1,4 @@
-<div class="ent-slideshow" style="background-color: {{ section.settings.background_color }};">
+<div class="ent-slideshow max-h-[750px]" style="background-color: {{ section.settings.background_color }};">
   {% for block in section.blocks %}
     <div class="relative w-full" {{ block.shopify_attributes }}>
       {% liquid
@@ -34,13 +34,13 @@
           </div>
         {% else %}
           {{
-            'lifestyle-1'
+            'hero-apparel-1'
             | placeholder_svg_tag: 'ent-placeholder-svg ent-image-overlay-svg absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat'
           }}
         {% endif %}
         <div class="ent-content-wrapper px-8 md:px-0 absolute w-full lg:w-1/2 {{ contentPosition }}">
           <h2
-            class="ent-title block font-bold uppercase large mt-4 md:text-[4rem]"
+            class="en-title-xl"
             style="color: {{ textColor }} "
           >
             {{ heading }}
@@ -63,13 +63,13 @@
           class="ent-image-overlay-container relative w-full pb-[55%]"
         >
           {{
-            'lifestyle-1'
+            'hero-apparel-1'
             | placeholder_svg_tag: 'ent-placeholder-svg ent-image-overlay-svg absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat'
           }}
 
           <div class="ent-content-wrapper absolute w-full lg:w-1/2 center">
             <h2
-              class="ent-title block font-bold uppercase large mt-4 md:text-[4rem]"
+              class="block font-bold uppercase large mt-4 md:text-[4rem]"
             >
               Slide Heading
             </h2>
