@@ -1,11 +1,11 @@
 <div class="en-content-collapsible absolute top-full left-0 md:left-auto bg-[rgba(var(--backgroundColor))] shadow-lg w-full overflow-y-scroll m-0 md:max-w-md z-[101]">
   {% if cart.item_count > 0 %}
-    <div class="p-4">
+    <div class="cart-has-item p-4" data-money-format="{{ shop.money_format }}">
       <div class="flex flex-col my-10 mx-auto">
         <form action="{{ routes.cart_url }}" method="POST" novalidate>
           <div class="flex flex-col gap-4">
             {% for item in cart.items %}
-              <div class="flex">
+              <div class="flex cart-item" data-key="{{ item.key }}">
                 <div class="w-full flex items-start gap-4">
                   <a href="{{ item.url }}" class="block shrink-0">
                     {% if item.image %}
@@ -24,10 +24,15 @@
 
                   <div class="max-w-full flex flex-col gap-2 justify-center">
                     <a href="{{ item.url }}">{{ item.product.title | truncatewords: 5 }}</a>
-                    <span class="text-sm text-[rgba(var(--textColor))]/75">{{ item.original_price | money }}</span>
+                    <span class="text-sm text-[rgba(var(--textColor))]/75">
+                      <span class="line-item-price">
+                        {{ item.line_price | money }}
+                      </span>
+                      {% render 'spinner' -%}
+                    </span>
                     <span class="text-sm opacity-[0.7]">{{ item.variant.title }}</span>
                     <div class="flex items-center justify-between">
-                      <div class="w-20 md:w-32 h-full relative border ">
+                      <div class="cart-quantity-selector w-20 md:w-32 h-full relative border ">
                         <input
                           type="number"
                           name="updates[]"
@@ -35,27 +40,22 @@
                           min="1"
                           id="updates_{{ forloop.index }}"
                           class="w-full h-full p-2 px-6 text-center focus:outline-none"
-                          onchange="updateTotalAmount(event)"
                         >
-                        <div
-                          id="itemMinusOne"
-                          class="absolute text-xl left-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
+                        <button
+                          class="minus absolute text-xl left-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
                         >
                           -
-                        </div>
-                        <div
-                          id="itemPlusOne"
-                          class="absolute text-xl right-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
+                        </button>
+                        <button
+                          class="plus absolute text-xl right-0 top-1/2 -translate-y-1/2 w-6 h-full z-10 flex items-center justify-center cursor-pointer bg-[rgba(var(--backgroundColor))]"
                         >
                           +
-                        </div>
+                        </button>
                       </div>
 
-                      <a
-                        href="#"
-                        class="text-sm font-medium text-red-500 my-1"
-                        onclick="removeItem({{ forloop.index }})"
-                        >Remove</a
+                      <span
+                        class="remove-from-cart text-sm font-medium text-red-500 my-1 cursor-pointer"
+                        >Remove</span
                       >
                     </div>
                   </div>
@@ -63,7 +63,10 @@
                 <div class="py-4 px-2 "></div>
               </div>
               <div class="py-4 px-2 hidden">
-                {{ item.line_price | money }}
+                <span class="line-item-price">
+                  {{ item.line_price | money }}
+                </span>
+                {% render 'spinner' %}
               </div>
             {% endfor %}
           </div>
@@ -87,7 +90,12 @@
               </div>
             </div>
             <div class="w-full my-4">
-              <h3 class="text-lg">Subtotal: {{ cart.total_price | money }}</h3>
+              <h3 class="text-lg">
+                Discount: <span id="total-discount"> {{ cart.total_discount | money }} </span>
+              </h3>
+              <h3 class="text-lg">
+                Subtotal: <span id="total-price"> {{ cart.total_price | money }} </span>
+              </h3>
 
               <small class="">
                 {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
@@ -140,68 +148,9 @@
       <h1 class="text-lg ">Your cart is empty</h1>
     </div>
   {% endif %}
+
+  <div class="cart-no-item flex hidden p-4 gap-4 items-center">
+    {% render 'icon-info' %}
+    <h1 class="text-lg ">Your cart is empty</h1>
+  </div>
 </div>
-
-<script>
-  function updateTotalAmount(event) {
-    const quantityInput = event.target;
-    const quantity = parseInt(quantityInput.value);
-    const priceElement = quantityInput.closest('.flex').nextElementSibling;
-    const price = parseFloat(priceElement.textContent.replace(/[^0-9.-]+/g, ''));
-
-    const newLinePrice = (price * quantity).toFixed(2);
-    priceElement.textContent = newLinePrice;
-
-    // Calculate the updated subtotal
-    const subtotalElements = document.querySelectorAll('.line-price');
-    let subtotal = 0;
-    subtotalElements.forEach((element) => {
-      const linePrice = parseFloat(element.textContent.replace(/[^0-9.-]+/g, ''));
-      subtotal += linePrice;
-    });
-
-    // Update the subtotal display
-    const subtotalElement = document.querySelector('#subtotal');
-    subtotalElement.textContent = subtotal.toFixed(2);
-  }
-</script>
-
-<script>
-  function removeItem(lineIndex) {
-    const removeURL = '{{ routes.cart_change_url }}?line=' + lineIndex + '&quantity=0';
-
-    fetch(removeURL, {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response data
-        if (data.status === 'success') {
-          console.log('ok');
-          // Item successfully removed from the cart
-
-          // Remove the corresponding item element from the DOM
-          const itemElement = document.querySelector('.cart-item-' + lineIndex);
-          itemElement.remove();
-
-          // Update the subtotal
-          const subtotalElement = document.querySelector('#subtotal');
-          subtotalElement.textContent = data.subtotal;
-
-          // Update any other relevant information or UI
-          // ...
-        } else {
-          // Handle the error condition
-          console.error('Error removing item from cart:', data.message);
-        }
-      })
-      .catch((error) => {
-        console.error('Error removing item from cart:', error);
-      });
-  }
-</script>

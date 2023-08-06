@@ -1265,10 +1265,6 @@ video {
   border-width: 2px;
 }
 
-.border-4 {
-  border-width: 4px;
-}
-
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1730,8 +1726,8 @@ video {
     }
   }
 
-  .motion-reduce\:animate-\[spin_1\.5s_linear_infinite\] {
-    animation: spin 1.5s linear infinite;
+  .motion-reduce\:animate-\[spin_0\.5s_linear_infinite\] {
+    animation: spin 0.5s linear infinite;
   }
 }
 

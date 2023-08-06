@@ -9,11 +9,8 @@
   }
 {% endstylesheet %}
 
-<script src="{{ 'cart.js' | asset_url }}" defer></script>
-"
-
 {% if cart.item_count > 0 %}
-  <div class="p-4" data-money-format="{{ shop.money_format }}">
+  <div class="cart-has-item p-4" data-money-format="{{ shop.money_format }}">
     <div class="max-w-6xl flex flex-col my-10 mx-auto">
       <div class="flex items-end justify-between my-5">
         <h1 class="text-3xl">Your cart</h1>
@@ -56,10 +53,9 @@
                     <a href="{{ item.url }}" class="my-1">{{ item.product.title | truncatewords: 5 }}</a>
                     <span class="text-sm text-[rgba(var(--textColor))]/75">{{ item.original_price | money }}</span>
                     <span class="text-sm opacity-[0.7]">{{ item.variant.title }}</span>
-                    <a
-                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
-                      class="text-sm font-medium text-red-500 my-1"
-                      >Remove</a
+                    <span
+                      class="remove-from-cart cursor-pointer text-sm font-medium text-red-500 my-1"
+                      >Remove</span
                     >
                   </div>
                 </td>
@@ -86,8 +82,12 @@
                     </button>
                   </div>
                 </td>
-                <td class="line-item-price py-4 px-2">
-                  {{ item.line_price | money }}
+                <td class=" py-4 px-2">
+                  <span class="line-item-price">
+                    {{ item.line_price | money }}
+                  </span>
+
+                  {% render 'spinner' %}
                 </td>
               </tr>
             {% endfor %}
@@ -135,15 +135,6 @@
             <div class="my-2">
               <button
                 type="submit"
-                name="update"
-                class="w-full en-btn-full en-btn-outline"
-              >
-                Update
-              </button>
-            </div>
-            <div class="my-2">
-              <button
-                type="submit"
                 name="checkout"
                 class="w-full en-btn-full en-btn-primary"
               >
@@ -172,6 +163,22 @@
     </div>
   </div>
 {% endif %}
+
+<div class="cart-no-item en-width en-container w-full flex flex-col hidden">
+  <div class="relative border-2 p4 max-w-full mt-8 mx-8">
+    <h1 class="text-xl my-4 px-16">Your cart is empty</h1>
+    <div class="absolute -left-4 top-1/2 -translate-y-1/2 -left-4  flex flex-col items-center justify-center bg-[rgba(var(--textColor))]/75 text-[rgba(var(--backgroundColor))] w-8 h-8 ">
+      {% render 'icon-info' %}
+    </div>
+  </div>
+  <div class="my-4 py-4 mx-8">
+    <a
+      href="{{ routes.all_products_collection_url }}"
+      class="en-btn-full en-btn-primary uppercase"
+      >Return to shop</a
+    >
+  </div>
+</div>
 
 {% schema %}
 {

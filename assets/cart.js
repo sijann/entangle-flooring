@@ -1,10 +1,5 @@
-function formatMoney(format){
-  var Shopify = Shopify || {};
-// ---------------------------------------------------------------------------
-// Money format handler
-// ---------------------------------------------------------------------------
-Shopify.money_format = "${{amount}}";
-Shopify.formatMoney = function(cents, format) {
+
+ function formatMoney(cents, format) {
   if (typeof cents == 'string') { cents = cents.replace('.',''); }
   var value = '';
   var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
@@ -47,7 +42,7 @@ Shopify.formatMoney = function(cents, format) {
 
   return formatString.replace(placeholderRegex, value);
 };
-}
+
 
 
 
@@ -86,9 +81,25 @@ addToCartForms.forEach((form) => {
 
 // Upadate PlusMinus Buttons
 
-
+const removeFromCartButtons = document.querySelectorAll(".remove-from-cart")
+removeFromCartButtons.forEach((button) => {
+  button.addEventListener("click", (e)=>{
+    e.preventDefault()
+    const key = button.closest(".cart-item").getAttribute("data-key");
+    changeItemQuantity(key, 0);
+  })
+})
 const cartQuantitySelectorButtons = document.querySelectorAll(".cart-quantity-selector button")
-console.log(cartQuantitySelectorButtons)
+const cartInputFields = document.querySelectorAll(".cart-quantity-selector input")
+
+cartInputFields.forEach((input) => {
+  input.addEventListener("change", ()=>{
+    let value = Number(input.value)
+    const key = input.closest(".cart-item").getAttribute("data-key")
+    changeItemQuantity(key, value)
+  })
+})
+
 cartQuantitySelectorButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault()
@@ -107,8 +118,13 @@ cartQuantitySelectorButtons.forEach((button) => {
 })
 
 async function changeItemQuantity(key, quantity) {
-  console.log(key, quantity);
 
+  document.querySelector(`[data-key="${key}"] .plus`).disabled = true;
+  document.querySelector(`[data-key="${key}"] .minus`).disabled = true;
+  document.querySelector(`[data-key="${key}"] input`).disabled = true;
+
+  document.querySelector(`[data-key="${key}"] .line-item-price`).classList.add("hidden");
+  document.querySelector(`[data-key="${key}"] .spinner--overlay`).classList.remove("hidden");
   const response = await fetch("/cart/change.js", {
     method: "post",
     headers: {
@@ -124,15 +140,21 @@ async function changeItemQuantity(key, quantity) {
   const data = await response.json();
 
   const format = document.querySelector('[data-money-format]').getAttribute('data-money-format')
-  console.log(format)
   const totalDiscount = formatMoney(data.total_discount, format);
   const totalPrice = formatMoney(data.total_price, format);
 
+  let itemPrice = 0
+
+  if(quantity !== 0){
   const item = data.items.find(item => item.key === key)
+  itemPrice = formatMoney(item.final_line_price, format);
+  }
 
 
-  const itemPrice = formatMoney(item.final_line_price, format);
+  const itemsInCart = data.item_count;
+  
 
+  document.querySelector(".cart-count").textContent = itemsInCart;
 
   document.querySelector("#total-discount").textContent = totalDiscount;
 
@@ -141,7 +163,20 @@ async function changeItemQuantity(key, quantity) {
   document.querySelector(`[data-key="${key}"] .line-item-price`).textContent = itemPrice;
 
 
-  console.log(document.querySelector(`[data-key="${key}"] .line-item-price`))
 
+  document.querySelector(`[data-key="${key}"] .line-item-price`).classList.remove("hidden");
+  document.querySelector(`[data-key="${key}"] .spinner--overlay`).classList.add("hidden");
+  document.querySelector(`[data-key="${key}"] .plus`).disabled = false;
+  document.querySelector(`[data-key="${key}"] .minus`).disabled = false;
+  document.querySelector(`[data-key="${key}"] input`).disabled = false;
+
+  if(quantity===0){
+    document.querySelector(`[data-key="${key}"]`).remove();
+  }
+
+  if(itemsInCart === 0){
+    document.querySelector('.cart-has-item').classList.add("hidden")
+    document.querySelector('.cart-no-item').classList.remove("hidden")
+  }
 
 }

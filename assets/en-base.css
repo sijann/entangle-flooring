@@ -22,6 +22,12 @@ h6 {
     font-family: var(--headingFontFamily);
 }
 
+button:disabled{
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+    
+
 .en-btn {
     padding: 0.3rem 1rem;
     cursor: pointer;
