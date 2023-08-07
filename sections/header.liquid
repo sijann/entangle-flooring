@@ -1,5 +1,5 @@
-<div class="en-container bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))]">
-  <div class="en-width relative flex flex-col gap-8 py-6">
+<div class="en-container relative bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))]">
+  <div class="en-width  flex flex-col gap-8 py-6">
     <div class="grid grid-cols-3">
       <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
         <span
@@ -61,6 +61,7 @@
           {%- endif -%}
         </a>
       </div>
+
       <div class="icons flex items-center justify-end gap-2">
         {% if section.settings.enable_language_selector %}
           {% render 'language-localization' %}
@@ -68,14 +69,28 @@
         <div class="en-menu-icon md:hidden">
           {% render 'icon-search' %}
         </div>
-        <div class="en-collapsible en-cart-collapsible">
-          {% unless section.settings.icon_style == 'text' %}
-            {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
-          {% else %}
-            Cart
-          {% endunless %}
-        </div>
-        {% render 'cart-drawer' %}
+
+        {% if settings.cart_type == 'drawer' %}
+          <div class="en-collapsible en-cart-collapsible">
+            {% unless section.settings.icon_style == 'text' %}
+              {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
+            {% else %}
+              Cart
+            {% endunless %}
+          </div>
+          {% render 'cart-drawer' %}
+
+        {% else %}
+          <div class="cart">
+            <a href="{{ routes.cart_url }}">
+              {% unless section.settings.icon_style == 'text' %}
+                {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
+              {% else %}
+                Cart
+              {% endunless %}
+            </a>
+          </div>
+        {% endif %}
       </div>
     </div>
     {% unless section.settings.menu_style == 'drawer' %}

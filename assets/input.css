@@ -19,4 +19,8 @@
         @apply text-[2rem] lg:text-[3rem] block font-bold uppercase;
     }
 
+    .visually-hidden{
+        @apply border-0 h-1 overflow-hidden p-0 absolute w-1;
+    }
+
   }

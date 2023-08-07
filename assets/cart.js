@@ -1,31 +1,31 @@
 
- function formatMoney(cents, format) {
-  if (typeof cents == 'string') { cents = cents.replace('.',''); }
+function formatMoney(cents, format) {
+  if (typeof cents == 'string') { cents = cents.replace('.', ''); }
   var value = '';
   var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
   var formatString = (format || this.money_format);
 
   function defaultOption(opt, def) {
-     return (typeof opt == 'undefined' ? def : opt);
+    return (typeof opt == 'undefined' ? def : opt);
   }
 
   function formatWithDelimiters(number, precision, thousands, decimal) {
     precision = defaultOption(precision, 2);
     thousands = defaultOption(thousands, ',');
-    decimal   = defaultOption(decimal, '.');
+    decimal = defaultOption(decimal, '.');
 
     if (isNaN(number) || number == null) { return 0; }
 
-    number = (number/100.0).toFixed(precision);
+    number = (number / 100.0).toFixed(precision);
 
-    var parts   = number.split('.'),
-        dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
-        cents   = parts[1] ? (decimal + parts[1]) : '';
+    var parts = number.split('.'),
+      dollars = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands),
+      cents = parts[1] ? (decimal + parts[1]) : '';
 
     return dollars + cents;
   }
 
-  switch(formatString.match(placeholderRegex)[1]) {
+  switch (formatString.match(placeholderRegex)[1]) {
     case 'amount':
       value = formatWithDelimiters(cents, 2);
       break;
@@ -83,7 +83,7 @@ addToCartForms.forEach((form) => {
 
 const removeFromCartButtons = document.querySelectorAll(".remove-from-cart")
 removeFromCartButtons.forEach((button) => {
-  button.addEventListener("click", (e)=>{
+  button.addEventListener("click", (e) => {
     e.preventDefault()
     const key = button.closest(".cart-item").getAttribute("data-key");
     changeItemQuantity(key, 0);
@@ -93,7 +93,7 @@ const cartQuantitySelectorButtons = document.querySelectorAll(".cart-quantity-se
 const cartInputFields = document.querySelectorAll(".cart-quantity-selector input")
 
 cartInputFields.forEach((input) => {
-  input.addEventListener("change", ()=>{
+  input.addEventListener("change", () => {
     let value = Number(input.value)
     const key = input.closest(".cart-item").getAttribute("data-key")
     changeItemQuantity(key, value)
@@ -109,10 +109,10 @@ cartQuantitySelectorButtons.forEach((button) => {
     const key = button.closest(".cart-item").getAttribute("data-key")
     if (isPlus) {
       input.value = value + 1;
-      changeItemQuantity(key, value+1)
-    }else if(value >1){
-      input.value = value -1;
-      changeItemQuantity(key, value-1)
+      changeItemQuantity(key, value + 1)
+    } else if (value > 1) {
+      input.value = value - 1;
+      changeItemQuantity(key, value - 1)
     }
   })
 })
@@ -128,7 +128,7 @@ async function changeItemQuantity(key, quantity) {
   const response = await fetch("/cart/change.js", {
     method: "post",
     headers: {
-      "Content-Type" : "application/json"
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
       id: key,
@@ -142,24 +142,30 @@ async function changeItemQuantity(key, quantity) {
   const format = document.querySelector('[data-money-format]').getAttribute('data-money-format')
   const totalDiscount = formatMoney(data.total_discount, format);
   const totalPrice = formatMoney(data.total_price, format);
+  console.log(data)
 
   let itemPrice = 0
-
-  if(quantity !== 0){
-  const item = data.items.find(item => item.key === key)
-  itemPrice = formatMoney(item.final_line_price, format);
+  let finalLinePrice;
+  if (quantity !== 0) {
+    const item = data.items.find(item => item.key === key)
+    itemPrice = formatMoney(item.final_line_price, format);
+    finalLinePrice = formatMoney(item.final_price, format);
   }
 
 
   const itemsInCart = data.item_count;
-  
+
 
   document.querySelector(".cart-count").textContent = itemsInCart;
 
-  document.querySelector("#total-discount").textContent = totalDiscount;
+  // document.querySelector("#total-discount").textContent = totalDiscount;
 
   document.querySelector("#total-price").textContent = totalPrice;
 
+  // Update final line price
+  document.querySelector(`[data-key="${key}"] .final-line-price`).textContent = finalLinePrice;
+
+  // Update final Price
   document.querySelector(`[data-key="${key}"] .line-item-price`).textContent = itemPrice;
 
 
@@ -170,11 +176,11 @@ async function changeItemQuantity(key, quantity) {
   document.querySelector(`[data-key="${key}"] .minus`).disabled = false;
   document.querySelector(`[data-key="${key}"] input`).disabled = false;
 
-  if(quantity===0){
+  if (quantity === 0) {
     document.querySelector(`[data-key="${key}"]`).remove();
   }
 
-  if(itemsInCart === 0){
+  if (itemsInCart === 0) {
     document.querySelector('.cart-has-item').classList.add("hidden")
     document.querySelector('.cart-no-item').classList.remove("hidden")
   }

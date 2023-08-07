@@ -1,4 +1,10 @@
-<div class="en-content-collapsible absolute top-full left-0 md:left-auto bg-[rgba(var(--backgroundColor))] shadow-lg w-full overflow-y-scroll m-0 md:max-w-md z-[101]">
+<div
+  class="en-content-collapsible absolute top-full left-0 md:left-auto bg-[rgba(var(--backgroundColor))] shadow-xl w-full m-0 md:max-w-md z-[101]"
+  style="overflow-y: scroll !important"
+>
+  <div class="en-collapsible-close absolute right-2 top-2 cursor-pointer">
+    {% render 'icon-close' %}
+  </div>
   {% if cart.item_count > 0 %}
     <div class="cart-has-item p-4" data-money-format="{{ shop.money_format }}">
       <div class="flex flex-col my-10 mx-auto">
@@ -25,12 +31,52 @@
                   <div class="max-w-full flex flex-col gap-2 justify-center">
                     <a href="{{ item.url }}">{{ item.product.title | truncatewords: 5 }}</a>
                     <span class="text-sm text-[rgba(var(--textColor))]/75">
-                      <span class="line-item-price">
-                        {{ item.line_price | money }}
-                      </span>
-                      {% render 'spinner' -%}
+                      {%- if item.original_price != item.final_price -%}
+                        <div class="">
+                          <span class="visually-hidden">
+                            {{ 'products.product.price.regular_price' | t }}
+                          </span>
+                          <s class="opacity-70">
+                            {{- item.original_price | money -}}
+                          </s>
+                          <span class="visually-hidden"> Sale Price </span>
+                          <strong class="final-line-price">
+                            {{ item.final_price | money }}
+                          </strong>
+                        </div>
+                      {%- else -%}
+                        <div class="product-option">
+                          {{ item.original_price | money }}
+                        </div>
+                      {%- endif -%}
                     </span>
-                    <span class="text-sm opacity-[0.7]">{{ item.variant.title }}</span>
+                    <span class="">{{ item.variant.title }}</span>
+
+                    {%- if item.product.has_only_default_variant == false -%}
+                      {%- for option in item.options_with_values -%}
+                        <div class="product-option text-sm opacity-[0.7]">
+                          <dt>{{ option.name }}:</dt>
+                          <dd>
+                            {{ option.value -}}
+                            {%- unless forloop.last %}, {% endunless %}
+                          </dd>
+                        </div>
+                      {%- endfor -%}
+                    {%- endif -%}
+
+                    <ul
+                      class="text-red-700 text-sm"
+                      role="list"
+                    >
+                      {%- for discount in item.line_level_discount_allocations -%}
+                        <li class="discounts__discount">
+                          {{ discount.discount_application.title }} (-
+                          {{- discount.amount | money }}
+                          )
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+
                     <div class="flex items-center justify-between">
                       <div class="cart-quantity-selector w-20 md:w-32 h-full relative border ">
                         <input
@@ -58,44 +104,57 @@
                         >Remove</span
                       >
                     </div>
+                    <div class="py-4 px-2 ">
+                      <span class="line-item-price">
+                        {{ item.final_line_price | money }}
+                      </span>
+                      {% render 'spinner' %}
+                    </div>
                   </div>
                 </div>
-                <div class="py-4 px-2 "></div>
-              </div>
-              <div class="py-4 px-2 hidden">
-                <span class="line-item-price">
-                  {{ item.line_price | money }}
-                </span>
-                {% render 'spinner' %}
               </div>
             {% endfor %}
           </div>
 
           <div class="flex flex-col justify-between">
-            <div class="w-full my-4">
-              <div class="flex flex-col border-b gap-4">
-                <div class="en-collapsible flex items-center justify-between">
-                  <label for="cart_notes" class="my-1 w-full text-lg cursor-pointer">Leave cart note</label>
-                  <span class="en-collapsible-caret text-sm">
-                    {% render 'icon-caret' %}
-                  </span>
-                </div>
-                <div class="en-content-collapsible w-full">
-                  <textarea
-                    name="note"
-                    id="cart_notes"
-                    class="border focus:outline-none w-full md:max-w-lg resize-none p-2 h-32"
-                  ></textarea>
+            {% if settings.enable_cart_note %}
+              <div class="w-full my-4">
+                <div class="flex flex-col border-b gap-4">
+                  <div class="en-collapsible flex items-center justify-between">
+                    <label for="cart_notes" class="my-1 w-full text-lg cursor-pointer">Leave cart note</label>
+                    <span class="en-collapsible-caret text-sm">
+                      {% render 'icon-caret' %}
+                    </span>
+                  </div>
+                  <div class="en-content-collapsible w-full">
+                    <textarea
+                      name="note"
+                      id="cart_notes"
+                      class="border focus:outline-none w-full md:max-w-lg resize-none p-2 h-32"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
+            {% endif %}
             <div class="w-full my-4">
-              <h3 class="text-lg">
-                Discount: <span id="total-discount"> {{ cart.total_discount | money }} </span>
+              {% comment %}
+                <h3 class="text-lg">
+                  Discount: <span id="total-discount"> {{ cart.total_discount | money }} </span>
+                </h3>
+              {% endcomment %}
+              <h3 class="text-lg flex items-center justify-between">
+                <span>Subtotal:</span> <span id="total-price"> {{ cart.total_price | money }} </span>
               </h3>
-              <h3 class="text-lg">
-                Subtotal: <span id="total-price"> {{ cart.total_price | money }} </span>
-              </h3>
+
+              <div class="my-2">
+                <button
+                  type="submit"
+                  name="checkout"
+                  class="w-full en-btn-full en-btn-primary"
+                >
+                  Checkout
+                </button>
+              </div>
 
               <small class="">
                 {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
@@ -108,35 +167,6 @@
                   Taxes and shipping calculated at checkout.
                 {%- endif -%}
               </small>
-
-              {% comment %}
-                <div class="my-2">
-                  <button
-                    type="submit"
-                    name="update"
-                    class="w-full en-btn-full en-btn-outline"
-                  >
-                    Update
-                  </button>
-                </div>
-              {% endcomment %}
-              <div class="my-2">
-                <a
-                  href="{{ routes.cart_url }}"
-                  class="block text-center w-full en-btn-full en-btn-outline"
-                >
-                  View Cart
-                </a>
-              </div>
-              <div class="my-2">
-                <button
-                  type="submit"
-                  name="checkout"
-                  class="w-full en-btn-full en-btn-primary"
-                >
-                  Checkout
-                </button>
-              </div>
             </div>
           </div>
         </form>

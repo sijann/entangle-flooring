@@ -90,6 +90,8 @@ button:disabled{
     transition: all ease 400ms;
 }
 
+
+
 .en-active .en-collapsible-caret {
     transform: rotate(180deg);
 }

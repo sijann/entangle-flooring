@@ -198,6 +198,38 @@
         ]
     },
     {
+        "name" : "Cart",
+        "settings" : [
+            {
+                "type" : "header",
+                "content" : "Cart"
+            },
+            {
+                "type" : "select",
+                "id" : "cart_type",
+                "default" : "drawer",
+                "label" : "Cart type",
+                "options" : [
+                    {
+                        "label" : "Drawer",
+                        "value" : "drawer"
+                    },
+                    {
+                        "label" : "Page",
+                        "value" : "page"
+                    }
+                ]
+            },
+            {
+                "type" : "checkbox",
+                "id" : "enable_cart_note",
+                "label" : "Enable cart note",
+                "default" : true 
+            }
+        ]
+
+    },
+    {
         "name": "t:settings_schema.social-media.name",
         "settings": [
             {
