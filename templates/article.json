@@ -1,4 +1,7 @@
 {
-    "sections": {},
-    "order": []
+    "sections": {
+        "template": {
+            "type": "en-article"}
+    },
+    "order": ["template"]
 }

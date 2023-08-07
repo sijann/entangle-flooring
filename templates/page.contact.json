@@ -1,4 +1,9 @@
 {
-    "sections": {},
-    "order": []
+    "sections": {
+        "template": {
+            "type": "en-page"
+        }
+       
+    },
+    "order": ["template"]
 }

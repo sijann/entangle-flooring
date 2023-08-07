@@ -1,4 +1,8 @@
 {
-    "sections": {},
-    "order": []
+    "sections": {
+        "template": {
+            "type": "en-blog"
+        }
+    },
+    "order": ["template"]
 }
