@@ -695,11 +695,41 @@ video {
   }
 }
 
+.en-title {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .en-title {
+    font-size: 1.5rem;
+  }
+}
+
+.en-title-lg {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .en-title-lg {
+    font-size: 1.9rem;
+  }
+}
+
 .en-title-xl {
   display: block;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .en-title-xl {
+    font-size: 2rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -715,6 +745,23 @@ video {
   overflow: hidden;
   border-width: 0px;
   padding: 0px;
+}
+
+.en-menu-item {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transition-duration: 500ms;
+}
+
+.en-menu-item:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 8px;
+}
+
+.en-menu-item.active {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  text-decoration-line: underline;
+  text-underline-offset: 8px;
+  transition-duration: 500ms;
 }
 
 .fixed {
@@ -892,6 +939,14 @@ video {
 
 .my-8 {
   margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-8 {
   margin-bottom: 2rem;
 }
 
@@ -1312,11 +1367,6 @@ video {
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
-.bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
-}
-
 .bg-green-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
@@ -1412,6 +1462,11 @@ video {
   padding-bottom: 0.25rem;
 }
 
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -1430,11 +1485,6 @@ video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
 }
 
 .py-8 {
@@ -1519,6 +1569,10 @@ video {
 
 .font-medium {
   font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .uppercase {
@@ -1848,6 +1902,11 @@ video {
   .md\:py-2 {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+  }
+
+  .md\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   .md\:text-\[2\.5rem\] {

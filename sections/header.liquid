@@ -1,5 +1,5 @@
 <div class="en-container relative bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))]">
-  <div class="en-width  flex flex-col gap-8 py-6">
+  <div class="en-width  flex flex-col gap-8 md:py-6">
     <div class="grid grid-cols-3">
       <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
         <span
@@ -123,7 +123,7 @@
             </div>
           {% else %}
             <a href="{{ link.url }}">
-              <div class="en-menu-item {% if link.active -%} en-menu-item-active {%- endif %} px-4 py-2">
+              <div class="en-menu-item {% if link.active -%} active {%- endif %} px-4 py-2">
                 {{- link.title | escape -}}
               </div>
             </a>

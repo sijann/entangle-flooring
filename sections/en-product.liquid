@@ -201,7 +201,7 @@
               {% when 'checkout_buttons' %}
 
               {% when 'checkout_buttons' %}
-                <div class="my-3">
+                <div class="my-3" id="buttons-{{ section.id }}">
                   <button
                     type="submit"
                     name="add"
@@ -276,7 +276,6 @@
         this.updateFormID();
         this.updatePrice();
         this.updateSKU();
-        this.updateButtton();
       }
     }
 
@@ -317,26 +316,27 @@
       sku.textContent = this.currentVariant.sku;
     }
 
-    updateButtton() {
-      const addtocartbtn = document.querySelector('.addtocart__button');
-      if (!this.currentVariant.available) {
-        addtocartbtn.disabled = true;
-      } else {
-        addtocartbtn.disabled = false;
-      }
-    }
+
 
     updatePrice() {
       fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
         .then((response) => response.text())
         .then((responseText) => {
-          const id = `price-${this.dataset.section}`;
+          const priceId = `price-${this.dataset.section}`;
           const html = new DOMParser().parseFromString(responseText, 'text/html');
 
-          const oldPrice = document.getElementById(id);
-          const newPrice = html.getElementById(id);
+          const oldPrice = document.getElementById(priceId);
+          const newPrice = html.getElementById(priceId);
 
           if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+
+          const buttonsId = `buttons-${this.dataset.section}`;
+          const newButtons = html.getElementById(buttonsId)
+          const oldButtons = document.getElementById(buttonsId)
+
+          if (oldButtons && newButtons) oldButtons.innerHTML = newButtons.innerHTML
+
+
         });
     }
   }

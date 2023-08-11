@@ -126,11 +126,7 @@ button:disabled{
     cursor: pointer;
 }
 
-.en-menu-item:hover,
-.en-menu-item-active {
-    background-color: rgba(var(--primaryBackgroundColor));
-    color: rgba(var(--primaryTextColor));
-}
+
 
 .en-input {
     border-width: var(--inputBorderWidth);

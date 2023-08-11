@@ -42,7 +42,7 @@
             {
                 "type": "font_picker",
                 "id": "type_header_font",
-                "default": "cabin_n4",
+                "default": "metro_nova_n4",
                 "label": "Header font"
             },
             {
@@ -62,7 +62,7 @@
             {
                 "type": "font_picker",
                 "id": "type_body_font",
-                "default": "cabin_n4",
+                "default": "nunito_n4",
                 "label": "Font"
             },
             {
@@ -88,13 +88,13 @@
                 "type": "color",
                 "id": "background_color",
                 "label": "Background color",
-                "default": "#FFFFFF"
+                "default": "#F5F5F5"
             },
             {
                 "type": "color",
                 "id": "text_color",
                 "label": "Text color",
-                "default": "#000000"
+                "default": "#333333"
             },
             {
                 "type": "color",
@@ -110,13 +110,13 @@
                 "type": "color",
                 "id": "header_background_color",
                 "label": "Background color",
-                "default": "#f1f5f9"
+                "default": "#F5F5F5"
             },
             {
                 "type": "color",
                 "id": "header_text_color",
                 "label": "Text color",
-                "default": "#000000"
+                "default": "#333333"
             },
             {
                 "type": "header",
@@ -132,7 +132,7 @@
                 "type": "color",
                 "id": "primary_button_background",
                 "label": "Background",
-                "default": "#000000"
+                "default": "#952E31"
             },
             {
                 "type": "header",
@@ -142,13 +142,13 @@
                 "type": "color",
                 "id": "secondary_button_text_color",
                 "label": "Color",
-                "default": "#000000"
+                "default": "#FFFFFF"
             },
             {
                 "type": "color",
                 "id": "secondary_button_background_color",
                 "label": "Background",
-                "default": "#FFFFFF"
+                "default": "#5C7F7D"
             },
             {
                 "type": "header",

@@ -15,12 +15,29 @@
         @apply inline-block px-6 md:px-12 py-2 md:py-3 text-sm font-medium text-[rgba(var(--secondaryTextColor))] bg-[rgba(var(--secondaryBackgroundColor))] border border-[rgba(var(--secondaryBackgroundColor))] active:text-[rgba(var(--secondaryBackgroundColor))] hover:bg-[rgba(var(--secondaryTextColor))]/[0.7] hover:text-[rgba(var(--secondaryBackgroundColor))]/[0.9] hover:border-[rgba(var(--secondaryBackgroundColor))]/[0.9]  focus:outline-none focus:ring duration-300
     }
 
+    .en-title{
+        @apply text-[1.2rem] md:text-[1.5rem]  block font-bold ;
+    }
+
+    .en-title-lg{
+        @apply text-[1.3rem] md:text-[1.9rem]  block font-bold ;
+    }
+
     .en-title-xl{
-        @apply text-[2rem] lg:text-[3rem] block font-bold uppercase;
+        @apply text-[1.5rem] md:text-[2rem] lg:text-[3rem] block font-bold uppercase;
     }
 
     .visually-hidden{
         @apply border-0 h-1 overflow-hidden p-0 absolute w-1;
+    }
+
+    .en-menu-item{
+        @apply hover:underline hover:underline-offset-8 transform duration-500;
+    }
+
+    .en-menu-item.active{
+        @apply underline underline-offset-8 transform duration-500;
+
     }
 
   }

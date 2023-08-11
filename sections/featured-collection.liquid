@@ -1,0 +1,97 @@
+<!-- sections/featured-collection.liquid -->
+<div class="py-10">
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl font-semibold mb-4">{{ section.settings.heading }}</h2>
+
+    {% assign collection_handle = section.settings.collection %}
+    {% assign collection = collections[collection_handle] %}
+
+    <div class="featured-collection-slider grid grid-cols-1 md:grod-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-8">
+      {% for product in collection.products limit: section.settings.max_products_to_show %}
+        {% render 'product-card',
+        card_product: product,
+        quick_add: section.settings.enable_quick_add %}
+      {% endfor %}
+    </div>
+
+    <div class="md:hidden">
+      <!-- Initialize Flickity slider if slider is selected -->
+      {% if section.settings.display_type == 'sliderr' %}
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            var elem = document.querySelector('.featured-collection-slider');
+            var flkty = new Flickity(elem, {
+              // Flickity options
+            });
+          });
+        </script>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "label": "Heading",
+      "id": "heading",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "collection",
+      "label": "Collection",
+      "id": "collection"
+    },
+    {
+      "type": "range",
+      "label": "Number of Columns on Desktop",
+      "id": "columns_desktop",
+      "default": 3,
+      "min": 1,
+      "max": 4,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "label": "Number of Columns on Mobile",
+      "id": "columns_mobile",
+      "default": 1,
+      "min": 1,
+      "max": 3,
+      "step": 1
+    },
+    {
+      "type": "radio",
+      "label": "Display Type",
+      "id": "display_type",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "slider", "label": "Slider" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable Quick Add",
+      "id": "enable_quick_add",
+      "default": true
+    },
+    {
+        "type": "range",
+        "id": "max_products_to_show",
+        "label": "Maximum products to show",
+        "default": 8,
+        "min": 1,
+        "max": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
