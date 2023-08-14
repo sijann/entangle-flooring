@@ -44,7 +44,7 @@
 %}
 
 <section
-  class="w-full h-[550px] {{ desktopHeightClass }} relative"
+class="w-full h-[550px] {{ desktopHeightClass }} relative {% unless bgImage %} bg-gray-300 {% endunless %}"
 
   {% if desktop_height == 'adapt' %}
     style="height: {{ bgImage.height }}px"
@@ -65,7 +65,7 @@
     class="w-full h-full absolute top-0 left-0 z-[99]"
     style="background-color: rgba({{ overlayColorRgba }}, {{ overlayOpacity }})"
   >
-    <div class="en-conten-wrapper px-8 md:px-0 absolute w-[100%_!important] lg:w-[50%_!important] {{ alignmentClass }} {{ contentPosition }}">
+<div class="{% if section.settings.show_container %}   {% endif %} en-conten-wrapper px-8 md:px-0 absolute w-[100%_!important] lg:w-[auto_!important] {{ alignmentClass }} {{ contentPosition }}">
       <h2
         class="en-title-xl"
         style="color: {{ textColor }} "
@@ -189,7 +189,7 @@
       "min": 0,
       "max": 1,
       "step": 0.1,
-      "default": 0
+      "default": 0.1
     },
     {
       "type": "text",
@@ -221,6 +221,12 @@
         { "value": "outline", "label": "Outline" }
       ]
     },
+    {
+      "type": "checkbox",
+      "label": "Show Container",
+      "id": "show_container",
+      "default": true
+    },
 
     {
       "type": "select",
@@ -242,7 +248,7 @@
     {
       "type": "select",
       "id": "alignment",
-      "default": "center",
+      "default": "left",
       "label": "Alignment",
       "options": [
         {

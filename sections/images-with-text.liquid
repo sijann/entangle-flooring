@@ -1,0 +1,60 @@
+<div class="en-width px-4">
+  <div class="flex flex-col-reverse md:flex-row my-6 md:my-16 gap-8 md:gap-4">
+    <div class="md:basis-[40%] pr-8 flex flex-col gap-4 justify-center">
+      <h1 class="font-bold text-2xl">Images with text</h1>
+      <p>
+        Pair large text with an image to tell a story, explain a detail about your product, or describe a new promotion.
+      </p>
+      <div class="">
+        <button class="inline-block w-auto en-button-primary rounded-md">Shop now</button>
+      </div>
+    </div>
+    <div class="md:basis-[65%] relative flex flex-col justify-center">
+      <div class=" border-2 bg-gray-300 w-[55%] object-cover relative mb-16 left-[45%] overflow-hidden rounded-lg ">
+
+      <div class="relative group w-full">
+        {% if section.settings.image_1 %}
+          <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+            {{ section.settings.image_1 | image_url: width: section.settings.image_1.width | image_tag: class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105' , loading: 'lazy' }}
+          </div>
+        {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'h-44 md:h-72 object-cover w-full' }}
+        {% endif %}
+      </div>
+
+
+        
+      </div>
+      <div class="border-2 bg-gray-300 w-[55%] object-cover top-8  md:top-16 absolute z-10 overflow-hidden rounded-lg">
+        <div class="relative group w-full object-cover">
+        {% if section.settings.image_2 %}
+          <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+            {{ section.settings.image_2 | image_url: width: 700 | image_tag: class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105' , loading: 'lazy' }}
+          </div>
+        {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'h-44 md:h-72 object-cover w-full' }}
+        {% endif %}
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+    {
+        "name": "Images with text",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "image_1",
+                "label" : "First Image"
+            },
+            {
+                "type": "image_picker",
+                "id": "image_2",
+                "label" : "Second Image"
+            }
+        ]
+    }
+{% endschema %}

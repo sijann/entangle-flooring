@@ -194,40 +194,144 @@
                 "unit": "px",
                 "label": "Section spacing",
                 "default": 50
-            }
-        ]
-    },
-    {
-        "name" : "Cart",
-        "settings" : [
-            {
-                "type" : "header",
-                "content" : "Cart"
             },
             {
-                "type" : "select",
-                "id" : "cart_type",
-                "default" : "drawer",
-                "label" : "Cart type",
-                "options" : [
+                "type": "header",
+                "content": "Styles"
+            },
+            {
+                "type": "select",
+                "id": "corners",
+                "default": "rounded",
+                "label": "Corners",
+                "options": [
                     {
-                        "label" : "Drawer",
-                        "value" : "drawer"
+                        "label": "Square",
+                        "value": "square"
                     },
                     {
-                        "label" : "Page",
-                        "value" : "page"
+                        "label": "Rounded",
+                        "value": "rounded"
                     }
                 ]
             },
             {
-                "type" : "checkbox",
-                "id" : "enable_cart_note",
-                "label" : "Enable cart note",
-                "default" : true 
+                "type": "select",
+                "id": "button_corners",
+                "default": "square",
+                "label": "Button Corners",
+                "options": [
+                    {
+                        "label": "Square",
+                        "value": "square"
+                    },
+                    {
+                        "label": "Rounded",
+                        "value": "rounded"
+                    }
+                ]
             }
         ]
-
+    },
+    {
+        "name": "Cart",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Cart"
+            },
+            {
+                "type": "select",
+                "id": "cart_type",
+                "default": "drawer",
+                "label": "Cart type",
+                "options": [
+                    {
+                        "label": "Drawer",
+                        "value": "drawer"
+                    },
+                    {
+                        "label": "Page",
+                        "value": "page"
+                    }
+                ]
+            },
+            {
+                "type": "checkbox",
+                "id": "enable_cart_note",
+                "label": "Enable cart note",
+                "default": true
+            }
+        ]
+    },
+    {
+        "name": "Product Cards",
+        "settings": [
+            {
+                "type": "select",
+                "id": "product_card_style",
+                "default": "card",
+                "label": "Style",
+                "options": [
+                    {
+                        "label": "Standard",
+                        "value": "standard"
+                    },
+                    {
+                        "label": "Card",
+                        "value": "card"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "product_card_corners",
+                "default": "rounded",
+                "label": "Corners",
+                "options": [
+                    {
+                        "label": "Square",
+                        "value": "square"
+                    },
+                    {
+                        "label": "Rounded",
+                        "value": "rounded"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "save_price",
+                "default": "percentage",
+                "label": "Save Price",
+                "options": [
+                    {
+                        "label": "Percentage",
+                        "value": "percentage"
+                    },
+                    {
+                        "label": "Money",
+                        "value": "money"
+                    }
+                ]
+            },
+            {
+                "type": "header",
+                "content": "Colors"
+            },
+            {
+                "type": "color",
+                "id": "product_card_background_color",
+                "label": "Background color",
+                "default": "#000000"
+            },
+            {
+                "type": "color",
+                "id": "product_card_text_color",
+                "label": "Text color",
+                "default": "#000000"
+            }
+        ]
     },
     {
         "name": "t:settings_schema.social-media.name",

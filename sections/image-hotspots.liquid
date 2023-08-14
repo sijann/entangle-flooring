@@ -1,0 +1,60 @@
+<div class="relative">
+{{ 'lifestyle-1' |  placeholder_svg_tag: "w-full h-full object-cover" }}
+  
+  <div class="absolute top-1/2 left-1/2 w-full h-full">
+    <!-- Hotspot 1 -->
+    <div class="hotspot-marker hotspot-marker-1"></div>
+    <div class="hotspot-content hotspot-content-1 hidden">
+      Text for Hotspot 1
+    </div>
+    
+    <!-- Hotspot 2 -->
+    <div class="hotspot-marker hotspot-marker-2"></div>
+    <div class="hotspot-content hotspot-content-2 hidden">
+      Text for Hotspot 2
+    </div>
+    
+    <!-- Add more hotspots as needed -->
+  </div>
+</div>
+
+
+<style>
+    /* Hotspot Markers */
+.hotspot-marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #FF5733;
+    border-radius: 50%;
+    filter: brightness(1.5);
+    transition: filter 0.3s;
+  }
+  
+  /* Hotspot Glowing Effect */
+  .hotspot-marker:hover {
+    filter: brightness(2);
+    box-shadow: 0 0 10px rgba(255, 87, 51, 0.8);
+  }
+  
+  /* Hotspot Content */
+  .hotspot-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  /* Show Hotspot Content on Hover */
+  .hotspot-marker:hover + .hotspot-content {
+    opacity: 1;
+    display: block;
+  }
+  
+</style>

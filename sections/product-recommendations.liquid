@@ -10,9 +10,7 @@
     {% endif %}
     <ul class="m-0 p-0 w-full grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
       {%- for product in recommendations.products -%}
-        <li class="product">
           {% render 'product-card', card_product: product %}
-        </li>
       {%- endfor -%}
     </ul>
   {%- endif -%}

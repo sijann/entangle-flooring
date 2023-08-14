@@ -13,7 +13,7 @@
     assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105 group-hover:opacity-70'
   endif
 %}
-<div class="w-full my-4">
+<div class="{% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.product_card_corners == 'rounded' %} rounded-lg {% endif %}w-full my-4 overflow-hidden duration-300 hover:shadow-md">
   <div class="relative w-full overflow-hidden">
     <div class="relative group w-full">
       <a href="{{ card_product.url }}">
@@ -29,7 +29,7 @@
 
       {% comment %} For quick add  {% endcomment %}
       {% if quick_add %}
-        <div class="quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div class="quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md">
           {%- liquid
             assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
             assign qty_rules = false
@@ -83,23 +83,25 @@
         <span class="text-sm">{{ card_product.vendor }}</span>
       {% endif %}
 
-      <a href="{{ card_product.url }}" class="text-gray-700 uppercase font-medium">{{ card_product.title }}</a>
+      <a href="{{ card_product.url }}" class="font-bold">
+        <h3>{{ card_product.title }}</h3>
+        </a>
 
       {% render 'price', product: card_product %}
     </div>
 
     {% comment %} For card badges {% endcomment %}
 
-    <div class="absolute top-1 right-1">
+    <div class="absolute top-1 right-1 text-xs font-bold uppercase rounded-sm overflow-hidden">
       {%- if card_product.available == false -%}
         <span
-          class="bg-red-400 px-2 py-1"
+          class="bg-red-400 px-1 py-2"
         >
           Sold out
         </span>
       {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
         <span
-          class="bg-green-400 px-2 py-1"
+          class="bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]  px-2 py-2"
         >
           Sale
         </span>

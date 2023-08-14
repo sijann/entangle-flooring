@@ -1,10 +1,18 @@
 {
     "sections": {
-        "banner" : {
-            "type": "image-banner"
+        "images_with_text" : {
+            "type": "images-with-text"
+        },
+        "featured_collection" : {
+            "type": "featured-collection"
+        },
+        "hotspots" : {
+            "type": "image-hotspots"
         }
     },
     "order": [
-        "banner"
+        "images_with_text",
+        "featured_collection",
+        "hotspots"
     ]
 }

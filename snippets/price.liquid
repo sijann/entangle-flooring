@@ -4,6 +4,7 @@
 
   if compareAtPrice > salePrice
     assign saveMoney = compareAtPrice | minus: salePrice
+    assign savePercent = saveMoney | times: 100 | divided_by: compareAtPrice
   endif
 %}
 
@@ -19,6 +20,10 @@
 
   <span class="hidden">Save Price</span>
   {% if saveMoney %}
-    <span class="text-green-700"> Save {{ saveMoney | money }} </span>
+    {% if settings.save_price == 'money' %}
+      <span class="text-green-700"> Save {{ saveMoney | money }} </span>
+    {% else %}
+      <span class="text-green-700"> Save {{ savePercent | append: '%' }} </span>
+    {% endif %}
   {% endif %}
 </div>
