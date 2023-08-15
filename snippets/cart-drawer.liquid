@@ -1,5 +1,6 @@
 <div
-  class="en-content-collapsible absolute top-full left-0 md:left-auto bg-[rgba(var(--backgroundColor))] shadow-xl w-full m-0 md:max-w-md z-[101]"
+  class="en-content-collapsible absolute top-full max-h-[40rem] left-0 md:left-auto bg-[rgba(var(--backgroundColor))] shadow-xl w-full m-0 md:max-w-md z-[101]"
+  id="en-cart-drawer"
   style="overflow-y: scroll !important"
 >
   <div class="en-collapsible-close absolute right-2 top-2 cursor-pointer">
@@ -30,7 +31,8 @@
 
                   <div class="max-w-full flex flex-col gap-2 justify-center">
                     <a href="{{ item.url }}">
-                      <h3 class="font-semibold">{{ item.product.title | truncatewords: 5 }}</h3></a>
+                      <h3 class="font-semibold">{{ item.product.title | truncatewords: 5 }}</h3>
+                    </a>
                     <span class="text-sm text-[rgba(var(--textColor))]/75">
                       {%- if item.original_price != item.final_price -%}
                         <div class="">
@@ -59,7 +61,6 @@
                           <dt>{{ option.name }}:</dt>
                           <dd>
                             {{ option.value -}}
-                           
                           </dd>
                         </div>
                       {%- endfor -%}

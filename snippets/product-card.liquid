@@ -13,7 +13,9 @@
     assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105 group-hover:opacity-70'
   endif
 %}
-<div class="{% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.product_card_corners == 'rounded' %} rounded-lg {% endif %}w-full my-4 overflow-hidden duration-300 hover:shadow-md">
+<div
+  class="reveal {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.product_card_corners == 'rounded' %} rounded-lg {% endif %}w-full my-4 overflow-hidden duration-300 hover:shadow-md"
+>
   <div class="relative w-full overflow-hidden">
     <div class="relative group w-full">
       <a href="{{ card_product.url }}">
@@ -29,7 +31,11 @@
 
       {% comment %} For quick add  {% endcomment %}
       {% if quick_add %}
-        <div class="quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md">
+        <div
+          data-product-url="{{ card_product.url }}"
+          data-id=" {{ card_product.id }}"
+          class="quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md"
+        >
           {%- liquid
             assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
             assign qty_rules = false
@@ -39,7 +45,7 @@
           -%}
           <div class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]">
             {%- if card_product.variants.size > 1 or qty_rules -%}
-              <a href="{{ card_product.url }}">
+              <a href="#">
                 {% render 'icon-link' %}
               </a>
             {% else %}
@@ -85,7 +91,7 @@
 
       <a href="{{ card_product.url }}" class="font-bold">
         <h3>{{ card_product.title }}</h3>
-        </a>
+      </a>
 
       {% render 'price', product: card_product %}
     </div>
@@ -109,3 +115,23 @@
     </div>
   </div>
 </div>
+
+<quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal hidden">
+  <div
+    role="dialog"
+    aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
+    aria-modal="true"
+    class="quick-add-modal__content global-settings-popup"
+    tabindex="-1"
+  >
+    <button
+      id="ModalClose-{{ card_product.id }}"
+      type="button"
+      class="quick-add-modal__toggle"
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {% render 'icon-close' %}
+    </button>
+    <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+  </div>
+</quick-add-modal>

@@ -22,11 +22,11 @@ h6 {
     font-family: var(--headingFontFamily);
 }
 
-button:disabled{
-        cursor: not-allowed;
-        opacity: 0.5;
-    }
-    
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 
 .en-btn {
     padding: 0.3rem 1rem;
@@ -294,43 +294,44 @@ button:disabled{
 
 
 .form-control {
-	position: relative;
-	margin: 20px 0;
+    position: relative;
+    margin: 20px 0;
 }
 
 .form-control input {
-	border: 0;
-	border-bottom: 2px solid ;
-	padding: 15px 0;
-	display: block;
-	width: 100%;
-	transition: 0.1s ease-in;
+    border: 0;
+    border-bottom: 2px solid;
+    padding: 15px 0;
+    display: block;
+    width: 100%;
+    transition: 0.1s ease-in;
 }
 
-.form-control input:focus, 
+.form-control input:focus,
 .form-control input:valid {
-	border-bottom-color: rgba(var(--textColor), 0.5);
-	outline: none;
+    border-bottom-color: rgba(var(--textColor), 0.5);
+    outline: none;
 }
 
-.form-control input:focus + label span ,
-.form-control input:valid + label span{
-	color: rgba(var(--textColor), 0.5);
-	transform: translateY(-30px);
+.form-control input:focus+label span,
+.form-control input:valid+label span {
+    color: rgba(var(--textColor), 0.5);
+    transform: translateY(-30px);
 }
 
 .form-control label {
-	position: absolute;
-	top: 15px;
-	left: 0;
-    color: rgba(var(--textColor), 0.5);;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    color: rgba(var(--textColor), 0.5);
+    ;
 }
 
 .form-control label span {
-	display: inline-block;
-	font-size: 18px;
-	min-width: 5px;
-	transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: inline-block;
+    font-size: 18px;
+    min-width: 5px;
+    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 
@@ -346,3 +347,50 @@ button:disabled{
 }
 
 
+
+
+/* effects */
+
+/* .animate-in */
+body
+    {
+    -webkit-animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.animate-out {
+    -webkit-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+    opacity: 0;
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translate3d(0, 70px, 0);
+    transition: opacity 0.7s, transform 0.7s;
+}
+
+.reveal_visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}

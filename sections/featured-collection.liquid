@@ -1,4 +1,4 @@
-<div class="en-width">
+<div class="en-width ">
   <div class="mx-auto px-4 py-10 my-12">
     <h2 class="text-2xl font-semibold mb-4">{{ section.settings.heading }}</h2>
 
@@ -7,13 +7,11 @@
 
     <div class=" featured-collection-slider grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-x-4 md:gap-y-2">
       {% for product in collection.products limit: section.settings.max_products_to_show %}
-        {% render 'product-card',
-        card_product: product,
-        quick_add: section.settings.enable_quick_add %}
+        {% render 'product-card', card_product: product, quick_add: section.settings.enable_quick_add %}
 
-        {% else %}
+      {% else %}
         {% for item in (1..4) %}
-          {% render 'product-card-empty', index : forloop.index %}
+          {% render 'product-card-empty', index: forloop.index %}
         {% endfor %}
       {% endfor %}
     </div>
@@ -23,8 +21,7 @@
         <script>
           document.addEventListener('DOMContentLoaded', function () {
             var elem = document.querySelector('.featured-collection-slider');
-            var flkty = new Flickity(elem, {
-            });
+            var flkty = new Flickity(elem, {});
           });
         </script>
       {% endif %}
@@ -82,12 +79,12 @@
       "default": true
     },
     {
-        "type": "range",
-        "id": "max_products_to_show",
-        "label": "Maximum products to show",
-        "default": 8,
-        "min": 1,
-        "max": 20
+      "type": "range",
+      "id": "max_products_to_show",
+      "label": "Maximum products to show",
+      "default": 8,
+      "min": 1,
+      "max": 20
     }
   ],
   "presets": [

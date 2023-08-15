@@ -234,6 +234,23 @@
         ]
     },
     {
+        "name": "Animations",
+        "settings": [
+            {
+                "type": "checkbox",
+                "id": "reveal_on_scroll",
+                "label": "Reveal on scroll",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "fade_page_transition",
+                "label": "Enable fade page transition",
+                "default": true
+            }
+        ]
+    },
+    {
         "name": "Cart",
         "settings": [
             {

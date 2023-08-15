@@ -1,7 +1,7 @@
-<div class="en-width">
+<div class="en-width px-4 reveal">
   <h1 class="text-2xl font-bold py-4">Image Hotspots</h1>
   <div class="w-full flex items-center">
-    <div class="w-full relative m-4 p-0 rounded-lg overflow-hidden{%- if section.settings.image == blank %} bg-gray-300 {% endif %} ">
+    <div class="w-full relative rounded-lg overflow-hidden{%- if section.settings.image == blank %} bg-gray-300 {% endif %} ">
       {% if section.settings.image %}
         {{
           section.settings.image
@@ -33,7 +33,9 @@
             style="top: {{ y }}%; left: {{ x }}%;"
             class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
           >
-            <div class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full "></div>
+            <div
+              class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
+            ></div>
             <div class="lg-hotspot__label">
               <h4>Product title</h4>
               <p>This is some text that goes in the label. It describes the item.</p>
@@ -60,10 +62,20 @@
           style="top: {{ block.settings.yposition }}%; left: {{ block.settings.xposition }}%;"
           class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
         >
-          <div class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full "></div>
-          <div class="lg-hotspot__label">
-            <h4>Product title</h4>
-            <p>This is some text that goes in the label. It describes the item.</p>
+          <div
+            class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
+          ></div>
+          <div class="lg-hotspot__label absolute bg-[rgba(var(--backgroundColor))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] rounded-lg opacity-0 hidden transition-all duration-500">
+            {% if block.settings.product != blank %}
+              <h4 class="font-bold pb-2 ">{{ block.settings.product.title }}</h4>
+              <p class="pb-2">{{ block.settings.description }}</p>
+              <div class="flex items-center gap-2">
+                <button class="en-button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
+              </div>
+            {% else %}
+              <h4 class="font-bold pb-2 mb-2">Product title</h4>
+              <p>This is some text that goes in the label. It describes the item.</p>
+            {% endif %}
           </div>
         </div>
       {% endfor %}
@@ -71,15 +83,13 @@
   </div>
 </div>
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
   :root {
     --buttonRadius: 24px;
     --labelPaddingX: calc(var(--buttonRadius) * 1);
     --labelBorderRadius: 2px;
     --labelFade: 0.1s;
-    --colorButton: {{ section.settings.hotspot_color }};
-    --colorButtonHover: #ff774c;
+    --colorHotspotButton: {{ section.settings.hotspot_color }};
+    --colorHotspotButtonHover: #ff774c;
     --colorText: #333;
     --colorHeadingBackground: #555;
   }
@@ -94,61 +104,14 @@
   }
 
   .lg-hotspot__button {
-    border: 1px solid var(--colorButton);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 999;
+    border: 1px solid var(--colorHotspotButton);
     animation: button-pulse 5s ease-in-out infinite;
   }
 
   .lg-hotspot__button:after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    content: '';
-    display: block;
     height: calc(var(--buttonRadius) * 0.7);
     width: calc(var(--buttonRadius) * 0.7);
-    border-radius: 100%;
-    border: 3px solid white;
-    background-color: var(--colorButton);
     transition: border-color 1s linear;
-  }
-
-  .lg-hotspot__label {
-    position: absolute;
-    padding: 0 0 1.1em 0;
-    width: 16em;
-    max-width: 50vw;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14.5px;
-    line-height: 1.45em;
-    z-index: -1;
-    border-radius: var(--labelBorderRadius);
-    user-select: none;
-    opacity: 0;
-    display: none;
-    transition: all var(--labelFade) linear;
-  }
-
-  .lg-hotspot__label h4 {
-    margin: 0;
-    padding: 0.65em var(--labelPaddingX);
-    background-color: var(--colorHeadingBackground);
-    font-size: 1.1em;
-    font-weight: normal;
-    letter-spacing: 0.02em;
-    color: white;
-    border-radius: var(--labelBorderRadius) var(--labelBorderRadius) 0 0;
-  }
-
-  .lg-hotspot__label p {
-    margin: 0;
-    padding: 1.1em var(--labelPaddingX) 0 var(--labelPaddingX);
-    color: var(--colorText);
   }
 
   .lg-hotspot--top-left .lg-hotspot__label {
@@ -256,6 +219,11 @@
           "type": "product",
           "id": "product",
           "label": "Product"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Product Description"
         }
       ]
     }

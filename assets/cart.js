@@ -57,23 +57,26 @@ addToCartForms.forEach((form) => {
     form.querySelector('button[type="submit"]').innerHTML = "Adding..."
 
     // Submit form with ajax
-    await fetch("/cart/add", {
+    fetch("/cart/add", {
       method: "post",
       body: new FormData(form),
-    });
+    }).then((response) => response.text())
+    .then((responseText) => {
+      const html = new DOMParser().parseFromString(responseText, 'text/html');
+      document.getElementById("en-cart-drawer").innerHTML = html.getElementById("en-cart-drawer").innerHTML
+      document.getElementById("en-cart-drawer").querySelectorAll('script').forEach((oldScriptTag) => {
+        const newScriptTag = document.createElement('script');
+        Array.from(oldScriptTag.attributes).forEach((attribute) => {
+          newScriptTag.setAttribute(attribute.name, attribute.value);
+        });
+        newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
+        oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
+      });
+      document.querySelector('.en-collapsible.en-cart-collapsible').click();
+    })
 
-    // Get new cart object
-    const res = await fetch("/cart.json");
-    const cart = await res.json();
-
-    // Update cart count
-    document.querySelectorAll(".cart-count").forEach((el) => {
-      el.textContent = cart.item_count;
-    });
-
-    // Display message
-    form.querySelector('button[type="submit"]').innerHTML = "Add to cart"
-    document.querySelector('.en-collapsible.en-cart-collapsible').click();
+    
+    
   });
 });
 
