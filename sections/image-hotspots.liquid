@@ -1,60 +1,264 @@
-<div class="relative">
-{{ 'lifestyle-1' |  placeholder_svg_tag: "w-full h-full object-cover" }}
-  
-  <div class="absolute top-1/2 left-1/2 w-full h-full">
-    <!-- Hotspot 1 -->
-    <div class="hotspot-marker hotspot-marker-1"></div>
-    <div class="hotspot-content hotspot-content-1 hidden">
-      Text for Hotspot 1
+<div class="en-width">
+  <h1 class="text-2xl font-bold py-4">Image Hotspots</h1>
+  <div class="w-full flex items-center">
+    <div class="w-full relative m-4 p-0 rounded-lg overflow-hidden{%- if section.settings.image == blank %} bg-gray-300 {% endif %} ">
+      {% if section.settings.image %}
+        {{
+          section.settings.image
+          | image_url: width: section.settings.image.width
+          | image_tag: class: 'block h-full w-full object-scale-down', loading: 'lazy'
+        }}
+
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'block h-full w-full object-scale-down' }}
+      {% endif %}
+
+      {% if section.settings.image == blank %}
+        {% for i in (1..3) %}
+          {% liquid
+            assign x = 10
+            assign y = 20
+            assign hotspot_class = 'top-left'
+            if forloop.index == 3
+              assign x = 40
+              assign y = 65
+              assign hotspot_class = 'top-right'
+            elsif forloop.index == 2
+              assign x = 80
+              assign y = 75
+              assign hotspot_class = 'top-right'
+            endif
+          %}
+          <div
+            style="top: {{ y }}%; left: {{ x }}%;"
+            class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
+          >
+            <div class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full "></div>
+            <div class="lg-hotspot__label">
+              <h4>Product title</h4>
+              <p>This is some text that goes in the label. It describes the item.</p>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      {% for block in section.blocks %}
+        {% liquid
+          assign x = block.settings.xposition
+          assign y = block.settings.yposition
+
+          assign hotspot_class = 'top-left'
+          if x > 40 and y <= 50
+            assign hotspot_class = 'top-right'
+          elsif x < 60 and y > 50
+            assign hotspot_class = 'bottom-left'
+          elsif x > 40 and y > 50
+            assign hotspot_class = 'bottom-right'
+          endif
+        %}
+        <div
+          style="top: {{ block.settings.yposition }}%; left: {{ block.settings.xposition }}%;"
+          class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
+        >
+          <div class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full "></div>
+          <div class="lg-hotspot__label">
+            <h4>Product title</h4>
+            <p>This is some text that goes in the label. It describes the item.</p>
+          </div>
+        </div>
+      {% endfor %}
     </div>
-    
-    <!-- Hotspot 2 -->
-    <div class="hotspot-marker hotspot-marker-2"></div>
-    <div class="hotspot-content hotspot-content-2 hidden">
-      Text for Hotspot 2
-    </div>
-    
-    <!-- Add more hotspots as needed -->
   </div>
 </div>
-
-
 <style>
-    /* Hotspot Markers */
-.hotspot-marker {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #FF5733;
-    border-radius: 50%;
-    filter: brightness(1.5);
-    transition: filter 0.3s;
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+  :root {
+    --buttonRadius: 24px;
+    --labelPaddingX: calc(var(--buttonRadius) * 1);
+    --labelBorderRadius: 2px;
+    --labelFade: 0.1s;
+    --colorButton: {{ section.settings.hotspot_color }};
+    --colorButtonHover: #ff774c;
+    --colorText: #333;
+    --colorHeadingBackground: #555;
   }
-  
-  /* Hotspot Glowing Effect */
-  .hotspot-marker:hover {
-    filter: brightness(2);
-    box-shadow: 0 0 10px rgba(255, 87, 51, 0.8);
+
+  .lg-hotspot--selected {
+    z-index: 999;
   }
-  
-  /* Hotspot Content */
-  .hotspot-content {
+
+  .lg-hotspot--selected .lg-hotspot__label {
+    opacity: 1;
+    display: block;
+  }
+
+  .lg-hotspot__button {
+    border: 1px solid var(--colorButton);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    animation: button-pulse 5s ease-in-out infinite;
+  }
+
+  .lg-hotspot__button:after {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  /* Show Hotspot Content on Hover */
-  .hotspot-marker:hover + .hotspot-content {
-    opacity: 1;
+    pointer-events: none;
+    content: '';
     display: block;
+    height: calc(var(--buttonRadius) * 0.7);
+    width: calc(var(--buttonRadius) * 0.7);
+    border-radius: 100%;
+    border: 3px solid white;
+    background-color: var(--colorButton);
+    transition: border-color 1s linear;
   }
-  
+
+  .lg-hotspot__label {
+    position: absolute;
+    padding: 0 0 1.1em 0;
+    width: 16em;
+    max-width: 50vw;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.45em;
+    z-index: -1;
+    border-radius: var(--labelBorderRadius);
+    user-select: none;
+    opacity: 0;
+    display: none;
+    transition: all var(--labelFade) linear;
+  }
+
+  .lg-hotspot__label h4 {
+    margin: 0;
+    padding: 0.65em var(--labelPaddingX);
+    background-color: var(--colorHeadingBackground);
+    font-size: 1.1em;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    color: white;
+    border-radius: var(--labelBorderRadius) var(--labelBorderRadius) 0 0;
+  }
+
+  .lg-hotspot__label p {
+    margin: 0;
+    padding: 1.1em var(--labelPaddingX) 0 var(--labelPaddingX);
+    color: var(--colorText);
+  }
+
+  .lg-hotspot--top-left .lg-hotspot__label {
+    top: var(--buttonRadius);
+    left: var(--buttonRadius);
+  }
+
+  .lg-hotspot--top-right .lg-hotspot__label {
+    top: var(--buttonRadius);
+    right: var(--buttonRadius);
+  }
+
+  .lg-hotspot--bottom-right .lg-hotspot__label {
+    right: var(--buttonRadius);
+    bottom: var(--buttonRadius);
+  }
+
+  .lg-hotspot--bottom-left .lg-hotspot__label {
+    bottom: var(--buttonRadius);
+    left: var(--buttonRadius);
+  }
+
+  @keyframes button-pulse {
+    0% {
+      transform: scale(1, 1);
+      opacity: 1;
+    }
+    40% {
+      transform: scale(1.25, 1.25);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1, 1);
+      opacity: 1;
+    }
+  }
 </style>
+
+<script>
+  const selectHotspot = (e) => {
+    const clickedHotspot = e.target.parentElement;
+    const container = clickedHotspot.parentElement;
+
+    // only include hotspots within same image to allow one open hotspot per image; change "container" to "document" to allow only one open hotspot for entire page:
+    const hotspots = document.querySelectorAll('.lg-hotspot');
+    hotspots.forEach((hotspot) => {
+      if (hotspot === clickedHotspot) {
+        hotspot.classList.toggle('lg-hotspot--selected');
+      } else {
+        hotspot.classList.remove('lg-hotspot--selected');
+      }
+    });
+  };
+
+  (() => {
+    const buttons = document.querySelectorAll('.lg-hotspot__button');
+    buttons.forEach((button) => {
+      button.addEventListener('click', selectHotspot);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Image Hotspots",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "color",
+      "id": "hotspot_color",
+      "label": "Hotspot Color",
+      "default": "#952E31"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Hotspot",
+      "settings": [
+        {
+          "type": "range",
+          "id": "xposition",
+          "default": 50,
+          "label": "Left",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "yposition",
+          "default": 50,
+          "label": "Top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
