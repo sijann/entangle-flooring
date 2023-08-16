@@ -71,14 +71,13 @@
         </div>
 
         {% if settings.cart_type == 'drawer' %}
-          <div class="en-collapsible en-cart-collapsible">
+          <div class="js-menu__open" data-menu="#main-nav">
             {% unless section.settings.icon_style == 'text' %}
               {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
             {% else %}
               Cart
             {% endunless %}
           </div>
-          {% render 'cart-drawer' %}
 
         {% else %}
           <div class="cart">
@@ -134,6 +133,8 @@
     {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
   </div>
 </div>
+
+{% render 'cart-drawer-new' %}
 
 <script>
   const menuIcon = document.querySelector('.en-menu-icon');

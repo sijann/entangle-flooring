@@ -1,26 +1,46 @@
 // Collapsible content 
-
-var coll = document.getElementsByClassName("en-collapsible");
-var i;
-if (coll) {
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("en-active");
-            var content = this.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-            let closeCollapsibleButton = content.querySelector(".en-collapsible-close")
-            if (closeCollapsibleButton) {
-                closeCollapsibleButton.addEventListener("click", () => {
-                    content.style.maxHeight = null;
-                })
-            }
-        });
+class CollapsibleContent extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoot.innerHTML = `
+        <style>
+          /* Your styling for the content */
+        </style>
+        <slot></slot>
+      `;
     }
-}
+  }
+  
+  class CollapsibleButton extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.shadowRoot.innerHTML = `
+        <style>
+          /* Your styling for the button */
+        </style>
+        <slot></slot>
+      `;
+  
+      this.addEventListener('click', () => {
+        const targetId = this.getAttribute('target-id');
+        const content = document.querySelector(`[data-id="${targetId}"]`);
+        if (content) {
+          content.classList.toggle('en-active');
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        }
+      });
+    }
+  }
+  
+  customElements.define('collapsible-content', CollapsibleContent);
+  customElements.define('collapsible-button', CollapsibleButton);
+  
 
 
 const inputs = document.querySelectorAll('.form-control input');

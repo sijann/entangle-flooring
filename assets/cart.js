@@ -53,7 +53,6 @@ addToCartForms.forEach((form) => {
   form.addEventListener("submit", async (event) => {
     // Prevent normal submission
     event.preventDefault();
-
     form.querySelector('button[type="submit"]').innerHTML = "Adding..."
 
     // Submit form with ajax
@@ -63,21 +62,22 @@ addToCartForms.forEach((form) => {
     }).then((response) => response.text())
     .then((responseText) => {
       const html = new DOMParser().parseFromString(responseText, 'text/html');
-      document.getElementById("en-cart-drawer").innerHTML = html.getElementById("en-cart-drawer").innerHTML
-      document.getElementById("en-cart-drawer").querySelectorAll('script').forEach((oldScriptTag) => {
-        const newScriptTag = document.createElement('script');
-        Array.from(oldScriptTag.attributes).forEach((attribute) => {
-          newScriptTag.setAttribute(attribute.name, attribute.value);
-        });
-        newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
-        oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
-      });
-      document.querySelector('.en-collapsible.en-cart-collapsible').click();
-    })
-
-    
-    
-  });
+      let elem = document.getElementById("main-nav") 
+      elem.innerHTML = html.getElementById("main-nav").innerHTML
+      // elem.querySelectorAll('script').forEach((oldScriptTag) => {
+      //   console.log(oldScriptTag)
+      //   const newScriptTag = document.createElement('script');
+      //   Array.from(oldScriptTag.attributes).forEach((attribute) => {
+      //     newScriptTag.setAttribute(attribute.name, attribute.value);
+      //   });
+      //   newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
+      //   oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
+      // });
+      document.querySelector('.js-menu__open').click();
+    }).finally(()=>{
+      form.querySelector('button[type="submit"]').innerHTML = "Add to Cart";
+    });
+  })
 });
 
 
@@ -189,3 +189,45 @@ async function changeItemQuantity(key, quantity) {
   }
 
 }
+
+
+// Quantity Button Custom Element
+class QuantityButton extends HTMLElement {
+  constructor() {
+    super();
+    this.addEventListener("click", this.onClick.bind(this));
+  }
+
+  onClick() {
+    const input = this.parentElement.querySelector("input");
+    let value = Number(input.value);
+    const isPlus = this.classList.contains("plus");
+    const key = this.closest(".cart-item").getAttribute("data-key");
+
+    if (isPlus) {
+      input.value = value + 1;
+      changeItemQuantity(key, value + 1);
+    } else if (value > 1) {
+      input.value = value - 1;
+      changeItemQuantity(key, value - 1);
+    }
+  }
+}
+
+// Remove from Cart Button Custom Element
+class RemoveFromCartButton extends HTMLElement {
+  constructor() {
+    super();
+    this.addEventListener("click", this.onClick.bind(this));
+  }
+
+  onClick(event) {
+    event.preventDefault();
+    const key = this.closest(".cart-item").getAttribute("data-key");
+    changeItemQuantity(key, 0);
+  }
+}
+
+// Define the custom elements
+customElements.define("quantity-button", QuantityButton);
+customElements.define("remove-from-cart", RemoveFromCartButton);
