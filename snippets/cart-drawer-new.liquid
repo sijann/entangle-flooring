@@ -21,14 +21,11 @@
                     <div class="w-full flex items-start gap-4">
                       <a href="{{ item.url }}" class="block shrink-0">
                         {% if item.image %}
-                          <img
-                            src="{{ item.image | img_url: 'small' }}"
-                            alt="{{ item.title | escape }}"
-                            class="w-16 h-16 object-cover border"
-                            height="500"
-                            width="500"
-                            loading="lazy"
-                          >
+                          {{
+                            item.image
+                            | image_url: width: item.image.width
+                            | image_tag: class: 'w-16 h-16 object-cover border', loading: 'lazy'
+                          }}
                         {% else %}
                           {{ 'product-1' | placeholder_svg_tag: 'w-20 h-20 object-cover border' }}
                         {% endif %}

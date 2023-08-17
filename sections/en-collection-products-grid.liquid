@@ -13,11 +13,12 @@
   {% paginate collection.products by section.settings.number_of_products_per_page %}
     {% if collection.all_products_count > 0 %}
       <div class="facets relative flex items-center justify-between">
-        {% render 'filters', collection: collection, type: 'drawer' %}
         {% render 'facets', collection: collection, position: 'left' %}
       </div>
       <div class="w-full">
-        <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4" id="products-grid">
+          {% render 'filters-new', collection: collection, type: 'drawer' %}
+
           {% for product in collection.products %}
             {% render 'product-card',
               card_product: product,

@@ -109,13 +109,15 @@
     </div>
   {% endif %}
 
-  <form class="en-filters {% if type == "drawer" %}absolute w-full md:w-[25rem] px-4 py-8 top-full z-10 scale-y-0 origin-top transition duration-300 flex-col bg-[rgba(var(--backgroundColor))] {% endif %} flex filter-form flex items-center gap-4">
+  <form
+    id="en-filter-form"
+    class="en-filters {% if type == "drawer" %}absolute w-full md:w-[25rem] px-4 py-8 top-full z-10 scale-y-0 origin-top transition duration-300 flex-col bg-[rgba(var(--backgroundColor))] {% endif %} flex filter-form flex items-center gap-4"
+  >
     {%- for filter in collection.filters -%}
       <div class="filter-group w-full flex flex-col relative">
         <div class="filter-group-div en-filter-toggle flex cursor-pointer">
           <div class="flex justify-between w-full">
-            <span>{{ filter.label }}</span>
-
+            <h2>{{ filter.label }}</h2>
             {%- if filter.active_values.size > 0 -%}
               <span>({{ filter.active_values.size }})</span>
             {%- endif -%}
@@ -131,21 +133,21 @@
               {%- when 'boolean', 'list' -%}
                 <ul class="filter-group-display__list">
                   {%- for filter_value in filter.values -%}
-                    <li class=" ">
+                    <li class="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        class="w-4 h-4"
+                        name="{{ filter_value.param_name }}"
+                        value="{{ filter_value.value }}"
+                        id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                        {% if filter_value.active -%}
+                          checked
+                        {%- endif %}
+                        {% if filter_value.count == 0 and filter_value.active == false -%}
+                          disabled
+                        {%- endif %}
+                      >
                       <label class="w-full flex gap-4" for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
-                        <input
-                          type="checkbox"
-                          class=""
-                          name="{{ filter_value.param_name }}"
-                          value="{{ filter_value.value }}"
-                          id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
-                          {% if filter_value.active -%}
-                            checked
-                          {%- endif %}
-                          {% if filter_value.count == 0 and filter_value.active == false -%}
-                            disabled
-                          {%- endif %}
-                        >
                         {{- filter_value.label -}}
                       </label>
                     </li>
@@ -302,24 +304,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     slideOne();
     slideTwo();
-
-    function applyFilters() {
-      document.querySelector('.filter-form').submit();
-    }
-
-    var checkboxes = document.querySelectorAll('.filter-group-display__list input[type="checkbox"]');
-    checkboxes.forEach(function (checkbox) {
-      checkbox.addEventListener('change', function () {
-        applyFilters();
-      });
-    });
-
-    var priceInputs = document.querySelectorAll('.filter-group-display__price-range input[type="number"]');
-    priceInputs.forEach(function (input) {
-      input.addEventListener('input', function () {
-        applyFilters();
-      });
-    });
   });
 
   let sliderOne = document.getElementById('slider-1');
@@ -358,4 +342,60 @@
     percent1 = (sliderOne.value / sliderMaxValue) * 100;
     percent2 = (sliderTwo.value / sliderMaxValue) * 100;
   }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const filterForm = document.querySelector('.en-filters');
+    const checkboxes = filterForm.querySelectorAll('input');
+    const priceRangeInputs = filterForm.querySelectorAll('.filter-group-display__price-range input[type="number"]');
+    const submitButton = filterForm.querySelector('.filter-group-display__submit input[type="submit"]');
+    const productsGrid = document.querySelector('#products-grid'); // Replace with the actual ID of the products grid section
+
+    // Attach event listeners for checkboxes
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', handleFormChange);
+    });
+
+    // Attach event listeners for price range inputs
+    priceRangeInputs.forEach((input) => {
+      input.addEventListener('change', handleFormChange);
+    });
+
+    // Attach event listener for form submission
+    filterForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      handleFormChange();
+    });
+
+    // Function to handle form changes and fetch data
+    function handleFormChange() {
+      const filterFormNew = document.querySelector('.en-filters');
+      const formData = new FormData(filterFormNew);
+      let formString = new URLSearchParams(formData).toString();
+      console.log(formString);
+      // Build the URL based on the form data (You need to modify this according to your needs)
+      const url = `${window.location.pathname}?section_id=en-collection-products-grid&${formString}`;
+      console.log(url);
+
+      // Fetch data from the URL
+      fetch(url)
+        .then((response) => response.text())
+        .then((data) => {
+          // Update the products-grid section with the fetched data
+          let html = data;
+
+          document.getElementById('products-grid').innerHTML = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('products-grid').innerHTML;
+
+          document.getElementById('active-filters').innerHTML = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('active-filters').innerHTML;
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  });
 </script>
