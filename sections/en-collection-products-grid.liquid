@@ -15,10 +15,13 @@
       <div class="facets relative flex items-center justify-between">
         {% render 'facets', collection: collection, position: 'left' %}
       </div>
-      <div class="w-full">
-        <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4" id="products-grid">
-          {% render 'filters-new', collection: collection, type: 'drawer' %}
-
+      <div class="w-full flex gap-4">
+        {% render 'filters-new', collection: collection, type: 'drawer' %}
+        <div class="grid relative grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4" id="products-grid">
+          <div
+            id="products-grid-overlay"
+            class="absolute z-[101] w-full h-full top-0 left-0 transition duration-500"
+          ></div>
           {% for product in collection.products %}
             {% render 'product-card',
               card_product: product,

@@ -104,7 +104,7 @@
 
 <div id="en-filters">
   <filter-form>
-    <form class="filter-form flex flex-col gap-3" id="en-filter-form">
+    <form class="filter-form flex flex-col gap-3 max-w-[20rem] w-full" id="en-filter-form">
       {%- for filter in collection.filters -%}
         <div class="filter-group flex flex-col">
           <collapsible-button target-id="filter-{{ filter.label }}" class="en-collapsible">
@@ -147,7 +147,6 @@
                             name="{{ filter_value.param_name }}"
                             value="{{ filter_value.value }}"
                             class="w-4 h-4 mr-2"
-                            id="range1"
                             {% if filter_value.active -%}
                               checked
                             {%- endif %}
@@ -161,88 +160,82 @@
                     {%- endfor -%}
                   </ul>
                 {%- when 'price_range' -%}
-                  <div class="flex flex-col gap-4">
-                    <div class="flex justify-between">
-                      <input
-                        name="{{ filter.min_value.param_name }}"
-                        id="range1"
-                        oninput="changeSlide1()"
-                        {% if filter.min_value.value -%}
-                          value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                        {% else %}
-                          value="0"
-                        {%- endif %}
-                        type="number"
-                        placeholder="0"
-                        min="0"
-                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                      >
-                      <span>-</span>
-                      <input
-                        name="{{ filter.max_value.param_name }}"
-                        id="range2"
-                        oninput="changeSlide2()"
-                        {% if filter.max_value.value -%}
-                          value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                        {% else %}
-                          value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                        {%- endif %}
-                        type="number"
-                        placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                        min="0"
-                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                      >
-                    </div>
-                    <div class="wrapper">
-                      <div class="container color-{{ color }}">
+                  <price-range>
+                    <div class="flex flex-col gap-4">
+                      <div class="flex justify-between">
                         <input
-                          type="range"
-                          class="text-[80%]"
-                          min="0"
-                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          name="{{ filter.min_value.param_name }}"
+                          id="range1"
                           {% if filter.min_value.value -%}
                             value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
                           {% else %}
                             value="0"
                           {%- endif %}
-
-                          id="slider-1"
-                          oninput="slideOne()"
-                        >
-                        <input
-                          type="range"
-                          class="text-[80%]"
+                          type="number"
+                          placeholder="0"
                           min="0"
                           max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        >
+                        <span>-</span>
+                        <input
+                          name="{{ filter.max_value.param_name }}"
+                          id="range2"
                           {% if filter.max_value.value -%}
                             value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
                           {% else %}
                             value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                           {%- endif %}
-
-                          id="slider-2"
-                          oninput="slideTwo()"
+                          type="number"
+                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                         >
                       </div>
-                    </div>
+                      <div class="wrapper">
+                        <div class="container color-{{ color }}">
+                          <input
+                            type="range"
+                            class="text-[80%]"
+                            min="0"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            {% if filter.min_value.value -%}
+                              value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                            {% else %}
+                              value="0"
+                            {%- endif %}
 
-                    <div class="flex justify-between">
-                      <span>$0</span>
-                      <span> </span>
-                      <span
-                        >$
-                        {%- if uses_comma_decimals -%}
-                          {{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}
-                        {%- else -%}
-                          {{ filter.range_max | money_without_currency | replace: ',', '' }}
-                        {% endif %}
-                      </span>
-                    </div>
+                            id="slider-1"
+                          >
+                          <input
+                            type="range"
+                            class="text-[80%]"
+                            min="0"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            {% if filter.max_value.value -%}
+                              value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                            {% else %}
+                              value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                            {%- endif %}
 
-                    <div class="en-btn en-btn-outline inline-block mx-auto">
-                      <input class="cursor-pointer" type="submit" value="Apply">
+                            id="slider-2"
+                          >
+                        </div>
+                      </div>
+
+                      <div class="flex justify-between">
+                        <span>$0</span>
+                        <span> </span>
+                        <span
+                          >$
+                          {%- if uses_comma_decimals -%}
+                            {{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}
+                          {%- else -%}
+                            {{ filter.range_max | money_without_currency | replace: ',', '' }}
+                          {% endif %}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  </price-range>
               {%- endcase -%}
             </div>
           </collapsible-content>
@@ -261,23 +254,23 @@
         {%- for filter in collection.filters -%}
           {%- if filter.type == 'price_range' -%}
             {%- if filter.min_value.value != null or filter.max_value.value != null -%}
-              <a
-                class="active-filters__remove-filter px-2 py-1 mr-2 my-2 border-black border-2 rounded-full inline-block"
-                href="{{ filter.url_to_remove }}"
+              <remove-filter
+                class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
+                data-url="{{ filter.url_to_remove }}"
               >
                 {%- assign min_value = filter.min_value.value | default: 0 -%}
                 {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
                 {{ min_value | money }} - {{ max_value | money }} X
-              </a>
+              </remove-filter>
             {%- endif -%}
           {%- else -%}
             {%- for filter_value in filter.active_values -%}
-              <a
-                class="active-filters__remove-filter px-2 py-1 mr-2 my-2 border-black border-2 rounded-full inline-block"
-                href="{{ filter_value.url_to_remove }}"
+              <remove-filter
+                class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
+                data-url="{{ filter_value.url_to_remove }}"
               >
                 {{ filter.label }}: {{ filter_value.label }} X
-              </a>
+              </remove-filter>
             {%- endfor -%}
           {%- endif -%}
         {%- endfor -%}
@@ -287,6 +280,37 @@
 </div>
 
 <script>
+  class RemoveFilter extends HTMLElement {
+    constructor() {
+      super();
+      this.url = this.getAttribute('data-url');
+
+      this.addEventListener('click', this.removeFilter);
+    }
+
+    removeFilter() {
+      this.productsOverlayGrid = document.querySelector('#products-grid-overlay');
+      this.productsGrid = document.querySelector('#products-grid');
+      this.productsOverlayGrid.classList.add('bg-[rgba(var(--backgroundColor))]');
+      this.filterComponent = document.querySelector('#en-filters');
+      fetch(this.url)
+        .then((response) => response.text())
+        .then((data) => {
+          const html = new DOMParser().parseFromString(data, 'text/html');
+          this.productsGrid.innerHTML = html.getElementById('products-grid').innerHTML;
+          this.filterComponent.innerHTML = html.getElementById('en-filters').innerHTML;
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        })
+        .finally(() => {
+          document.querySelector('#products-grid-overlay').classList.remove('bg-[rgba(var(--backgroundColor))]');
+        });
+    }
+  }
+
+  customElements.define('remove-filter', RemoveFilter);
+
   class FilterForm extends HTMLElement {
     constructor() {
       super();
@@ -318,7 +342,7 @@
       const formData = new FormData(this.querySelector('form'));
       const formString = new URLSearchParams(formData).toString();
       const url = `${window.location.pathname}?section_id=en-collection-products-grid&${formString}`;
-
+      document.querySelector('#products-grid-overlay').classList.add('bg-[rgba(var(--backgroundColor))]');
       fetch(url)
         .then((response) => response.text())
         .then((data) => {
@@ -329,6 +353,9 @@
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
+        })
+        .finally(() => {
+          document.querySelector('#products-grid-overlay').classList.remove('bg-[rgba(var(--backgroundColor))]');
         });
     }
 
@@ -338,47 +365,59 @@
   }
 
   customElements.define('filter-form', FilterForm);
+</script>
 
-  document.addEventListener('DOMContentLoaded', function () {
-    slideOne();
-    slideTwo();
-  });
+<script>
+  class PriceRange extends HTMLElement {
+    constructor() {
+      super();
+      this.range1 = this.querySelector('#range1');
+      this.range2 = this.querySelector('#range2');
+      this.slider1 = this.querySelector('#slider-1');
+      this.slider2 = this.querySelector('#slider-2');
 
-  let sliderOne = document.getElementById('slider-1');
-  console.log(sliderOne.value);
-  let sliderTwo = document.getElementById('slider-2');
-  let displayValOne = document.getElementById('range1');
-  let displayValTwo = document.getElementById('range2');
-  let minGap = 0;
-  let sliderTrack = document.querySelector('.slider-track');
-  let sliderMaxValue = document.getElementById('slider-1').max;
-
-  function slideOne() {
-    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-      sliderOne.value = parseInt(sliderTwo.value) - minGap;
+      this.addEventListeners();
     }
-    displayValOne.value = sliderOne.value;
-    fillColor();
-  }
-  function slideTwo() {
-    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-      console.log(slideTwo.value);
-      sliderTwo.value = parseInt(sliderOne.value) + minGap;
+
+    addEventListeners() {
+      this.slider1.addEventListener('input', () => this.changeRange1());
+      this.slider2.addEventListener('input', () => this.changeRange2());
+      this.range1.addEventListener('input', () => this.changeSlide1());
+      this.range2.addEventListener('input', () => this.changeSlide2());
     }
-    displayValTwo.value = sliderTwo.value;
-    fillColor();
+
+    changeSlide1() {
+      if (this.range1.value <= parseInt(this.range2.value)) {
+        this.slider1.value = parseInt(this.range1.value);
+      } else {
+        this.range1.value = parseInt(this.range2.value) - 1;
+      }
+    }
+
+    changeSlide2() {
+      if (parseInt(this.range2.value) > this.range1.value) {
+        this.slider2.value = parseInt(this.range2.value);
+      } else {
+        this.range2.value = parseInt(this.range1.value) + 1;
+      }
+    }
+
+    changeRange1() {
+      if (parseInt(this.slider1.value) <= parseInt(this.slider2.value)) {
+        this.range1.value = parseInt(this.slider1.value);
+      } else {
+        this.slider1.value = parseInt(this.slider2.value) - 1;
+      }
+    }
+
+    changeRange2() {
+      if (parseInt(this.slider2.value) > parseInt(this.slider1.value)) {
+        this.range2.value = parseInt(this.slider2.value);
+      } else {
+        this.slider2.value = parseInt(this.slider1.value) + 1;
+      }
+    }
   }
 
-  function changeSlide1() {
-    document.getElementById('slider-1').value = displayValOne.value;
-  }
-
-  function changeSlide2() {
-    document.getElementById('slider-2').value = displayValTwo.value;
-  }
-
-  function fillColor() {
-    percent1 = (sliderOne.value / sliderMaxValue) * 100;
-    percent2 = (sliderTwo.value / sliderMaxValue) * 100;
-  }
+  customElements.define('price-range', PriceRange);
 </script>
