@@ -1,423 +1,214 @@
-<style>
-  .wrapper {
-    position: relative;
-    border-radius: 10px;
-  }
-  .container {
-    position: relative;
-    width: 100%;
-    border-top: 4px solid;
-    border-bottom: 4px solid;
-  }
-  input[type='range'] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 100%;
-    outline: none;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    background-color: transparent;
-    pointer-events: none;
-  }
-  .slider-track {
-    width: 100%;
-    height: 5px;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    border-radius: 5px;
-  }
-  input[type='range']::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    height: 5px;
-  }
-  input[type='range']::-moz-range-track {
-    -moz-appearance: none;
-    height: 5px;
-  }
-  input[type='range']::-ms-track {
-    appearance: none;
-    height: 5px;
-  }
-  input[type='range']::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 1.7em;
-    width: 1.7em;
-    background-color: #3264fe;
-    cursor: pointer;
-    margin-top: -9px;
-    pointer-events: auto;
-    border-radius: 50%;
-  }
-  input[type='range']::-moz-range-thumb {
-    -webkit-appearance: none;
-    height: 1.7em;
-    width: 1.7em;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: #3264fe;
-    pointer-events: auto;
-  }
-  input[type='range']::-ms-thumb {
-    appearance: none;
-    height: 1.7em;
-    width: 1.7em;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: #3264fe;
-    pointer-events: auto;
-  }
-  input[type='range']:active::-webkit-slider-thumb {
-    background-color: #ffffff;
-    border: 3px solid #3264fe;
-  }
-  .values {
-    background-color: #3264fe;
-    width: 32%;
-    position: relative;
-    margin: auto;
-    padding: 10px 0;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: 500;
-    font-size: 25px;
-    color: #ffffff;
-  }
-  .values:before {
-    content: '';
-    position: absolute;
-    height: 0;
-    width: 0;
-    border-top: 15px solid #3264fe;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    margin: auto;
-    bottom: -14px;
-    left: 0;
-    right: 0;
-  }
-</style>
+{{ 'en-filters.css' | asset_url | stylesheet_tag }}
 
-<div id="en-filters">
-  <filter-form>
-    <form class="filter-form flex flex-col gap-3 max-w-[20rem] w-full" id="en-filter-form">
-      {%- for filter in collection.filters -%}
-        <div class="filter-group flex flex-col">
-          <collapsible-button target-id="filter-{{ filter.label }}" class="en-collapsible">
-            <div class="filter-group-summary">
-              <div class="flex gap-2 items-center">
-                <h2 class="text-xl">{{ filter.label }}</h2>
-                {%- if filter.active_values.size > 0 -%}
-                  <span>({{ filter.active_values.size }})</span>
-                {%- endif -%}
-                {% render 'icon-caret' %}
-              </div>
-            </div>
-          </collapsible-button>
-          <collapsible-content
-            data-id="filter-{{ filter.label }}"
-            class="en-content-collapsible  "
-            {% if filter.active_values.size > 0 or filter.min_value.value != null or filter.max_value.value != null -%}
-              style="max-height: 200px;"
-            {% endif %}
-          >
-            <div class="filter-group-display">
-              <div class="filter-group-display__header">
-                {% comment %} <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>  {% endcomment %}
+<div class="relative w-full left-0 md:w-auto">
+  <collapsible-button target-id="filters" class=" flex gap-2 md:hidden max-w-[50%]">
+    {% render 'icon-adjustments' -%}
+  </collapsible-button>
 
-                {% comment %}
-                  {%- if filter.active_values.size > 0 -%}
-                    <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
-                  {%- endif -%}
-                {% endcomment %}
-              </div>
+  <collapsible-content
+    data-id="filters"
+    data-height="500"
+    class=" bg-[rgba(var(--backgroundColor))] w-full z-[100] md:relative block md:px-0 md:max-h-full"
+  >
+    <div id="en-filters" class="my-6 ">
+      <div class="sort border-b mb-2 pb-2 md:hidden">
+        <collapsible-button target-id="sort-by" class="flex justify-between ">
+          <h3>Sort By</h3>
+          <div class="en-collapsible-caret">
+            {% render 'icon-caret', class: 'h-4 w-4' %}
+          </div>
+        </collapsible-button>
+        <collapsible-content data-id="sort-by" class="block">
+          <select id="sort-by" class=" px-2 py-2 w-full cursor-pointer bg-transparent border-2">
+            {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
 
-              {%- case filter.type -%}
-                {%- when 'boolean', 'list' -%}
-                  <ul class="filter-group-display__list my-3">
-                    {%- for filter_value in filter.values -%}
-                      <li class="filter-group-display__list-item ">
-                        <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}" class="flex items-center">
-                          <input
-                            type="checkbox"
-                            name="{{ filter_value.param_name }}"
-                            value="{{ filter_value.value }}"
-                            class="w-4 h-4 mr-2"
-                            {% if filter_value.active -%}
-                              checked
-                            {%- endif %}
-                            {% if filter_value.count == 0 and filter_value.active == false -%}
-                              disabled
-                            {%- endif %}
-                          >
-                          {{- filter_value.label -}}
-                        </label>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                {%- when 'price_range' -%}
-                  <price-range>
-                    <div class="flex flex-col gap-4">
-                      <div class="flex justify-between">
-                        <input
-                          name="{{ filter.min_value.param_name }}"
-                          id="range1"
-                          {% if filter.min_value.value -%}
-                            value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                          {% else %}
-                            value="0"
-                          {%- endif %}
-                          type="number"
-                          placeholder="0"
-                          min="0"
-                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                        >
-                        <span>-</span>
-                        <input
-                          name="{{ filter.max_value.param_name }}"
-                          id="range2"
-                          {% if filter.max_value.value -%}
-                            value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                          {% else %}
-                            value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                          {%- endif %}
-                          type="number"
-                          placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                          min="0"
-                          max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                        >
-                      </div>
-                      <div class="wrapper">
-                        <div class="container color-{{ color }}">
-                          <input
-                            type="range"
-                            class="text-[80%]"
-                            min="0"
-                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                            {% if filter.min_value.value -%}
-                              value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                            {% else %}
-                              value="0"
-                            {%- endif %}
-
-                            id="slider-1"
-                          >
-                          <input
-                            type="range"
-                            class="text-[80%]"
-                            min="0"
-                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                            {% if filter.max_value.value -%}
-                              value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                            {% else %}
-                              value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                            {%- endif %}
-
-                            id="slider-2"
-                          >
-                        </div>
-                      </div>
-
-                      <div class="flex justify-between">
-                        <span>$0</span>
-                        <span> </span>
-                        <span
-                          >$
-                          {%- if uses_comma_decimals -%}
-                            {{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}
-                          {%- else -%}
-                            {{ filter.range_max | money_without_currency | replace: ',', '' }}
-                          {% endif %}
-                        </span>
-                      </div>
-                    </div>
-                  </price-range>
-              {%- endcase -%}
-            </div>
-          </collapsible-content>
-        </div>
-      {%- endfor -%}
-
-      <div class="active-filters" id="active-filters">
-        {% comment %}
-          <a
-            href="{{ collection.url }}?sort_by={{ collection.sort_by }}"
-            class="active-filters__clear px-2 py-1 mr-2 my-2 border-black border-2 rounded-full inline-block"
-            >Clear all</a
-          >
-        {% endcomment %}
-
-        {%- for filter in collection.filters -%}
-          {%- if filter.type == 'price_range' -%}
-            {%- if filter.min_value.value != null or filter.max_value.value != null -%}
-              <remove-filter
-                class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
-                data-url="{{ filter.url_to_remove }}"
+            {% for option in collection.sort_options %}
+              <option
+                value="{{ option.value }}"
+                {% if option.value == sort_by %}
+                  selected="selected"
+                {% endif %}
               >
-                {%- assign min_value = filter.min_value.value | default: 0 -%}
-                {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-                {{ min_value | money }} - {{ max_value | money }} X
-              </remove-filter>
-            {%- endif -%}
-          {%- else -%}
-            {%- for filter_value in filter.active_values -%}
-              <remove-filter
-                class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
-                data-url="{{ filter_value.url_to_remove }}"
-              >
-                {{ filter.label }}: {{ filter_value.label }} X
-              </remove-filter>
-            {%- endfor -%}
-          {%- endif -%}
-        {%- endfor -%}
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </collapsible-content>
       </div>
-    </form>
-  </filter-form>
+
+      <filter-form>
+        <form class="filter-form flex flex-col gap-3" id="en-filter-form">
+          {%- for filter in collection.filters -%}
+            <div class="filter-group flex flex-col">
+              <collapsible-button target-id="filter-{{ filter.label }}" class="en-collapsible">
+                <div class="filter-group-summary">
+                  <div class="flex gap-2 items-center justify-between">
+                    <h2 class="">{{ filter.label }}</h2>
+                    <div class="en-collapsible-caret">
+                      {% render 'icon-caret', class: 'h-4 w-4' %}
+                    </div>
+                  </div>
+                </div>
+              </collapsible-button>
+              <collapsible-content
+                data-id="filter-{{ filter.label }}"
+                class="en-content-collapsible"
+                {% if filter.active_values.size > 0
+                  or filter.min_value.value != null
+                  or filter.max_value.value != null
+                -%}
+                  style="max-height: 200px;"
+                {% endif %}
+              >
+                <div class="filter-group-display">
+                  <div class="filter-group-display__header"></div>
+
+                  {%- case filter.type -%}
+                    {%- when 'boolean', 'list' -%}
+                      <ul class="filter-group-display__list my-3">
+                        {%- for filter_value in filter.values -%}
+                          <li class="filter-group-display__list-item ">
+                            <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}" class="flex items-center">
+                              <input
+                                type="checkbox"
+                                name="{{ filter_value.param_name }}"
+                                value="{{ filter_value.value }}"
+                                class="w-4 h-4 mr-2"
+                                {% if filter_value.active -%}
+                                  checked
+                                {%- endif %}
+                                {% if filter_value.count == 0 and filter_value.active == false -%}
+                                  disabled
+                                {%- endif %}
+                              >
+                              {{- filter_value.label -}}
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- when 'price_range' -%}
+                      <price-range>
+                        <div class="flex flex-col gap-4 mt-3">
+                          <div class="flex justify-between gap-4 items-center">
+                            <input
+                              name="{{ filter.min_value.param_name }}"
+                              id="range1"
+                              {% if filter.min_value.value -%}
+                                value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                              {% else %}
+                                value="0"
+                              {%- endif %}
+                              type="number"
+                              placeholder="0"
+                              min="0"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              class="px-2 py-2"
+                            >
+                            <span>-</span>
+                            <input
+                              name="{{ filter.max_value.param_name }}"
+                              id="range2"
+                              {% if filter.max_value.value -%}
+                                value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                              {% else %}
+                                value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              {%- endif %}
+                              type="number"
+                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              min="0"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              class="px-2 py-2"
+                            >
+                          </div>
+                          <div class="wrapper">
+                            <div class="container color-{{ color }}">
+                              <input
+                                type="range"
+                                class="text-[80%]"
+                                min="0"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                {% if filter.min_value.value -%}
+                                  value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                                {% else %}
+                                  value="0"
+                                {%- endif %}
+
+                                id="slider-1"
+                              >
+                              <input
+                                type="range"
+                                class="text-[80%]"
+                                min="0"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                {% if filter.max_value.value -%}
+                                  value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                                {% else %}
+                                  value="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                {%- endif %}
+
+                                id="slider-2"
+                              >
+                            </div>
+                          </div>
+
+                          <div class="flex justify-between">
+                            <span>$0</span>
+                            <span> </span>
+                            <span
+                              >$
+                              {%- if uses_comma_decimals -%}
+                                {{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}
+                              {%- else -%}
+                                {{ filter.range_max | money_without_currency | replace: ',', '' }}
+                              {% endif %}
+                            </span>
+                          </div>
+                        </div>
+                      </price-range>
+                  {%- endcase -%}
+                </div>
+              </collapsible-content>
+            </div>
+          {%- endfor -%}
+
+          <div class="active-filters" id="active-filters">
+            {% comment %}
+              <a
+                href="{{ collection.url }}?sort_by={{ collection.sort_by }}"
+                class="active-filters__clear px-2 py-1 mr-2 my-2 border-black border-2 rounded-full inline-block"
+                >Clear all</a
+              >
+            {% endcomment %}
+
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                  {% if filter.range_max != filter.max_value.value or filter.min_value.value != 0 %}
+                    <remove-filter
+                      class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
+                      data-url="{{ filter.url_to_remove }}"
+                    >
+                      {{ filter.range_min }}
+                      {%- assign min_value = filter.min_value.value | default: 0 -%}
+                      {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                      {{ min_value | money }} - {{ max_value | money }} X
+                    </remove-filter>
+                  {% endif %}
+                {%- endif -%}
+              {%- else -%}
+                {%- for filter_value in filter.active_values -%}
+                  <remove-filter
+                    class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
+                    data-url="{{ filter_value.url_to_remove }}"
+                  >
+                    {{ filter.label }}: {{ filter_value.label }} X
+                  </remove-filter>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </form>
+      </filter-form>
+    </div>
+  </collapsible-content>
 </div>
-
-<script>
-  class RemoveFilter extends HTMLElement {
-    constructor() {
-      super();
-      this.url = this.getAttribute('data-url');
-
-      this.addEventListener('click', this.removeFilter);
-    }
-
-    removeFilter() {
-      this.productsOverlayGrid = document.querySelector('#products-grid-overlay');
-      this.productsGrid = document.querySelector('#products-grid');
-      this.productsOverlayGrid.classList.add('bg-[rgba(var(--backgroundColor))]');
-      this.filterComponent = document.querySelector('#en-filters');
-      fetch(this.url)
-        .then((response) => response.text())
-        .then((data) => {
-          const html = new DOMParser().parseFromString(data, 'text/html');
-          this.productsGrid.innerHTML = html.getElementById('products-grid').innerHTML;
-          this.filterComponent.innerHTML = html.getElementById('en-filters').innerHTML;
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        })
-        .finally(() => {
-          document.querySelector('#products-grid-overlay').classList.remove('bg-[rgba(var(--backgroundColor))]');
-        });
-    }
-  }
-
-  customElements.define('remove-filter', RemoveFilter);
-
-  class FilterForm extends HTMLElement {
-    constructor() {
-      super();
-      this.attachShadow({ mode: 'open' });
-      this.shadowRoot.innerHTML = `
-          <slot></slot>
-        `;
-      this.inputs = this.querySelectorAll('input');
-      this.handleFormChange = this.handleFormChange.bind(this);
-      this.setupEventListeners();
-    }
-
-    connectedCallback() {
-      this.querySelector('form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        this.handleFormChange();
-      });
-    }
-
-    setupEventListeners() {
-      this.inputs.forEach((input) => {
-        input.addEventListener('change', this.handleFormChange);
-      });
-    }
-
-    handleFormChange() {
-      this.productsGrid = document.querySelector('#products-grid');
-      this.filterComponent = document.querySelector('#active-filters');
-      const formData = new FormData(this.querySelector('form'));
-      const formString = new URLSearchParams(formData).toString();
-      const url = `${window.location.pathname}?section_id=en-collection-products-grid&${formString}`;
-      document.querySelector('#products-grid-overlay').classList.add('bg-[rgba(var(--backgroundColor))]');
-      fetch(url)
-        .then((response) => response.text())
-        .then((data) => {
-          const html = new DOMParser().parseFromString(data, 'text/html');
-          this.productsGrid.innerHTML = html.getElementById('products-grid').innerHTML;
-          this.filterComponent.innerHTML = html.getElementById('active-filters').innerHTML;
-          this.updateURL(`${window.location.pathname}?${formString}`);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        })
-        .finally(() => {
-          document.querySelector('#products-grid-overlay').classList.remove('bg-[rgba(var(--backgroundColor))]');
-        });
-    }
-
-    updateURL(url) {
-      window.history.replaceState({}, '', url);
-    }
-  }
-
-  customElements.define('filter-form', FilterForm);
-</script>
-
-<script>
-  class PriceRange extends HTMLElement {
-    constructor() {
-      super();
-      this.range1 = this.querySelector('#range1');
-      this.range2 = this.querySelector('#range2');
-      this.slider1 = this.querySelector('#slider-1');
-      this.slider2 = this.querySelector('#slider-2');
-
-      this.addEventListeners();
-    }
-
-    addEventListeners() {
-      this.slider1.addEventListener('input', () => this.changeRange1());
-      this.slider2.addEventListener('input', () => this.changeRange2());
-      this.range1.addEventListener('input', () => this.changeSlide1());
-      this.range2.addEventListener('input', () => this.changeSlide2());
-    }
-
-    changeSlide1() {
-      if (this.range1.value <= parseInt(this.range2.value)) {
-        this.slider1.value = parseInt(this.range1.value);
-      } else {
-        this.range1.value = parseInt(this.range2.value) - 1;
-      }
-    }
-
-    changeSlide2() {
-      if (parseInt(this.range2.value) > this.range1.value) {
-        this.slider2.value = parseInt(this.range2.value);
-      } else {
-        this.range2.value = parseInt(this.range1.value) + 1;
-      }
-    }
-
-    changeRange1() {
-      if (parseInt(this.slider1.value) <= parseInt(this.slider2.value)) {
-        this.range1.value = parseInt(this.slider1.value);
-      } else {
-        this.slider1.value = parseInt(this.slider2.value) - 1;
-      }
-    }
-
-    changeRange2() {
-      if (parseInt(this.slider2.value) > parseInt(this.slider1.value)) {
-        this.range2.value = parseInt(this.slider2.value);
-      } else {
-        this.slider2.value = parseInt(this.slider1.value) + 1;
-      }
-    }
-  }
-
-  customElements.define('price-range', PriceRange);
-</script>

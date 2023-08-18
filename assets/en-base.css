@@ -76,11 +76,11 @@ button:disabled {
     margin-bottom: var(--sectionSpacing);
 }
 
-.en-collapsible {
+collapsible-button {
     cursor: pointer;
 }
 
-.en-content-collapsible {
+collapsible-content {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
@@ -91,20 +91,19 @@ button:disabled {
 }
 
 
-
-.en-active .en-collapsible-caret {
+.en-opened .en-collapsible-caret {
     transform: rotate(180deg);
 }
 
-.en-content-collapsible::-webkit-scrollbar {
+collapsible-content::-webkit-scrollbar {
     width: 0.1em;
 }
 
-.en-content-collapsible::-webkit-scrollbar-track {
+collapsible-content::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.en-content-collapsible::-webkit-scrollbar-thumb {
+collapsible-content::-webkit-scrollbar-thumb {
     background-color: darkgrey;
     outline: 1px solid slategrey;
 }

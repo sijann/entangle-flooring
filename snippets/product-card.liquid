@@ -16,8 +16,8 @@
 <div
   class=" {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.product_card_corners == 'rounded' %} rounded-lg {% endif %}w-full my-4 overflow-hidden duration-300 hover:shadow-md"
 >
-  <div class="relative w-full overflow-hidden">
-    <div class="relative group w-full">
+  <div class="relative w-full overflow-hidden {% if type == 'list' %} flex{% endif %}">
+    <div class="relative group w-full {% if type == 'list' %} max-w-[200px]{% endif %}">
       <a href="{{ card_product.url }}">
         {% if card_product.featured_image %}
           <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
@@ -94,6 +94,21 @@
       </a>
 
       {% render 'price', product: card_product %}
+
+      {% if swatches %}
+        {% for option in card_product.options_with_values %}
+          {% if option.name == 'Color' %}
+            <div class="my-2 flex gap-2 flex-wrap">
+              {% for value in option.values %}
+                <div
+                  class="h-4 w-4 rounded-md"
+                  style="background-color: {{- value -}};"
+                ></div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
 
     {% comment %} For card badges {% endcomment %}
