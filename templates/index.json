@@ -1,18 +1,57 @@
 {
-    "sections": {
-        "images_with_text" : {
-            "type": "images-with-text"
-        },
-        "featured_collection" : {
-            "type": "featured-collection"
-        },
-        "hotspots" : {
-            "type": "image-hotspots"
-        }
+  "sections": {
+    "images_with_text": {
+      "type": "images-with-text",
+      "settings": {
+      }
     },
-    "order": [
-        "images_with_text",
-        "featured_collection",
-        "hotspots"
-    ]
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Featured Collection",
+        "collection": "",
+        "columns_desktop": 3,
+        "columns_mobile": 1,
+        "display_type": "grid",
+        "enable_quick_add": true,
+        "max_products_to_show": 8
+      }
+    },
+    "hotspots": {
+      "type": "image-hotspots",
+      "blocks": {
+        "e610794b-bc6e-46bc-838a-8555a943a56e": {
+          "type": "hotspot",
+          "settings": {
+            "xposition": 36,
+            "yposition": 29,
+            "product": "amazing-aluminum-bag-collection1",
+            "description": ""
+          }
+        },
+        "9b511e3e-6ae0-4138-9b98-e76a3542583e": {
+          "type": "hotspot",
+          "settings": {
+            "xposition": 45,
+            "yposition": 38,
+            "product": "",
+            "description": "dbsadbk dsahdk"
+          }
+        }
+      },
+      "block_order": [
+        "e610794b-bc6e-46bc-838a-8555a943a56e",
+        "9b511e3e-6ae0-4138-9b98-e76a3542583e"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/silver-lamp-on-a-white-table-next-to-books.jpg",
+        "hotspot_color": "#80d03f"
+      }
+    }
+  },
+  "order": [
+    "images_with_text",
+    "featured_collection",
+    "hotspots"
+  ]
 }
