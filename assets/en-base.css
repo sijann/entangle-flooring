@@ -278,19 +278,6 @@ collapsible-content::-webkit-scrollbar-thumb {
     border: 2px solid;
 }
 
-/* Flickity  */
-.is-selected.is-nav-selected img {
-    transition: all ease-in-out 300ms;
-    border-bottom: 4px solid;
-}
-
-.flickity-prev-next-button:disabled {
-    display: none;
-}
-
-
-/* Input Fields  */
-
 
 .form-control {
     position: relative;

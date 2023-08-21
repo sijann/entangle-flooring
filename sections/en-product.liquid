@@ -1,13 +1,10 @@
 <section
   id="MainProduct-{{ section.id }}"
-  class="page-width section-{{ section.id }}-padding"
+  class="page-width section-{{ section.id }}-padding bg-[rgba(var(--backgroundColor))]"
   data-section="{{ section.id }}"
 >
-  <link rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   {% assign selected_variant = product.selected_or_first_available_variant %}
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  <script src="{{ 'product-model.js' | asset_url }}" defer></script>
   <style>
     .product--information {
       height: fit-content;
@@ -23,7 +20,7 @@
     endif
   %}
 
-  <div class="en-width en-container" x-data="{ productModalOpen: false }">
+  <div class="en-width en-container">
     <div class="mx-auto my-8">
       <div class="flex flex-col md:flex-row gap-8">
         <div class="product--medias w-full {{ media_width }} {% if section.settings.media_position == "right" %} order-last {% endif %}">
@@ -207,10 +204,8 @@
 
                 {% when 'checkout_buttons' %}
                   <div class="my-3" id="buttons-{{ section.id }}">
-                    <button
-                      type="submit"
-                      name="add"
-                      class="addtocart__button w-full en-btn-full en-btn-primary my-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    <add-to-cart
+                      class="inline-block en-button en-button-primary text-lg w-full text-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       {% if selected_variant.available == false %}
                         disabled
                       {% endif %}
@@ -220,7 +215,7 @@
                       {% else %}
                         Add to cart
                       {% endif %}
-                    </button>
+                    </add-to-cart>
                   </div>
                   {{ form | payment_button }}
                 {% else %}
@@ -243,112 +238,7 @@
         height: 100%;
       }
     </style>
-
-    <div id="productModelModal">
-      <div x-show="productModalOpen" class="w-full h-full z-50 items-center fixed inset-0">
-        <div class="relative w-full h-full bg-white">
-          <div class="relative">
-            <div class="flex justify-between items-start p-5 border-b">
-              <h2 class="text-xl font-bold text-gray-700">3D Model Preview</h2>
-              <button
-                x-on:click="productModalOpen = false"
-                class="text-gray-400 bg-transparent hover:text-gray-700 rounded text-sm p-2 ml-auto inline-flex items-center"
-              >
-                {% render 'icon-close' %}
-              </button>
-            </div>
-
-            <div id="body" class="media block relative" style="padding-top: min(calc(100vh - 5rem), 100%);"></div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-
-  <script>
-    class VariantSelector extends HTMLElement {
-      constructor() {
-        super();
-        this.addEventListener('change', this.onVariantChange);
-      }
-
-      onVariantChange() {
-        this.getSelectedOptions();
-        this.getSelectedVariant();
-
-        if (this.currentVariant) {
-          this.updateURL();
-          this.updateFormID();
-          this.updatePrice();
-          this.updateSKU();
-        }
-      }
-
-      getSelectedOptions() {
-        this.options = Array.from(this.querySelectorAll('input[type="radio"]:checked'), (input) => input.value);
-      }
-
-      getVariantJSON() {
-        this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
-        return this.variantData;
-      }
-
-      getSelectedVariant() {
-        this.currentVariant = this.getVariantJSON().find((variant) => {
-          const findings = !variant.options
-            .map((option, index) => {
-              return this.options[index] === option;
-            })
-            .includes(false);
-
-          if (findings) return variant;
-        });
-      }
-
-      updateURL() {
-        if (!this.currentVariant) return;
-        window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
-      }
-
-      updateFormID() {
-        const form_input = document.querySelector('#product-form').querySelector('input[name="id"]');
-        form_input.value = this.currentVariant.id;
-      }
-
-      updateSKU() {
-        console.log(this.currentVariant, '----currentV------');
-        const sku = document.querySelector('.sku--text');
-        sku.textContent = this.currentVariant.sku;
-      }
-
-      updatePrice() {
-        fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
-          .then((response) => response.text())
-          .then((responseText) => {
-            const priceId = `price-${this.dataset.section}`;
-            const html = new DOMParser().parseFromString(responseText, 'text/html');
-
-            const cartContent = document.querySelector('#en-cart-drawer');
-            const cartContentNew = html.getElementById('en-cart-drawer');
-            console.log('-----html-----', html);
-            cartContent.innerHTML = cartContentNew.innerHTML;
-
-            const oldPrice = document.getElementById(priceId);
-            const newPrice = html.getElementById(priceId);
-
-            if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
-
-            const buttonsId = `buttons-${this.dataset.section}`;
-            const newButtons = html.getElementById(buttonsId);
-            const oldButtons = document.getElementById(buttonsId);
-
-            if (oldButtons && newButtons) oldButtons.innerHTML = newButtons.innerHTML;
-          });
-      }
-    }
-
-    customElements.define('variant-selector', VariantSelector);
-  </script>
 
   <script>
     let flkty;
@@ -361,6 +251,7 @@
           pageDots: false,
           wrapAround: true,
           prevNextButtons: true,
+          draggable: false,
         });
 
         var elem1 = document.querySelector('.en-images-slider-thumbnail');

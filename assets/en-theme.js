@@ -41,26 +41,37 @@ class CollapsibleButton extends HTMLElement {
     this.shadowRoot.innerHTML = `
         <slot></slot>
       `;
-
-    this.addEventListener('click', () => {
-      const targetId = this.getAttribute('target-id');
-      const content = document.querySelector(`[data-id="${targetId}"]`);
-      if (content) {
-        content.classList.toggle('en-active');
-        this.classList.toggle('en-opened')
-        if (content.style.maxHeight) {
-          content.style.maxHeight = null;
-        } else
-
-          if (content.getAttribute("data-height")) {
-            content.style.maxHeight = parseInt(content.getAttribute("data-height")) + 'px';
-          }
-          else {
-            content.style.maxHeight = content.scrollHeight + 'px';
-          }
-      }
-    });
   }
+
+
+  connectedCallback() {
+    this.addEventListener("click", () => this.handleClick());
+  }
+  disconnectedCallback() {
+    this.addEventListener("click", () => this.handleClick());
+  }
+
+
+
+  handleClick() {
+    const targetId = this.getAttribute('target-id');
+    const content = document.querySelector(`[data-id="${targetId}"]`);
+    if (content) {
+      content.classList.toggle('en-active');
+      this.classList.toggle('en-opened')
+      if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+      } else
+
+        if (content.getAttribute("data-height")) {
+          content.style.maxHeight = parseInt(content.getAttribute("data-height")) + 'px';
+        }
+        else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    }
+  }
+
 }
 
 customElements.define('collapsible-content', CollapsibleContent);
@@ -72,11 +83,19 @@ class RemoveFilter extends HTMLElement {
   constructor() {
     super();
     this.url = this.getAttribute('data-url');
-
-    this.addEventListener('click', this.removeFilter);
   }
 
-  removeFilter() {
+  connectedCallback() {
+    this.addEventListener("click", () => this.handleClick());
+  }
+  disconnectedCallback() {
+    this.addEventListener("click", () => this.handleClick());
+  }
+
+
+
+
+  handleClick() {
     this.productsOverlayGrid = document.querySelector('#products-grid-overlay');
     this.productsGrid = document.querySelector('#products-grid');
     this.productsOverlayGrid.classList.add('bg-[rgba(var(--backgroundColor))]', 'z-[101]');
@@ -163,16 +182,22 @@ class PriceRange extends HTMLElement {
     this.range2 = this.querySelector('#range2');
     this.slider1 = this.querySelector('#slider-1');
     this.slider2 = this.querySelector('#slider-2');
-
-    this.addEventListeners();
   }
 
-  addEventListeners() {
+
+  connectedCallback() {
     this.slider1.addEventListener('input', () => this.changeRange1());
     this.slider2.addEventListener('input', () => this.changeRange2());
     this.range1.addEventListener('input', () => this.changeSlide1());
     this.range2.addEventListener('input', () => this.changeSlide2());
   }
+  disconnectedCallback() {
+    this.slider1.removeEventListener('input', () => this.changeRange1());
+    this.slider2.removeEventListener('input', () => this.changeRange2());
+    this.range1.removeEventListener('input', () => this.changeSlide1());
+    this.range2.removeEventListener('input', () => this.changeSlide2());
+  }
+
 
   changeSlide1() {
     if (this.range1.value <= parseInt(this.range2.value)) {
@@ -211,7 +236,186 @@ customElements.define('price-range', PriceRange);
 
 
 
+class ModelViewer extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = `
+          <slot></slot>
+        `;
 
+    this.closeButton = this.querySelector("#model-close")
+    this.openButton = this.querySelector("#model-open")
+    this.model = this.querySelector("model-viewer")
+    this.modelOverlay = this.querySelector("#model-overlay");
+
+
+
+  }
+
+
+  connectedCallback() {
+    this.closeButton.addEventListener("click", () => this.closeModel())
+    this.openButton.addEventListener("click", () => this.openModel())
+  }
+
+  disconnectedCallback() {
+    this.closeButton.removeEventListener("click", () => this.closeModel())
+    this.openButton.removeEventListener("click", () => this.openModel())
+  }
+
+  openModel() {
+    this.model.style.pointerEvents = "all"
+    this.openButton.classList.add("hidden")
+    this.closeButton.classList.remove("hidden")
+    this.modelOverlay.classList.add("hidden");
+  }
+
+
+  closeModel() {
+    this.model.style.pointerEvents = "none";
+    this.closeButton.classList.add("hidden");
+    this.openButton.classList.remove("hidden")
+    this.modelOverlay.classList.remove("hidden");
+  }
+}
+
+customElements.define("en-model-viewer", ModelViewer)
+
+
+class VariantSelector extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback(){
+    this.addEventListener('change', this.onVariantChange);
+  }
+
+  disconnectedCallback(){
+    this.removeEventListener('change', this.onVariantChange);
+  }
+
+  onVariantChange() {
+    this.getSelectedOptions();
+    this.getSelectedVariant();
+
+    if (this.currentVariant) {
+      this.updateURL();
+      this.updateFormID();
+      this.updatePrice();
+      this.updateSKU();
+    }
+  }
+
+  getSelectedOptions() {
+    this.options = Array.from(this.querySelectorAll('input[type="radio"]:checked'), (input) => input.value);
+  }
+
+  getVariantJSON() {
+    this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
+    return this.variantData;
+  }
+
+  getSelectedVariant() {
+    this.currentVariant = this.getVariantJSON().find((variant) => {
+      const findings = !variant.options
+        .map((option, index) => {
+          return this.options[index] === option;
+        })
+        .includes(false);
+
+      if (findings) return variant;
+    });
+  }
+
+  updateURL() {
+    if (!this.currentVariant) return;
+    window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+  }
+
+  updateFormID() {
+    const form_input = document.querySelector('#product-form').querySelector('input[name="id"]');
+    form_input.value = this.currentVariant.id;
+  }
+
+  updateSKU() {
+    console.log(this.currentVariant, '----currentV------');
+    const sku = document.querySelector('.sku--text');
+    sku.textContent = this.currentVariant.sku;
+  }
+
+  updatePrice() {
+    fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+      .then((response) => response.text())
+      .then((responseText) => {
+        const priceId = `price-${this.dataset.section}`;
+        const html = new DOMParser().parseFromString(responseText, 'text/html');
+
+        const cartContent = document.querySelector('#en-cart-drawer');
+        const cartContentNew = html.getElementById('en-cart-drawer');
+        console.log('-----html-----', html);
+        cartContent.innerHTML = cartContentNew.innerHTML;
+
+        const oldPrice = document.getElementById(priceId);
+        const newPrice = html.getElementById(priceId);
+
+        if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+
+        const buttonsId = `buttons-${this.dataset.section}`;
+        const newButtons = html.getElementById(buttonsId);
+        const oldButtons = document.getElementById(buttonsId);
+
+        if (oldButtons && newButtons) oldButtons.innerHTML = newButtons.innerHTML;
+      });
+  }
+}
+
+customElements.define('variant-selector', VariantSelector);
+
+
+
+
+class AddtoCartButton extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.addEventListener("click", () => this.handleAddtoCart());
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("click", () => this.handleAddtoCart());
+  }
+
+  handleAddtoCart() {
+    const form = document.querySelector('#product-form'); // Replace with your form selector
+    this.innerHTML = "Adding..."
+
+    fetch("/cart/add", {
+      method: "post",
+      body: new FormData(form),
+    })
+      .then((response) => response.text())
+      .then((responseText) => {
+        const html = new DOMParser().parseFromString(responseText, 'text/html');
+        const mainNav = document.getElementById("main-nav");
+        const newMainNavContent = html.getElementById("main-nav").innerHTML;
+        mainNav.innerHTML = newMainNavContent;
+        document.querySelector('.js-menu__open').click();
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        // Handle error gracefully, e.g., show an error message
+      })
+      .finally(() => {
+        this.innerHTML = "Add to Cart";
+      });
+  }
+}
+
+customElements.define("add-to-cart", AddtoCartButton);
 
 
 
@@ -267,16 +471,16 @@ function showQuickAdd(opener) {
       targetElement.innerHTML = productElement.innerHTML;
 
 
-        // Reinjects the script tags to allow execution. By default, scripts are disabled when using element.innerHTML.
-        productElement.querySelectorAll('script').forEach((oldScriptTag) => {
-          const newScriptTag = document.createElement('script');
-          console.log(newScriptTag)
-          Array.from(oldScriptTag.attributes).forEach((attribute) => {
-            newScriptTag.setAttribute(attribute.name, attribute.value);
-          });
-          newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
-          oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
+      // Reinjects the script tags to allow execution. By default, scripts are disabled when using element.innerHTML.
+      targetElement.querySelectorAll('script').forEach((oldScriptTag) => {
+        const newScriptTag = document.createElement('script');
+        console.log(newScriptTag)
+        Array.from(oldScriptTag.attributes).forEach((attribute) => {
+          newScriptTag.setAttribute(attribute.name, attribute.value);
         });
+        newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
+        oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
+      });
 
 
 
@@ -291,3 +495,4 @@ function showQuickAdd(opener) {
     .finally(() => {
     });
 }
+

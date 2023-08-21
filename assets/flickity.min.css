@@ -42,13 +42,16 @@ https://flickity.metafizzy.co
 
 .flickity-button {
     position: absolute;
-    background: hsla(0, 0%, 100%, .75);
+    background-color: rgba(var(--backgroundColor), 0.8) !important;
+    ;
     border: none;
-    color: #333
+    color: rgba(var(--textColor)) !important;
+    ;
+    transition: all ease 300ms;
 }
 
 .flickity-button:hover {
-    background: #fff;
+    background-color: rgba(var(--backgroundColor)) !important;
     cursor: pointer
 }
 
@@ -136,48 +139,59 @@ https://flickity.metafizzy.co
     opacity: 1
 }
 
-.main-carousel{
+.main-carousel {
     margin-bottom: 25px;
 }
 
-.flickity-page-dots .dot{
+.flickity-page-dots .dot {
     background: rgba(var(--color-foreground))
 }
 
-.flickity-page-dots li:only-child{
+.flickity-page-dots li:only-child {
     display: none;
-    }
+}
 
 @media screen and (max-width: 490px) {
-    .flickity-prev-next-button{
+    .flickity-prev-next-button {
         width: 30px !important;
         height: 30px !important;
     }
 
-    .flickity-page-dots .dot{
+    .flickity-page-dots .dot {
         width: 5px !important;
         height: 5px !important;
     }
 
-    .flickity-prev-next-button.previous{
+    .flickity-prev-next-button.previous {
         left: 0;
     }
-    .flickity-prev-next-button.next{
+
+    .flickity-prev-next-button.next {
         right: 0;
     }
 }
-  .carousel-cell {
+
+.carousel-cell {
     width: 100%;
-  }
+}
 
-   @media(min-width: 768px) {
+@media(min-width: 768px) {
     .carousel-cell {
-      width: 50%;
+        width: 50%;
     }
-  }
+}
 
-  @media(min-width: 992px) {
+@media(min-width: 992px) {
     .carousel-cell {
-      width: 33.33%;
+        width: 33.33%;
     }
-  }
+}
+
+.is-selected.is-nav-selected img {
+    transition: all ease-in-out 300ms;
+    border-bottom: 4px solid;
+}
+
+.flickity-prev-next-button:disabled {
+    display: none;
+}

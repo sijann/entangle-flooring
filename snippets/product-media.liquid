@@ -1,61 +1,71 @@
-{% case media.media_type %}
-  {% when 'image' %}
-    <div class=" group mx-auto {% if thumbnail %} w-[50px] md:w-[80px] mr-2 {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
-      {{
-        media
-        | image_url: width: media.width
-        | image_tag:
-          class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out',
-          loading: 'lazy'
-      }}
-    </div>
-
-  {% when 'external_video' %}
-    <div class=" group {% if thumbnail %} w-[50px] md:w-[80px] mr-2 {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
-      {{
-        media
-        | external_video_tag:
-          class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
-      }}
-    </div>
-  {% when 'video' %}
-    <div class=" group {% if thumbnail %} w-[50px] md:w-[80px] mr-2 {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
-      {{
-        media
-        | video_tag:
-          controls: true,
-          class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
-      }}
-    </div>
-
-  {% when 'model' %}
-    <product-model data-media-id="{{ media.id }}" class="{% unless thumbnail %} h-full w-full relative {% endunless %}">
-      <div>
-        <button
-          id="productModelOpenButton_{{ media.id }}"
-          x-on:click="productModalOpen = true"
-          class="w-full h-full border relative"
-        >
-          <span class="border absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            {% render 'icon-model-viewer' %}
-          </span>
-          <div class=" group {% if thumbnail %} w-[50px] md:w-[80px] mr-2 {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
-            {{
-              media
-              | image_url: width: media.width
-              | image_tag:
-                class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out',
-                loading: 'lazy'
-            }}
-          </div>
-        </button>
+{% if thumbnail %}
+  <div class="mr-2 w-[50px] h-[50px] md:w-[80px] md:h-[80px]">
+    {{
+      media
+      | image_url: width: media.width
+      | image_tag: class: 'h-full w-full object-cover transition duration-700 ease-in-out'
+    }}
+  </div>
+{% else %}
+  {% case media.media_type %}
+    {% when 'image' %}
+      <div class=" group {% if thumbnail %} w-[50px] md:w-[80px]  {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+        {{
+          media
+          | image_url: width: media.width
+          | image_tag:
+            class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out',
+            loading: 'lazy'
+        }}
       </div>
 
-      <template>
-        {{ media | model_viewer_tag: reveal: 'interaction' }}
-      </template>
-    </product-model>
+    {% when 'external_video' %}
+      <div class=" group  {% if thumbnail %} w-[50px] md:w-[80px]  {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+        {{
+          media
+          | external_video_tag:
+            class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
+        }}
+      </div>
+    {% when 'video' %}
+      <div class="group  {% if thumbnail %} w-[50px] md:w-[80px]  {% else %} w-full {% endif %} overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+        {{
+          media
+          | video_tag:
+            controls: true,
+            class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
+        }}
+      </div>
 
-  {% else %}
-    {{ media | media_tag }}
-{% endcase %}
+    {% when 'model' %}
+      {% if thumbnail %}
+        <div class="w-[50px] md:w-[80px]">
+          {{ media | image_url: width: media.width | image_tag }}
+        </div>
+      {% else %}
+        <en-model-viewer class="en-model-viewer w-full h-full group overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
+          {{
+            media
+            | model_viewer_tag:
+              class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
+          }}
+
+          <div
+            id="model-open"
+            class="absolute z-[100] cursor-pointer top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden"
+          >
+            {% render 'icon-model-viewer' %}
+          </div>
+
+          <div class="absolute top-4 right-4 z-[100] cursor-pointer" id="model-close">
+            {% render 'icon-close' %}
+          </div>
+
+          <div class="absolute top-0 left-0 w-full h-full bg-black/20 hidden" id="model-overlay"></div>
+        </en-model-viewer>
+      {% endif %}
+
+    {% else %}
+      {{ media | media_tag }}
+  {% endcase %}
+{% endif %}

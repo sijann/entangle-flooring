@@ -32,9 +32,10 @@
       {% comment %} For quick add  {% endcomment %}
       {% if quick_add %}
         <div
+          data-menu="#QuickAddDrawer-{{ card_product.id }}"
           data-product-url="{{ card_product.url }}"
           data-id=" {{ card_product.id }}"
-          class="quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md"
+          class="js-menu__open quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md"
         >
           {%- liquid
             assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
@@ -131,22 +132,27 @@
   </div>
 </div>
 
-<quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal hidden">
+<div class="js-menu__context bg-black/50 fixed left-0 top-0 opacity-0 transition-[opacity_0.3s,_visibility_0.3s] invisible w-full h-full z-[999]">
   <div
-    role="dialog"
-    aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
-    aria-modal="true"
-    class="quick-add-modal__content global-settings-popup"
-    tabindex="-1"
+    id="QuickAddDrawer-{{ card_product.id }}"
+    class="js-menu js-menu--right flex flex-col bg-[rgba(var(--backgroundColor))] absolute h-full w-full md:max-w-[30rem] m-0 z-[99]"
   >
-    <button
-      id="ModalClose-{{ card_product.id }}"
-      type="button"
-      class="quick-add-modal__toggle"
-      aria-label="{{ 'accessibility.close' | t }}"
+    <quick-add-modal
+      id="QuickAdd-{{ card_product.id }}"
+      class="quick-add-modal"
     >
-      {% render 'icon-close' %}
-    </button>
-    <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+      <div
+        role="dialog"
+        aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
+        aria-modal="true"
+        class="quick-add-modal__content global-settings-popup"
+        tabindex="-1"
+      >
+        <div class="js-menu__open" data-menu="#QuickAddDrawer-{{ card_product.id }}">
+          {% render 'icon-close' %}
+        </div>
+        <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+      </div>
+    </quick-add-modal>
   </div>
-</quick-add-modal>
+</div>

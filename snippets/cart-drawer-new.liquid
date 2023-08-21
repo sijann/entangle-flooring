@@ -81,7 +81,7 @@
                           {%- endfor -%}
                         </ul>
 
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3 flex-wrap">
                           <div class="cart-quantity-selector w-20 md:w-32 h-full relative border ">
                             <input
                               type="number"
@@ -108,14 +108,16 @@
                           <remove-from-cart
                             data-section="cart-drawer"
                             class="remove-from-cart text-sm font-medium text-red-500 my-1 cursor-pointer"
-                            >Remove</remove-from-cart
                           >
-                        </div>
-                        <div class="py-4 px-2 ">
-                          <span class="line-item-price">
-                            {{ item.final_line_price | money }}
-                          </span>
-                          {% render 'spinner' %}
+                            {% render 'icon-trash' -%}
+                          </remove-from-cart>
+
+                          <div class="py-4 px-2 ">
+                            <span class="line-item-price">
+                              {{ item.final_line_price | money }}
+                            </span>
+                            {% render 'spinner' %}
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -1,37 +1,3 @@
-// AddtoCart 
-
-const addToCartForms = document.querySelectorAll('form[action="/cart/add"]');
-addToCartForms.forEach((form) => {
-  form.addEventListener("submit", async (event) => {
-    // Prevent normal submission
-    event.preventDefault();
-    form.querySelector('button[type="submit"]').innerHTML = "Adding..."
-
-    // Submit form with ajax
-    fetch("/cart/add", {
-      method: "post",
-      body: new FormData(form),
-    }).then((response) => response.text())
-    .then((responseText) => {
-      const html = new DOMParser().parseFromString(responseText, 'text/html');
-      let elem = document.getElementById("main-nav") 
-      elem.innerHTML = html.getElementById("main-nav").innerHTML
-      // elem.querySelectorAll('script').forEach((oldScriptTag) => {
-      //   console.log(oldScriptTag)
-      //   const newScriptTag = document.createElement('script');
-      //   Array.from(oldScriptTag.attributes).forEach((attribute) => {
-      //     newScriptTag.setAttribute(attribute.name, attribute.value);
-      //   });
-      //   newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
-      //   oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
-      // });
-      document.querySelector('.js-menu__open').click();
-    }).finally(()=>{
-      form.querySelector('button[type="submit"]').innerHTML = "Add to Cart";
-    });
-  })
-});
-
 
 
 
