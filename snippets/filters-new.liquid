@@ -1,8 +1,9 @@
 {{ 'en-filters.css' | asset_url | stylesheet_tag }}
 
 <div class="relative w-full left-0 md:w-auto">
-  <collapsible-button target-id="filters" class=" flex gap-2 md:hidden max-w-[50%]">
+  <collapsible-button target-id="filters" class=" flex gap-2 md:hidden md:max-w-[50%]">
     {% render 'icon-adjustments' -%}
+    Sort and Filters
   </collapsible-button>
 
   <collapsible-content

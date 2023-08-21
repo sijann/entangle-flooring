@@ -242,10 +242,15 @@ window.addEventListener("beforeunload", function () {
 
 
 
+
+
+
+
 let quickAddOpeners = document.querySelectorAll('.quick-add');
 
 quickAddOpeners.forEach((opener) => {
   opener.addEventListener('click', () => {
+    showQuickAdd(opener)
   });
 });
 
@@ -254,12 +259,29 @@ function showQuickAdd(opener) {
     .then((response) => response.text())
     .then((responseText) => {
       const responseHTML = new DOMParser().parseFromString(responseText, 'text/html');
+      console.log(responseHTML)
       const productElement = responseHTML.querySelector('section[id^="MainProduct-"]');
       let id = "QuickAddInfo-" + opener.getAttribute('data-id').replace(" ", "")
-      const targetElement = document.getElementById()
+      const targetElement = document.getElementById(id)
+      console.log(targetElement, "------target---------")
       targetElement.innerHTML = productElement.innerHTML;
 
-      document.getElementById(`QuickAdd-${opener.getAttribute('data-id')}`).classList.remove("hidden")
+
+        // Reinjects the script tags to allow execution. By default, scripts are disabled when using element.innerHTML.
+        productElement.querySelectorAll('script').forEach((oldScriptTag) => {
+          const newScriptTag = document.createElement('script');
+          console.log(newScriptTag)
+          Array.from(oldScriptTag.attributes).forEach((attribute) => {
+            newScriptTag.setAttribute(attribute.name, attribute.value);
+          });
+          newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
+          oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
+        });
+
+
+
+      let newElem = "QuickAdd-" + opener.getAttribute('data-id').replace(" ", "")
+      document.getElementById(newElem).classList.remove("hidden")
 
 
       if (window.Shopify && Shopify.PaymentButton) {

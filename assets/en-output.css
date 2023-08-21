@@ -835,14 +835,6 @@ video {
   top: 100%;
 }
 
-.bottom-0 {
-  bottom: 0px;
-}
-
-.top-16 {
-  top: 4rem;
-}
-
 .isolate {
   isolation: isolate;
 }
@@ -885,14 +877,6 @@ video {
 
 .z-\[9\] {
   z-index: 9;
-}
-
-.z-\[1000\] {
-  z-index: 1000;
-}
-
-.z-\[1\] {
-  z-index: 1;
 }
 
 .order-last {
@@ -991,6 +975,10 @@ video {
   margin-right: 0.5rem;
 }
 
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -1001,26 +989,6 @@ video {
 
 .mt-auto {
   margin-top: auto;
-}
-
-.mt-16 {
-  margin-top: 4rem;
-}
-
-.mt-3 {
-  margin-top: 0.75rem;
-}
-
-.-mt-10 {
-  margin-top: -2.5rem;
-}
-
-.-mt-\[-29px\] {
-  margin-top: 29px;
-}
-
-.mt-\[-29px\] {
-  margin-top: -29px;
 }
 
 .block {
@@ -1107,8 +1075,8 @@ video {
   height: 100%;
 }
 
-.h-12 {
-  height: 3rem;
+.h-\[50px\] {
+  height: 50px;
 }
 
 .max-h-\[40rem\] {
@@ -1183,14 +1151,6 @@ video {
   width: 100%;
 }
 
-.w-\[90vw\] {
-  width: 90vw;
-}
-
-.w-12 {
-  width: 3rem;
-}
-
 .min-w-\[40px\] {
   min-width: 40px;
 }
@@ -1199,8 +1159,8 @@ video {
   max-width: 72rem;
 }
 
-.max-w-\[20rem\] {
-  max-width: 20rem;
+.max-w-\[200px\] {
+  max-width: 200px;
 }
 
 .max-w-\[30rem\] {
@@ -1215,16 +1175,12 @@ video {
   max-width: 40vw;
 }
 
-.max-w-full {
-  max-width: 100%;
-}
-
 .max-w-\[50\%\] {
   max-width: 50%;
 }
 
-.max-w-\[200px\] {
-  max-width: 200px;
+.max-w-full {
+  max-width: 100%;
 }
 
 .shrink-0 {
@@ -1233,10 +1189,6 @@ video {
 
 .flex-grow {
   flex-grow: 1;
-}
-
-.basis-\[20\%\] {
-  flex-basis: 20%;
 }
 
 .table-auto {
@@ -1643,11 +1595,6 @@ video {
   padding-bottom: 2rem;
 }
 
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -1662,10 +1609,6 @@ video {
 
 .pr-8 {
   padding-right: 2rem;
-}
-
-.pt-6 {
-  padding-top: 1.5rem;
 }
 
 .text-left {
@@ -1837,6 +1780,10 @@ video {
 
 .opacity-\[0\.7\] {
   opacity: 0.7;
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .shadow-lg {
@@ -2098,16 +2045,16 @@ video {
     height: 16rem;
   }
 
-  .md\:h-full {
-    height: 100%;
+  .md\:h-\[80-px\] {
+    height: 80-px;
+  }
+
+  .md\:h-\[80px\] {
+    height: 80px;
   }
 
   .md\:max-h-full {
     max-height: 100%;
-  }
-
-  .md\:max-h-screen {
-    max-height: 100vh;
   }
 
   .md\:w-32 {
@@ -2164,6 +2111,10 @@ video {
 
   .md\:max-w-md {
     max-width: 28rem;
+  }
+
+  .md\:max-w-\[50\%\] {
+    max-width: 50%;
   }
 
   .md\:basis-\[40\%\] {

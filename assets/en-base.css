@@ -393,3 +393,13 @@ body
     opacity: 1;
     transform: translate3d(0, 0, 0);
 }
+
+
+/*  Model Viewer */
+
+.en-model-viewer model-viewer{
+
+    height: 100%;
+    width: 100%;
+
+}
