@@ -14,26 +14,28 @@
     <div id="en-filters" class="my-6 ">
       <div class="sort border-b mb-2 pb-2 md:hidden">
         <collapsible-button target-id="sort-by" class="flex justify-between ">
-          <h3>Sort By</h3>
+          <h2>Sort By</h2>
           <div class="en-collapsible-caret">
             {% render 'icon-caret', class: 'h-4 w-4' %}
           </div>
         </collapsible-button>
         <collapsible-content data-id="sort-by" class="block">
-          <select id="sort-by" class=" px-2 py-2 w-full cursor-pointer bg-transparent border-2">
-            {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+          <sort-by>
+            <select id="sort-by--mobile" class=" px-2 py-2 w-full cursor-pointer bg-transparent border-2">
+              {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
 
-            {% for option in collection.sort_options %}
-              <option
-                value="{{ option.value }}"
-                {% if option.value == sort_by %}
-                  selected="selected"
-                {% endif %}
-              >
-                {{ option.name }}
-              </option>
-            {% endfor %}
-          </select>
+              {% for option in collection.sort_options %}
+                <option
+                  value="{{ option.value }}"
+                  {% if option.value == sort_by %}
+                    selected="selected"
+                  {% endif %}
+                >
+                  {{ option.name }}
+                </option>
+              {% endfor %}
+            </select>
+          </sort-by>
         </collapsible-content>
       </div>
 
@@ -91,6 +93,7 @@
                       <price-range>
                         <div class="flex flex-col gap-4 mt-3">
                           <div class="flex justify-between gap-4 items-center">
+                            <label for="range1" class="hidden">Min Price</label>
                             <input
                               name="{{ filter.min_value.param_name }}"
                               id="range1"
@@ -106,6 +109,7 @@
                               class="px-2 py-2"
                             >
                             <span>-</span>
+                            <label for="range2" class="hidden">Max Price</label>
                             <input
                               name="{{ filter.max_value.param_name }}"
                               id="range2"
@@ -123,6 +127,7 @@
                           </div>
                           <div class="wrapper">
                             <div class="container color-{{ color }}">
+                              <label for="slider-1" class="hidden">Min Price</label>
                               <input
                                 type="range"
                                 class="text-[80%]"
@@ -136,6 +141,7 @@
 
                                 id="slider-1"
                               >
+                              <label for="slider-2" class="hidden">Min Price</label>
                               <input
                                 type="range"
                                 class="text-[80%]"

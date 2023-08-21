@@ -12,15 +12,34 @@ if (location.search.length) {
   }
 }
 
-// Update sort_by query parameter on select change
-document.querySelectorAll('#sort-by').forEach((elem) => {
-  elem.addEventListener('change', function (e) {
-    var value = e.target.value;
+
+
+class SortBy extends HTMLElement{
+  constructor(){
+    super();
+    this.elem = this.querySelector("select")
+  }
+
+  connectedCallback(){
+    this.elem.addEventListener("change", ()=> this.handleChange())
+  }
+
+
+  disconnectedCallback(){
+    this.elem.removeEventListener("change", ()=> this.handleChange())
+  }
+
+  handleChange(){
+    var value = this.elem.value;
     console.log(value)
     Shopify.queryParams.sort_by = value;
     location.search = new URLSearchParams(Shopify.queryParams).toString();
-  });
-})
+
+  }
+
+}
+
+customElements.define("sort-by", SortBy)
 
 
 

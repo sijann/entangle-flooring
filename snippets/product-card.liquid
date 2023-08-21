@@ -46,9 +46,9 @@
           -%}
           <div class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]">
             {%- if card_product.variants.size > 1 or qty_rules -%}
-              <a href="#">
+              <span class="cursor-pointer">
                 {% render 'icon-link' %}
-              </a>
+              </span>
             {% else %}
               {%- form 'product',
                 card_product,
