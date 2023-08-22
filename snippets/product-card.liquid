@@ -31,56 +31,59 @@
 
       {% comment %} For quick add  {% endcomment %}
       {% if quick_add %}
-        <div
-          data-menu="#QuickAddDrawer-{{ card_product.id }}"
-          data-product-url="{{ card_product.url }}"
-          data-id=" {{ card_product.id }}"
-          class="js-menu__open quick-add transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md"
-        >
-          {%- liquid
-            assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
-            assign qty_rules = false
-            if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
-              assign qty_rules = true
-            endif
-          -%}
-          <div class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]">
-            {%- if card_product.variants.size > 1 or qty_rules -%}
-              <span class="cursor-pointer">
-                {% render 'icon-link' %}
-              </span>
-            {% else %}
-              {%- form 'product',
+        {%- liquid
+          assign product_form_id = 'product-form-' | append: card_product.id
+          assign qty_rules = false
+          if card_product.selected_or_first_available_variant.quantity_rule.min > 1 or card_product.selected_or_first_available_variant.quantity_rule.max != null or card_product.selected_or_first_available_variant.quantity_rule.increment > 1
+            assign qty_rules = true
+          endif
+        -%}
+
+        <div class="transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md">
+          {%- if card_product.variants.size > 1 or qty_rules -%}
+            <quick-add-opener
+              target-quickadd-id="QuickAdd-{{ card_product.id }}"
+              data-product-url="{{ card_product.url }}"
+              data-id="{{ card_product.id }}"
+              data-section-id="{{ section.id }}"
+            >
+              <div class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]">
+                <span class="cursor-pointer icon-link">
+                  {% render 'icon-link' %}
+                </span>
+
+                {% render 'spinner' %}
+              </div>
+            </quick-add-opener>
+
+          {% else %}
+            <product-form data-type="quick-add">
+              {% form 'product',
                 card_product,
                 id: product_form_id,
                 class: 'flex items-center justify-center',
-                novalidate: 'novalidate',
-                data-type: 'add-to-cart-form'
+                novalidate: 'novalidate'
               -%}
                 <input
                   type="hidden"
                   name="id"
                   value="{{ card_product.selected_or_first_available_variant.id }}"
-                  disabled
                 >
+
                 <button
-                  id="{{ product_form_id }}-submit"
-                  type="submit"
-                  name="add"
-                  class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
-                  aria-haspopup="dialog"
-                  aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                  aria-live="polite"
-                  data-sold-out-message="true"
+                  class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primaryBackgroundColor))] text-[rgba(var(--primaryTextColor))]"
                   {% if card_product.selected_or_first_available_variant.available == false %}
                     disabled
                   {% endif %}
                 >
-                  {% render 'icon-plus' %}
+                  <span class="icon-plus">
+                    {% render 'icon-plus' %}
+                  </span>
+                  {% render 'spinner' %}
                 </button>
               {%- endform -%}
-            {% endif %}
-          </div>
+            </product-form>
+          {% endif %}
         </div>
       {% endif %}
     </div>
@@ -132,27 +135,18 @@
   </div>
 </div>
 
-<div class="js-menu__context bg-black/50 fixed left-0 top-0 opacity-0 transition-[opacity_0.3s,_visibility_0.3s] invisible w-full h-full z-[999]">
+<quick-add-modal
+  quickadd-id="QuickAdd-{{ card_product.id }}"
+  class="hidden"
+>
+  <div class="fixed w-full h-full top-0 left-0 bg-black opacity-40 z-[10]"></div>
   <div
-    id="QuickAddDrawer-{{ card_product.id }}"
-    class="js-menu js-menu--right flex flex-col bg-[rgba(var(--backgroundColor))] absolute h-full w-full md:max-w-[30rem] m-0 z-[99]"
+    class="en-width fixed z-[11] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] md:w-[80%] lg:w-[70%] max-h-[90%] overflow-scroll bg-[rgba(var(--backgroundColor))]"
   >
-    <quick-add-modal
-      id="QuickAdd-{{ card_product.id }}"
-      class="quick-add-modal"
-    >
-      <div
-        role="dialog"
-        aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
-        aria-modal="true"
-        class="quick-add-modal__content global-settings-popup"
-        tabindex="-1"
-      >
-        <div class="js-menu__open" data-menu="#QuickAddDrawer-{{ card_product.id }}">
-          {% render 'icon-close' %}
-        </div>
-        <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
-      </div>
-    </quick-add-modal>
+    <div class="absolute top-2 right-2 z-[12] cursor-pointer">
+      {% render 'icon-close', class: 'close-modal' %}
+    </div>
+
+    <div id="QuickAddInfo-{{ card_product.id }}" class=""></div>
   </div>
-</div>
+</quick-add-modal>

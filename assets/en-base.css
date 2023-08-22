@@ -390,3 +390,33 @@ body
     width: 100%;
 
 }
+
+
+
+  .js-menu {
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    transition: all 0.3s;
+  }
+
+  .js-menu--left {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+  .js-menu--right {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    position: absolute;
+    right: 0;
+  }
+  .js-menu__open,
+  .js-menu__close {
+    cursor: pointer;
+  }
+
+  .js-menu__expanded {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+  }

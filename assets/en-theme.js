@@ -14,22 +14,22 @@ if (location.search.length) {
 
 
 
-class SortBy extends HTMLElement{
-  constructor(){
+class SortBy extends HTMLElement {
+  constructor() {
     super();
     this.elem = this.querySelector("select")
   }
 
-  connectedCallback(){
-    this.elem.addEventListener("change", ()=> this.handleChange())
+  connectedCallback() {
+    this.elem.addEventListener("change", () => this.handleChange())
   }
 
 
-  disconnectedCallback(){
-    this.elem.removeEventListener("change", ()=> this.handleChange())
+  disconnectedCallback() {
+    this.elem.removeEventListener("change", () => this.handleChange())
   }
 
-  handleChange(){
+  handleChange() {
     var value = this.elem.value;
     console.log(value)
     Shopify.queryParams.sort_by = value;
@@ -307,11 +307,11 @@ class VariantSelector extends HTMLElement {
     super();
   }
 
-  connectedCallback(){
+  connectedCallback() {
     this.addEventListener('change', this.onVariantChange);
   }
 
-  disconnectedCallback(){
+  disconnectedCallback() {
     this.removeEventListener('change', this.onVariantChange);
   }
 
@@ -437,6 +437,62 @@ class AddtoCartButton extends HTMLElement {
 customElements.define("add-to-cart", AddtoCartButton);
 
 
+class ProductForm extends HTMLElement{
+  constructor(){
+    super()
+    this.form = this.querySelector("form");
+    this.button = this.querySelector("button")
+    this.type = this.getAttribute("data-type")
+  }
+
+  connectedCallback(){
+    if(this.form && this.button) this.button.addEventListener("click", (e)=> this.addToCart(e))
+
+  }
+
+  disconnectedCallback(){
+    if(this.form && this.button) this.button.removeEventListener("click", (e)=> this.addToCart(e))
+
+  }
+
+  addToCart(e){
+    e.preventDefault()
+    
+
+    if(this.type == 'quick-add'){
+      this.querySelector(".icon-plus").classList.add("hidden")
+      this.querySelector(".spinner--overlay").classList.remove("hidden")
+    }
+
+    fetch("/cart/add", {
+      method: "post",
+      body: new FormData(this.form),
+    })
+      .then((response) => response.text())
+      .then((responseText) => {
+        const html = new DOMParser().parseFromString(responseText, 'text/html');
+        const mainNav = document.getElementById("main-nav");
+        const newMainNavContent = html.getElementById("main-nav").innerHTML;
+        mainNav.innerHTML = newMainNavContent;
+        document.querySelector('.js-menu__open').click();
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        // Handle error gracefully, e.g., show an error message
+      })
+      .finally(() => {
+        if(this.type == 'quick-add'){
+          this.querySelector(".icon-plus").classList.remove("hidden")
+          this.querySelector(".spinner--overlay").classList.add("hidden")
+        }
+    
+      });
+
+  }
+
+}
+
+customElements.define("product-form", ProductForm)
 
 
 
@@ -445,6 +501,94 @@ customElements.define("add-to-cart", AddtoCartButton);
 
 
 
+
+class QuickAdd extends HTMLElement {
+  constructor() {
+    super()
+  }
+
+
+  connectedCallback() {
+    this.addEventListener("click", (event) => this.handleClick(event))
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("click", (event) => this.handleClick(event))
+  }
+
+  handleClick(event) {
+
+    console.log(event.target.classList)
+    if (event.target.classList.contains("fixed") || event.target.classList.contains("close-modal")) {
+      this.classList.toggle("hidden")
+      document.body.classList.remove('overflow-hidden');
+    }
+
+
+  }
+
+}
+
+customElements.define("quick-add-modal", QuickAdd)
+
+
+class QuickAddOpener extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.addEventListener("click", () => this.openQuickAdd(this));
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("click", () => this.openQuickAdd(this));
+  }
+
+  openQuickAdd = (opener) => {
+    this.querySelector(".spinner--overlay").classList.remove("hidden")
+    this.querySelector(".icon-link").classList.add("hidden")
+
+
+    this.targetId = this.getAttribute("target-quickadd-id");
+    this.drawer = document.querySelector(`[quickadd-id="${this.targetId}"]`);
+    if (this.drawer) {
+      fetch(opener.getAttribute('data-product-url'))
+        .then((response) => response.text())
+        .then((responseText) => {
+          const responseHTML = new DOMParser().parseFromString(responseText, 'text/html');
+          console.log(responseHTML, "------response-----");
+          const productElement = responseHTML.querySelector('section[id^="MainProduct-"]');
+          let id = "QuickAddInfo-" + opener.getAttribute('data-id').replace(" ", "");
+          const targetElement = document.getElementById(id);
+          console.log(targetElement, "------target---------");
+          targetElement.innerHTML = productElement.innerHTML;
+
+          // Reinjects the script tags to allow execution.
+          targetElement.querySelectorAll('script').forEach((oldScriptTag) => {
+            const newScriptTag = document.createElement('script');
+            Array.from(oldScriptTag.attributes).forEach((attribute) => {
+              newScriptTag.setAttribute(attribute.name, attribute.value);
+            });
+            newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
+            oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
+          });
+
+          if (window.Shopify && Shopify.PaymentButton) {
+            Shopify.PaymentButton.init();
+          }
+        })
+        .finally(() => {
+          this.drawer.classList.remove("hidden");
+          this.querySelector(".spinner--overlay").classList.add("hidden")
+          this.querySelector(".icon-link").classList.remove("hidden")
+          document.body.classList.add('overflow-hidden')
+        });
+    }
+  }
+}
+
+customElements.define("quick-add-opener", QuickAddOpener);
 
 
 
@@ -469,49 +613,4 @@ window.addEventListener("beforeunload", function () {
 
 
 
-let quickAddOpeners = document.querySelectorAll('.quick-add');
-
-quickAddOpeners.forEach((opener) => {
-  opener.addEventListener('click', () => {
-    showQuickAdd(opener)
-  });
-});
-
-function showQuickAdd(opener) {
-  fetch(opener.getAttribute('data-product-url'))
-    .then((response) => response.text())
-    .then((responseText) => {
-      const responseHTML = new DOMParser().parseFromString(responseText, 'text/html');
-      console.log(responseHTML)
-      const productElement = responseHTML.querySelector('section[id^="MainProduct-"]');
-      let id = "QuickAddInfo-" + opener.getAttribute('data-id').replace(" ", "")
-      const targetElement = document.getElementById(id)
-      console.log(targetElement, "------target---------")
-      targetElement.innerHTML = productElement.innerHTML;
-
-
-      // Reinjects the script tags to allow execution. By default, scripts are disabled when using element.innerHTML.
-      targetElement.querySelectorAll('script').forEach((oldScriptTag) => {
-        const newScriptTag = document.createElement('script');
-        console.log(newScriptTag)
-        Array.from(oldScriptTag.attributes).forEach((attribute) => {
-          newScriptTag.setAttribute(attribute.name, attribute.value);
-        });
-        newScriptTag.appendChild(document.createTextNode(oldScriptTag.innerHTML));
-        oldScriptTag.parentNode.replaceChild(newScriptTag, oldScriptTag);
-      });
-
-
-
-      let newElem = "QuickAdd-" + opener.getAttribute('data-id').replace(" ", "")
-      document.getElementById(newElem).classList.remove("hidden")
-
-
-      if (window.Shopify && Shopify.PaymentButton) {
-        Shopify.PaymentButton.init();
-      }
-    })
-    .finally(() => {
-    });
-}
 
