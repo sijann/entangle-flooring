@@ -316,16 +316,30 @@ class VariantSelector extends HTMLElement {
   }
 
   onVariantChange() {
+
+    this.disableButtons();
+
     this.getSelectedOptions();
     this.getSelectedVariant();
 
     if (this.currentVariant) {
-      this.updateURL();
+      const quickAddModal = this.closest('quick-add-modal');
+      if (!quickAddModal) {
+        this.updateURL();
+      }
       this.updateFormID();
       this.updatePrice();
       this.updateSKU();
     }
   }
+
+  disableButtons(){
+    let buttons = document.querySelector("product-form").querySelectorAll('button')
+    if(!buttons) return
+    buttons.forEach((button) => {
+      button.disabled = true
+    })
+    }
 
   getSelectedOptions() {
     this.options = Array.from(this.querySelectorAll('input[type="radio"]:checked'), (input) => input.value);
@@ -371,10 +385,10 @@ class VariantSelector extends HTMLElement {
         const priceId = `price-${this.dataset.section}`;
         const html = new DOMParser().parseFromString(responseText, 'text/html');
 
-        const cartContent = document.querySelector('#en-cart-drawer');
-        const cartContentNew = html.getElementById('en-cart-drawer');
-        console.log('-----html-----', html);
-        cartContent.innerHTML = cartContentNew.innerHTML;
+        // const cartContent = document.querySelector('#en-cart-drawer');
+        // const cartContentNew = html.getElementById('en-cart-drawer');
+        // console.log('-----html-----', html);
+        // cartContent.innerHTML = cartContentNew.innerHTML;
 
         const oldPrice = document.getElementById(priceId);
         const newPrice = html.getElementById(priceId);
@@ -385,7 +399,12 @@ class VariantSelector extends HTMLElement {
         const newButtons = html.getElementById(buttonsId);
         const oldButtons = document.getElementById(buttonsId);
 
+        
         if (oldButtons && newButtons) oldButtons.innerHTML = newButtons.innerHTML;
+
+        if (window.Shopify && Shopify.PaymentButton) {
+          Shopify.PaymentButton.init();
+        }
       });
   }
 }
@@ -437,32 +456,39 @@ class AddtoCartButton extends HTMLElement {
 customElements.define("add-to-cart", AddtoCartButton);
 
 
-class ProductForm extends HTMLElement{
-  constructor(){
+class ProductForm extends HTMLElement {
+  constructor() {
     super()
     this.form = this.querySelector("form");
-    this.button = this.querySelector("button")
+    this.button = this.querySelector('[type="submit"]');
     this.type = this.getAttribute("data-type")
   }
 
-  connectedCallback(){
-    if(this.form && this.button) this.button.addEventListener("click", (e)=> this.addToCart(e))
+  connectedCallback() {
+    if (this.form && this.button) this.button.addEventListener("click", (e) => this.addToCart(e))
 
   }
 
-  disconnectedCallback(){
-    if(this.form && this.button) this.button.removeEventListener("click", (e)=> this.addToCart(e))
+  disconnectedCallback() {
+    if (this.form && this.button) this.button.removeEventListener("click", (e) => this.addToCart(e))
 
   }
 
-  addToCart(e){
+  addToCart(e) {
     e.preventDefault()
-    
 
-    if(this.type == 'quick-add'){
+    this.form = this.querySelector("form");
+    console.log(this.form)
+    this.querySelector(".spinner--overlay").classList.remove("hidden")
+    if (this.type == 'quick-add') {
       this.querySelector(".icon-plus").classList.add("hidden")
-      this.querySelector(".spinner--overlay").classList.remove("hidden")
+
+
     }
+
+    this.querySelectorAll("button").forEach((button) => {
+      button.disabled = true;
+    })
 
     fetch("/cart/add", {
       method: "post",
@@ -478,14 +504,19 @@ class ProductForm extends HTMLElement{
       })
       .catch((error) => {
         console.error("An error occurred:", error);
-        // Handle error gracefully, e.g., show an error message
       })
       .finally(() => {
-        if(this.type == 'quick-add'){
+        if (this.type == 'quick-add') {
           this.querySelector(".icon-plus").classList.remove("hidden")
-          this.querySelector(".spinner--overlay").classList.add("hidden")
+
+
         }
-    
+        this.querySelectorAll("button").forEach((button) => {
+          button.disabled = false;
+        })
+
+        this.querySelector(".spinner--overlay").classList.add("hidden")
+
       });
 
   }
