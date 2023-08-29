@@ -526,13 +526,6 @@ class ProductForm extends HTMLElement {
 customElements.define("product-form", ProductForm)
 
 
-
-
-
-
-
-
-
 class QuickAdd extends HTMLElement {
   constructor() {
     super()
