@@ -1,19 +1,8 @@
 {
   "current": {
-    "content_for_index": [
-
-    ],
-    "blocks": {
-      "8170924994765517213": {
-        "type": "shopify:\/\/apps\/teeinblue-product-options\/blocks\/app-embed\/906ef57c-14e4-45d8-8b53-3ba7349d56a6",
-        "disabled": false,
-        "settings": {
-        }
-      }
-    }
+    "content_for_index": []
   },
   "presets": {
-    "Default": {
-    }
+    "Default": {}
   }
 }

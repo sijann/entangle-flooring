@@ -333,13 +333,13 @@ class VariantSelector extends HTMLElement {
     }
   }
 
-  disableButtons(){
+  disableButtons() {
     let buttons = document.querySelector("product-form").querySelectorAll('button')
-    if(!buttons) return
+    if (!buttons) return
     buttons.forEach((button) => {
       button.disabled = true
     })
-    }
+  }
 
   getSelectedOptions() {
     this.options = Array.from(this.querySelectorAll('input[type="radio"]:checked'), (input) => input.value);
@@ -399,7 +399,7 @@ class VariantSelector extends HTMLElement {
         const newButtons = html.getElementById(buttonsId);
         const oldButtons = document.getElementById(buttonsId);
 
-        
+
         if (oldButtons && newButtons) oldButtons.innerHTML = newButtons.innerHTML;
 
         if (window.Shopify && Shopify.PaymentButton) {
@@ -620,6 +620,23 @@ class QuickAddOpener extends HTMLElement {
 }
 
 customElements.define("quick-add-opener", QuickAddOpener);
+
+
+class SliderComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.sliderData = this.getAttribute("data-slider");
+    this.sliderElement = this.querySelector(".main-carousel");
+    this.flickity = new Flickity(this.sliderElement, {
+      // options
+      cellAlign: 'left',
+      contain: true
+    });
+  }
+
+}
+
+customElements.define("slider-component", SliderComponent)
 
 
 

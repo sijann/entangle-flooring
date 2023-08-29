@@ -338,8 +338,7 @@ collapsible-content::-webkit-scrollbar-thumb {
 /* effects */
 
 /* .animate-in */
-body
-    {
+body {
     -webkit-animation: fadeIn 0.5s ease-in;
     animation: fadeIn 0.5s ease-in;
 }
@@ -384,7 +383,7 @@ body
 
 /*  Model Viewer */
 
-.en-model-viewer model-viewer{
+.en-model-viewer model-viewer {
 
     height: 100%;
     width: 100%;
@@ -393,30 +392,32 @@ body
 
 
 
-  .js-menu {
+.js-menu {
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     transition: all 0.3s;
-  }
+}
 
-  .js-menu--left {
+.js-menu--left {
     -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
-  }
-  .js-menu--right {
+}
+
+.js-menu--right {
     -webkit-transform: translateX(100%);
     transform: translateX(100%);
     position: absolute;
     right: 0;
-  }
-  .js-menu__open,
-  .js-menu__close {
-    cursor: pointer;
-  }
+}
 
-  .js-menu__expanded {
+.js-menu__open,
+.js-menu__close {
+    cursor: pointer;
+}
+
+.js-menu__expanded {
     -webkit-transform: translateX(0);
     transform: translateX(0);
     visibility: visible;
     opacity: 1;
-  }
+}

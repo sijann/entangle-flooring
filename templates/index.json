@@ -2,8 +2,7 @@
   "sections": {
     "images_with_text": {
       "type": "images-with-text",
-      "settings": {
-      }
+      "settings": {}
     },
     "featured_collection": {
       "type": "featured-collection"
