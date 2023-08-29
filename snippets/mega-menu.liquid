@@ -1,0 +1,36 @@
+<div class="en-menu hidden md:flex gap-4 justify-center items-center">
+  {%- for link in section.settings.menu.links -%}
+    {%- if link.links != blank -%}
+      <div class="en-menu-item {% if link.child_active -%} en-menu-item-active {%- endif %} px-4 py-2 relative flex items-center gap-1 ">
+        {{- link.title | escape -}}
+        {% render 'icon-caret' %}
+
+        <div class="en-submenu hidden absolute top-full left-0">
+          <div class="flex flex-col gap-4 w-32">
+            {% for childlink in link.links %}
+              <a href="{{ childlink.url }}">
+                <div class=" px-4 py-2">{{- childlink.title | escape -}}</div>
+              </a>
+
+              {%- if childlink.links != blank -%}
+                <div class="flex flex-col gap-4 w-32">
+                  {%- for grandchildlink in childlink.links -%}
+                    <a href="{{ grandchildlink.url }}">
+                      <div class=" px-4 py-2">{{- grandchildlink.title | escape -}}</div>
+                    </a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <a href="{{ link.url }}">
+        <div class="en-menu-item {% if link.active -%} active {%- endif %} px-4 py-2">
+          {{- link.title | escape -}}
+        </div>
+      </a>
+    {% endif %}
+  {% endfor %}
+</div>

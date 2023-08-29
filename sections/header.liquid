@@ -1,152 +1,110 @@
-<div class="en-container relative bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))]">
-  <div class="en-width  flex flex-col gap-8 md:py-6">
-    <div class="grid grid-cols-3">
-      <div class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}">
-        <span
-          class="en-line-1 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300 origin-left"
-        ></span
-        ><span class="en-line-2 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300"></span
-        ><span
-          class="en-line-3 block w-6 h-[0.2rem] rounded-lg bg-black transition duration-300 origin-left"
-        ></span>
-      </div>
-
-      {% unless section.settings.menu_style == 'drawer' %}
-        <div class="hidden md:flex items-center">
-          <div class="relative">
-            <form action="{{ routes.search_url }}">
-              <input
-                type="text"
-                name="q"
-                value="{{ search.terms | escape }}"
-                class="en-input px-2 py-2 text-sm bg-transparent placeholder:uppercase placeholder:text-sm"
-                placeholder="Search"
-              >
-              <input type="hidden" name="type" value="product,page">
-              <input type="hidden" name="options[unavailable_products]" value="hide">
-              <input type="hidden" name="options[prefix]" value="last">
-              <button type="submit">
-                <div class="en-search-small absolute top-0 right-1 translate-y-2 pr-1">
-                  {% render 'icon-search' %}
-                </div>
-              </button>
-            </form>
-          </div>
-        </div>
-      {% endunless %}
-
-      <div class="flex items-center justify-center flex-grow">
-        <a href="{{ routes.root_url }}" class="">
-          {%- if settings.logo != blank -%}
-            <div class="">
-              {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-              {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-              {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
-              {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-              {{
-                settings.logo
-                | image_url: width: 600
-                | image_tag:
-                  class: 'logo',
-                  widths: widths,
-                  height: logo_height,
-                  width: settings.logo_width,
-                  alt: logo_alt,
-                  sizes: sizes,
-                  preload: true
-              }}
+<en-header
+  data-headertype="hideonscroll"
+  class="fixed left-0 top-0 w-full transition-all duration-500 bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))] z-[10]"
+>
+  <div class="en-container relative ">
+    <div class="en-width  flex flex-col gap-8 md:py-6">
+      <div class="grid grid-cols-3">
+        <open-drawer
+          data-drawer="menu"
+          class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}"
+        >
+          {% render 'icon-bars' %}
+        </open-drawer>
+        {% unless section.settings.menu_style == 'drawer' %}
+          <div class="hidden md:flex items-center">
+            <div class="relative">
+              <form action="{{ routes.search_url }}">
+                <input
+                  type="text"
+                  name="q"
+                  value="{{ search.terms | escape }}"
+                  class="en-input px-2 py-2 text-sm bg-transparent placeholder:uppercase placeholder:text-sm"
+                  placeholder="Search"
+                >
+                <input type="hidden" name="type" value="product,page">
+                <input type="hidden" name="options[unavailable_products]" value="hide">
+                <input type="hidden" name="options[prefix]" value="last">
+                <button type="submit">
+                  <div class="en-search-small absolute top-0 right-1 translate-y-2 pr-1">
+                    {% render 'icon-search' %}
+                  </div>
+                </button>
+              </form>
             </div>
-          {%- else -%}
-            <h1 class="text-2xl uppercase">{{ shop.name }}</h1>
-          {%- endif -%}
-        </a>
-      </div>
+          </div>
+        {% endunless %}
 
-      <div class="icons flex items-center justify-end gap-2">
-        {% if section.settings.enable_language_selector %}
-          {% render 'language-localization' %}
-        {% endif %}
-        <div class="en-menu-icon md:hidden">
-          {% render 'icon-search' %}
+        <div class="flex items-center justify-center flex-grow">
+          <a href="{{ routes.root_url }}" class="">
+            {%- if settings.logo != blank -%}
+              <div class="">
+                {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+                {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+                {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+                {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+                {{
+                  settings.logo
+                  | image_url: width: 600
+                  | image_tag:
+                    class: 'logo',
+                    widths: widths,
+                    height: logo_height,
+                    width: settings.logo_width,
+                    alt: logo_alt,
+                    sizes: sizes,
+                    preload: true
+                }}
+              </div>
+            {%- else -%}
+              <h1 class="text-2xl uppercase">{{ shop.name }}</h1>
+            {%- endif -%}
+          </a>
         </div>
 
-        {% if settings.cart_type == 'drawer' %}
-          <div class="js-menu__open" data-menu="#main-nav">
-            {% unless section.settings.icon_style == 'text' %}
-              {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
-            {% else %}
-              Cart
-            {% endunless %}
+        <div class="icons flex items-center justify-end gap-2">
+          {% if section.settings.enable_language_selector %}
+            {% render 'language-localization' %}
+          {% endif %}
+          <div class="en-menu-icon md:hidden">
+            {% render 'icon-search' %}
           </div>
 
-        {% else %}
-          <div class="cart">
-            <a href="{{ routes.cart_url }}">
+          {% if settings.cart_type == 'drawer' %}
+            <open-drawer data-drawer="cart-drawer">
               {% unless section.settings.icon_style == 'text' %}
                 {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
               {% else %}
                 Cart
               {% endunless %}
-            </a>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-    {% unless section.settings.menu_style == 'drawer' %}
-      <div class="en-menu hidden md:flex gap-4 justify-center items-center">
-        {%- for link in section.settings.menu.links -%}
-          {%- if link.links != blank -%}
-            <div class="en-menu-item {% if link.child_active -%} en-menu-item-active {%- endif %} px-4 py-2 relative flex items-center gap-1 ">
-              {{- link.title | escape -}}
-              {% render 'icon-caret' %}
+            </open-drawer>
 
-              <div class="en-submenu hidden absolute top-full left-0">
-                <div class="flex flex-col gap-4 w-32">
-                  {% for childlink in link.links %}
-                    <a href="{{ childlink.url }}">
-                      <div class=" px-4 py-2">{{- childlink.title | escape -}}</div>
-                    </a>
-
-                    {%- if childlink.links != blank -%}
-                      <div class="flex flex-col gap-4 w-32">
-                        {%- for grandchildlink in childlink.links -%}
-                          <a href="{{ grandchildlink.url }}">
-                            <div class=" px-4 py-2">{{- grandchildlink.title | escape -}}</div>
-                          </a>
-                        {% endfor %}
-                      </div>
-                    {% endif %}
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
           {% else %}
-            <a href="{{ link.url }}">
-              <div class="en-menu-item {% if link.active -%} active {%- endif %} px-4 py-2">
-                {{- link.title | escape -}}
-              </div>
-            </a>
+            <div class="cart">
+              <a href="{{ routes.cart_url }}">
+                {% unless section.settings.icon_style == 'text' %}
+                  {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
+                {% else %}
+                  Cart
+                {% endunless %}
+              </a>
+            </div>
           {% endif %}
-        {% endfor %}
+        </div>
       </div>
-    {% endunless %}
-    {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
+      {% unless section.settings.menu_style == 'drawer' %}
+        {% render 'mega-menu' %}
+      {% endunless %}
+      {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
+    </div>
   </div>
-</div>
+</en-header>
 
+<div
+  id="overlay"
+  class="overlay-full"
+></div>
 {% render 'cart-drawer-new' %}
-
-<script>
-  const menuIcon = document.querySelector('.en-menu-icon');
-  if (menuIcon) {
-    menuIcon.addEventListener('click', () => {
-      document.querySelector('.en-menu-drawer').classList.toggle('scale-y-0');
-      document.querySelector('.en-line-1').classList.toggle('open');
-      document.querySelector('.en-line-2').classList.toggle('open');
-      document.querySelector('.en-line-3').classList.toggle('open');
-    });
-  }
-</script>
 
 {% schema %}
 {
@@ -156,7 +114,7 @@
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
-      "label": "t:sections.header.settings.menu.label"
+      "label": "Menu"
     },
     {
       "type": "select",

@@ -420,3 +420,49 @@ body
     visibility: visible;
     opacity: 1;
   }
+
+
+
+  /* en-drawer{
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    z-index: 999;
+  } */
+
+  en-drawer[expanded] .main-drawer{
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .main-drawer{
+    transition: all 0.3s;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    z-index: 999;
+    
+  }
+
+  .overlay-full.visible{
+    visibility: visible;
+    opacity: 1;
+  }
+
+
+  .main-drawer--left {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+  .main-drawer--right {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    position: absolute;
+    right: 0;
+  }
+

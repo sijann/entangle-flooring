@@ -333,13 +333,13 @@ class VariantSelector extends HTMLElement {
     }
   }
 
-  disableButtons(){
+  disableButtons() {
     let buttons = document.querySelector("product-form").querySelectorAll('button')
-    if(!buttons) return
+    if (!buttons) return
     buttons.forEach((button) => {
       button.disabled = true
     })
-    }
+  }
 
   getSelectedOptions() {
     this.options = Array.from(this.querySelectorAll('input[type="radio"]:checked'), (input) => input.value);
@@ -399,7 +399,7 @@ class VariantSelector extends HTMLElement {
         const newButtons = html.getElementById(buttonsId);
         const oldButtons = document.getElementById(buttonsId);
 
-        
+
         if (oldButtons && newButtons) oldButtons.innerHTML = newButtons.innerHTML;
 
         if (window.Shopify && Shopify.PaymentButton) {
@@ -526,13 +526,6 @@ class ProductForm extends HTMLElement {
 customElements.define("product-form", ProductForm)
 
 
-
-
-
-
-
-
-
 class QuickAdd extends HTMLElement {
   constructor() {
     super()
@@ -620,6 +613,87 @@ class QuickAddOpener extends HTMLElement {
 }
 
 customElements.define("quick-add-opener", QuickAddOpener);
+
+
+class EnHeader extends HTMLElement {
+  constructor() {
+    super();
+    this.headerType = this.getAttribute("data-headertype");
+    document.querySelector("main").style.paddingTop = `${this.offsetHeight}px`;
+    if (this.headerType === "sticky") this.stickyHeader.bind(this)();
+    else if (this.headerType === "hideonscroll") this.hideOnScroll.bind(this)();
+  }
+
+  stickyHeader() {
+   // Explicitly bind the function to the current instance
+  }
+
+  hideOnScroll(){
+    var prevScrollpos = window.pageYOffset;
+    var headerHeight = this.offsetHeight;
+    window.onscroll = function () {
+      console.log(this.offsetY);
+      var currentScrollPos = window.pageYOffset;
+      if (prevScrollpos > currentScrollPos) {
+        this.style.top = "0";
+        
+      } else {
+        this.style.top = `-${headerHeight}px`;
+      }
+      
+
+      prevScrollpos = currentScrollPos;
+    }.bind(this);  
+
+  }
+}
+
+customElements.define("en-header", EnHeader);
+
+
+
+ customElements.define('en-drawer', class extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback(){
+        this.addEventListener("click", ()=>this.handleClick)
+      }
+
+      disconnectedCallback(){
+        this.removeEventListener("click", ()=>this.handleClick)
+      }
+
+      handleClick(){
+        console.log("clicked")
+      }
+    });
+
+    customElements.define('open-drawer', class extends HTMLElement {
+      constructor() {
+        super();
+        this.addEventListener('click', this.openDrawer.bind(this));
+      }
+
+      openDrawer() {
+        const drawerId = this.getAttribute('data-drawer');
+        const drawer = document.querySelector(`en-drawer[data-id="${drawerId}"]`);
+        console.log(drawerId)
+        if (drawer) {
+          console.log(drawer)
+          drawer.setAttribute("expanded", '')
+          drawer.classList.add("visible")
+          drawer.addEventListener("click", (e)=>{
+            if(e.target.classList.contains("overlay-full") || e.target.classList.contains("drawer-close") ){
+              drawer.removeAttribute("expanded")
+              drawer.classList.remove("visible")
+              
+            }
+          })
+        }
+      }
+    });
 
 
 
