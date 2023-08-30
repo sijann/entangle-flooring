@@ -3,16 +3,16 @@
   class="fixed left-0 top-0 w-full transition-all duration-500 bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))] z-[10]"
 >
   <div class="en-container relative ">
-    <div class="en-width  flex flex-col gap-8 md:py-6">
+    <div class="en-width  flex flex-col gap-8 lg:py-6">
       <div class="grid grid-cols-3">
         <open-drawer
           data-drawer="menu"
-          class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} md:hidden {% endunless %}"
+          class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} lg:hidden {% endunless %}"
         >
           {% render 'icon-bars' %}
         </open-drawer>
         {% unless section.settings.menu_style == 'drawer' %}
-          <div class="hidden md:flex items-center">
+          <div class="hidden lg:flex items-center">
             <div class="relative">
               <form action="{{ routes.search_url }}">
                 <input
@@ -66,12 +66,12 @@
           {% if section.settings.enable_language_selector %}
             {% render 'language-localization' %}
           {% endif %}
-          <div class="en-menu-icon md:hidden">
+          <div class="en-menu-icon lg:hidden">
             {% render 'icon-search' %}
           </div>
 
           {% if settings.cart_type == 'drawer' %}
-            <open-drawer data-drawer="cart-drawer">
+            <open-drawer data-drawer="cart-drawer" class="cursor-pointer">
               {% unless section.settings.icon_style == 'text' %}
                 {% render 'icon-cart', items: cart.item_count, style: section.settings.icon_style %}
               {% else %}
@@ -93,7 +93,7 @@
         </div>
       </div>
       {% unless section.settings.menu_style == 'drawer' %}
-        {% render 'mega-menu' %}
+        {% render 'mega-menu', menu: section.settings.menu %}
       {% endunless %}
       {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
     </div>

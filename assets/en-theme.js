@@ -78,19 +78,10 @@ class CollapsibleButton extends HTMLElement {
     if (content) {
       content.classList.toggle('en-active');
       this.classList.toggle('en-opened')
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
-      } else
-
-        if (content.getAttribute("data-height")) {
-          content.style.maxHeight = parseInt(content.getAttribute("data-height")) + 'px';
-        }
-        else {
-          content.style.maxHeight = content.scrollHeight + 'px';
-        }
-    }
+      
   }
 
+}
 }
 
 customElements.define('collapsible-content', CollapsibleContent);
@@ -631,6 +622,106 @@ class SliderComponent extends HTMLElement {
 
 customElements.define("slider-component", SliderComponent)
 
+
+class EnHeader extends HTMLElement {
+  constructor() {
+    super();
+    this.headerType = this.getAttribute("data-headertype");
+    document.querySelector("main").style.paddingTop = `${this.offsetHeight}px`;
+    if (this.headerType === "sticky") this.stickyHeader.bind(this)();
+    else if (this.headerType === "hideonscroll") this.hideOnScroll.bind(this)();
+  }
+
+  stickyHeader() {
+    // Explicitly bind the function to the current instance
+  }
+
+  hideOnScroll() {
+    var prevScrollpos = window.pageYOffset;
+    var headerHeight = this.offsetHeight;
+    window.onscroll = function () {
+      console.log(this.offsetY);
+      var currentScrollPos = window.pageYOffset;
+      if (prevScrollpos > currentScrollPos) {
+        this.style.top = "0";
+
+      } else {
+        this.style.top = `-${headerHeight}px`;
+      }
+
+
+      prevScrollpos = currentScrollPos;
+    }.bind(this);
+
+  }
+}
+
+customElements.define("en-header", EnHeader);
+
+
+
+customElements.define('en-drawer', class extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  connectedCallback() {
+    this.addEventListener("click", () => this.handleClick)
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("click", () => this.handleClick)
+  }
+
+  handleClick() {
+  }
+});
+
+customElements.define('open-drawer', class extends HTMLElement {
+  constructor() {
+    super();
+    this.addEventListener('click', this.openDrawer.bind(this));
+  }
+
+  openDrawer() {
+    const drawerId = this.getAttribute('data-drawer');
+    const drawer = document.querySelector(`en-drawer[data-id="${drawerId}"]`);
+    if (drawer) {
+      drawer.setAttribute("expanded", '')
+      drawer.classList.add("visible")
+      drawer.addEventListener("click", (e) => {
+        if (e.target.classList.contains("overlay-full") || e.target.classList.contains("drawer-close") || e.target.classList.contains("close-drawer")) {
+          drawer.removeAttribute("expanded")
+          drawer.classList.remove("visible")
+
+        }
+      })
+    }
+  }
+});
+
+
+class DropdownMenu extends HTMLElement{
+  constructor(){
+    super();
+    this.addEventListener("mouseenter", ()=>{
+      console.log(this)
+      this.id = this.getAttribute("data-id");
+      this.target = this.nextElementSibling;
+      this.target.classList.remove("scale-y-0")
+    })
+
+    this.addEventListener("mouseleave", ()=>{
+      console.log(this)
+      this.id = this.getAttribute("data-id");
+      this.target = this.nextElementSibling;
+      this.target.classList.add("scale-y-0")
+    })
+  }
+}
+
+
+customElements.define("dropdown-menu", DropdownMenu)
 
 
 

@@ -4,16 +4,18 @@
   class="fixed left-0 top-0 w-full h-full z-[99] overlay-full"
 >
   <div
-    class="main-drawer main-drawer--right flex flex-col bg-[rgba(var(--backgroundColor))] absolute h-full w-full md:max-w-[30rem] m-0 z-[99]"
+    class="main-drawer main-drawer--right flex flex-col bg-[rgba(var(--backgroundColor))] absolute h-full w-full md:max-w-[25rem] m-0 z-[99]"
   >
-    <div id="cart-drawer" class=" flex flex-col h-full">
+    <div class="close-drawer absolute bg-[rgba(var(--backgroundColor))] z-[100] flex items-center rounded-full right-2 top-2 cursor-pointer">
+      {% render 'icon-close', class: 'close-drawer' %}
+    </div>
+    <div id="cart-drawer" class=" flex flex-col h-full pt-4">
       {% if cart.item_count > 0 %}
         <div class="cart-has-item flex flex-col h-full" data-money-format="{{ shop.money_format }}">
           <div class="flex flex-col h-full">
             <form action="{{ routes.cart_url }}" method="POST" class="flex flex-col h-full" novalidate>
               <div class="flex justify-between items-center p-4">
                 <h3 class="text-2xl font-bold">Your Cart</h3>
-                {% render 'icon-close', class: 'js-menu__close' %}
               </div>
               <div class="flex flex-col gap-4 overflow-y-scroll p-4">
                 {% for item in cart.items %}

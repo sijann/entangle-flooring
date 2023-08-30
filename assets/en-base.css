@@ -81,10 +81,17 @@ collapsible-button {
 }
 
 collapsible-content {
-    max-height: 0;
+    transform: scaleY(0);
+    transform-origin: top center; 
     overflow: hidden;
-    transition: max-height 0.2s ease-out;
+    transition: transform 0.2s ease-out;
 }
+
+collapsible-content.en-active{
+    transform: scaleY(1);
+}
+
+
 
 .en-collapsible-caret {
     transition: all ease 400ms;
@@ -119,11 +126,6 @@ collapsible-content::-webkit-scrollbar-thumb {
 
 }
 
-.en-menu-item {
-    padding: 0.3rem 1rem;
-    transition: all ease 300ms;
-    cursor: pointer;
-}
 
 
 
