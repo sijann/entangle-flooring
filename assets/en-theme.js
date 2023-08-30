@@ -31,7 +31,6 @@ class SortBy extends HTMLElement {
 
   handleChange() {
     var value = this.elem.value;
-    console.log(value)
     Shopify.queryParams.sort_by = value;
     location.search = new URLSearchParams(Shopify.queryParams).toString();
 
@@ -78,10 +77,9 @@ class CollapsibleButton extends HTMLElement {
     if (content) {
       content.classList.toggle('en-active');
       this.classList.toggle('en-opened')
-      
+    }
   }
 
-}
 }
 
 customElements.define('collapsible-content', CollapsibleContent);
@@ -364,7 +362,6 @@ class VariantSelector extends HTMLElement {
   }
 
   updateSKU() {
-    console.log(this.currentVariant, '----currentV------');
     const sku = document.querySelector('.sku--text');
     sku.textContent = this.currentVariant.sku;
   }
@@ -375,11 +372,6 @@ class VariantSelector extends HTMLElement {
       .then((responseText) => {
         const priceId = `price-${this.dataset.section}`;
         const html = new DOMParser().parseFromString(responseText, 'text/html');
-
-        // const cartContent = document.querySelector('#en-cart-drawer');
-        // const cartContentNew = html.getElementById('en-cart-drawer');
-        // console.log('-----html-----', html);
-        // cartContent.innerHTML = cartContentNew.innerHTML;
 
         const oldPrice = document.getElementById(priceId);
         const newPrice = html.getElementById(priceId);
@@ -432,7 +424,7 @@ class AddtoCartButton extends HTMLElement {
         const mainNav = document.getElementById("main-nav");
         const newMainNavContent = html.getElementById("main-nav").innerHTML;
         mainNav.innerHTML = newMainNavContent;
-        document.querySelector('.js-menu__open').click();
+        document.querySelector('open-drawer[data-drawer="cart-drawer"]').click();
       })
       .catch((error) => {
         console.error("An error occurred:", error);
@@ -469,7 +461,6 @@ class ProductForm extends HTMLElement {
     e.preventDefault()
 
     this.form = this.querySelector("form");
-    console.log(this.form)
     this.querySelector(".spinner--overlay").classList.remove("hidden")
     if (this.type == 'quick-add') {
       this.querySelector(".icon-plus").classList.add("hidden")
@@ -491,7 +482,10 @@ class ProductForm extends HTMLElement {
         const mainNav = document.getElementById("main-nav");
         const newMainNavContent = html.getElementById("main-nav").innerHTML;
         mainNav.innerHTML = newMainNavContent;
-        document.querySelector('.js-menu__open').click();
+        const cartButton = document.querySelector('open-drawer[data-drawer="cart-drawer" ]');
+        if(cartButton){
+          cartButton.click()
+        }
       })
       .catch((error) => {
         console.error("An error occurred:", error);
@@ -533,7 +527,6 @@ class QuickAdd extends HTMLElement {
 
   handleClick(event) {
 
-    console.log(event.target.classList)
     if (event.target.classList.contains("fixed") || event.target.classList.contains("close-modal")) {
       this.classList.toggle("hidden")
       document.body.classList.remove('overflow-hidden');
@@ -572,11 +565,9 @@ class QuickAddOpener extends HTMLElement {
         .then((response) => response.text())
         .then((responseText) => {
           const responseHTML = new DOMParser().parseFromString(responseText, 'text/html');
-          console.log(responseHTML, "------response-----");
           const productElement = responseHTML.querySelector('section[id^="MainProduct-"]');
           let id = "QuickAddInfo-" + opener.getAttribute('data-id').replace(" ", "");
           const targetElement = document.getElementById(id);
-          console.log(targetElement, "------target---------");
           targetElement.innerHTML = productElement.innerHTML;
 
           // Reinjects the script tags to allow execution.
@@ -640,7 +631,6 @@ class EnHeader extends HTMLElement {
     var prevScrollpos = window.pageYOffset;
     var headerHeight = this.offsetHeight;
     window.onscroll = function () {
-      console.log(this.offsetY);
       var currentScrollPos = window.pageYOffset;
       if (prevScrollpos > currentScrollPos) {
         this.style.top = "0";
@@ -705,14 +695,12 @@ class DropdownMenu extends HTMLElement{
   constructor(){
     super();
     this.addEventListener("mouseenter", ()=>{
-      console.log(this)
       this.id = this.getAttribute("data-id");
       this.target = this.nextElementSibling;
       this.target.classList.remove("scale-y-0")
     })
 
     this.addEventListener("mouseleave", ()=>{
-      console.log(this)
       this.id = this.getAttribute("data-id");
       this.target = this.nextElementSibling;
       this.target.classList.add("scale-y-0")

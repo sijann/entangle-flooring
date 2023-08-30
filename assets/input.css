@@ -48,4 +48,8 @@
         @apply bg-black/50 fixed left-0 top-0 opacity-0 transition-[opacity_0.3s,_visibility_0.3s] invisible w-full h-full z-[98];
     }
 
+    .en-input{
+        @apply block w-full border border-black placeholder:text-[rgba(var(--textColor))] py-2 px-3 pr-0 text-[rgba(var(--textColor))] focus:outline-none;  
+    }
+
   }

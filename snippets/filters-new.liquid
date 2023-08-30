@@ -8,10 +8,9 @@
 
   <collapsible-content
     data-id="filters"
-    data-height="500"
-    class=" bg-[rgba(var(--backgroundColor))] w-full z-[9] md:relative block md:px-0 md:max-h-full"
+    class=" bg-[rgba(var(--backgroundColor))] w-full md:flex z-[9] md:relative md:px-0 md:max-h-full"
   >
-    <div id="en-filters" class="my-6 ">
+    <div id="en-filters" class="collapsible-inner my-6 ">
       <div class="sort border-b mb-2 pb-2 md:hidden">
         <collapsible-button target-id="sort-by" class="flex justify-between ">
           <h2>Sort By</h2>
@@ -19,23 +18,25 @@
             {% render 'icon-caret', class: 'h-4 w-4' %}
           </div>
         </collapsible-button>
-        <collapsible-content data-id="sort-by" class="block">
-          <sort-by>
-            <select id="sort-by--mobile" class=" px-2 py-2 w-full cursor-pointer bg-transparent border-2">
-              {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+        <collapsible-content data-id="sort-by" class="">
+          <div class="collapsible-inner">
+            <sort-by>
+              <select id="sort-by--mobile" class=" px-2 py-2 w-full cursor-pointer bg-transparent border-2">
+                {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
 
-              {% for option in collection.sort_options %}
-                <option
-                  value="{{ option.value }}"
-                  {% if option.value == sort_by %}
-                    selected="selected"
-                  {% endif %}
-                >
-                  {{ option.name }}
-                </option>
-              {% endfor %}
-            </select>
-          </sort-by>
+                {% for option in collection.sort_options %}
+                  <option
+                    value="{{ option.value }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                  >
+                    {{ option.name }}
+                  </option>
+                {% endfor %}
+              </select>
+            </sort-by>
+          </div>
         </collapsible-content>
       </div>
 
@@ -63,7 +64,7 @@
                   style="max-height: 200px;"
                 {% endif %}
               >
-                <div class="filter-group-display">
+                <div class="collapsible-inner filter-group-display">
                   <div class="filter-group-display__header"></div>
 
                   {%- case filter.type -%}

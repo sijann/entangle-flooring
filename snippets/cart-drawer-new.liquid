@@ -5,6 +5,7 @@
 >
   <div
     class="main-drawer main-drawer--right flex flex-col bg-[rgba(var(--backgroundColor))] absolute h-full w-full md:max-w-[25rem] m-0 z-[99]"
+    id="main-nav"
   >
     <div class="close-drawer absolute bg-[rgba(var(--backgroundColor))] z-[100] flex items-center rounded-full right-2 top-2 cursor-pointer">
       {% render 'icon-close', class: 'close-drawer' %}
@@ -141,11 +142,13 @@
                         </span>
                       </collapsible-button>
                       <collapsible-content data-id="content-2" class="en-content-collapsible w-full">
-                        <textarea
-                          name="note"
-                          id="cart_notes"
-                          class="border focus:outline-none w-full md:max-w-lg resize-none p-2 h-32"
-                        ></textarea>
+                        <div class="collapsible-inner">
+                          <textarea
+                            name="note"
+                            id="cart_notes"
+                            class="border focus:outline-none w-full md:max-w-lg resize-none p-2 h-32"
+                          ></textarea>
+                        </div>
                       </collapsible-content>
                     </div>
                   </div>
@@ -206,7 +209,6 @@
       button.addEventListener('click', function () {
         var menuId = button.getAttribute('data-menu');
         var menu = document.querySelector(menuId);
-        console.log(menu);
 
         if (menu) {
           menu.classList.toggle('js-menu__expanded');

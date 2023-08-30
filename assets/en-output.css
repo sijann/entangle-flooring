@@ -689,6 +689,18 @@ video {
   }
 }
 
+.en-title {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .en-title {
+    font-size: 1.5rem;
+  }
+}
+
 .en-title-xl {
   display: block;
   font-size: 1.5rem;
@@ -771,6 +783,33 @@ video {
   transition-property: opacity 0.3s, visibility 0.3s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+.en-input {
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-right: 0px;
+  color: rgba(var(--textColor));
+}
+
+.en-input::-moz-placeholder {
+  color: rgba(var(--textColor));
+}
+
+.en-input::placeholder {
+  color: rgba(var(--textColor));
+}
+
+.en-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 .invisible {
@@ -871,14 +910,6 @@ video {
 
 .top-full {
   top: 100%;
-}
-
-.bottom-0 {
-  bottom: 0px;
-}
-
-.bottom-full {
-  bottom: 100%;
 }
 
 .isolate {
@@ -1173,6 +1204,10 @@ video {
   width: 100% !important;
 }
 
+.w-\[11rem\] {
+  width: 11rem;
+}
+
 .w-\[14em\] {
   width: 14em;
 }
@@ -1205,10 +1240,6 @@ video {
   width: 100%;
 }
 
-.w-\[11rem\] {
-  width: 11rem;
-}
-
 .min-w-\[40px\] {
   min-width: 40px;
 }
@@ -1235,10 +1266,6 @@ video {
 
 .max-w-full {
   max-width: 100%;
-}
-
-.max-w-\[50px\] {
-  max-width: 50px;
 }
 
 .shrink-0 {
@@ -1529,11 +1556,6 @@ video {
 
 .bg-transparent {
   background-color: transparent;
-}
-
-.bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .bg-cover {
@@ -2036,10 +2058,6 @@ video {
   opacity: 0.5;
 }
 
-.group:hover .group-hover\:block {
-  display: block;
-}
-
 .group:hover .group-hover\:scale-\[1\.03\] {
   --tw-scale-x: 1.03;
   --tw-scale-y: 1.03;
@@ -2087,6 +2105,10 @@ video {
 
   .md\:block {
     display: block;
+  }
+
+  .md\:flex {
+    display: flex;
   }
 
   .md\:hidden {
