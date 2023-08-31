@@ -10,11 +10,11 @@
   assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105'
 
   if quick_add
-    assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105 group-hover:opacity-70'
+    assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105 '
   endif
 %}
 <div
-  class=" {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.product_card_corners == 'rounded' %} rounded-lg {% endif %}w-full my-4 overflow-hidden duration-300 hover:shadow-mdz"
+  class=" {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.corners == "rounded" %} rounded-lg {% endif %} w-full my-4 overflow-hidden duration-300 hover:shadow-md"
 >
   <div class="relative w-full overflow-hidden {% if type == 'list' %} flex{% endif %}">
     <div class="relative group w-full {% if type == 'list' %} max-w-[200px]{% endif %}">
@@ -39,7 +39,7 @@
           endif
         -%}
 
-        <div class="transition duration-500 scale-x-0 group-hover:scale-x-100 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md">
+        <div class="transition duration-500 absolute bottom-1 right-1 overflow-hidden">
           {%- if card_product.variants.size > 1 or qty_rules -%}
             <quick-add-opener
               target-quickadd-id="QuickAdd-{{ card_product.id }}"
@@ -47,12 +47,18 @@
               data-id="{{ card_product.id }}"
               data-section-id="{{ section.id }}"
             >
-              <div class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]">
-                <span class="cursor-pointer icon-link">
-                  {% render 'icon-link' %}
+              <div class="flex items-center justify-center p-2 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))] overflow-hidden">
+                <span class="cursor-pointer flex group">
+                  <span class="icon-link">
+                    {% render 'icon-plus' %}
+                  </span>
+                  {% render 'spinner' %}
+                  <span class="grid grid-cols-[0fr] transition-all ease duration-700 overflow-hidden group-hover:grid-cols-[1fr]">
+                    <span class="line-clamp-1 overflow-hidden  transition-all delay-700 duration-700">
+                      Add to cart
+                    </span>
+                  </span>
                 </span>
-
-                {% render 'spinner' %}
               </div>
             </quick-add-opener>
 
@@ -86,6 +92,23 @@
           {% endif %}
         </div>
       {% endif %}
+
+      {% comment %} For card badges {% endcomment %}
+
+      {% liquid
+        assign badge_classes = 'top-1 right-1'
+        if settings.badge_position == 'top_left'
+          assign badge_classes = 'top-1 left-1'
+        elsif settings.badge_position == 'bottom_left'
+          assign badge_classes = 'bottom-1 left-1'
+        elsif settings.badge_position == 'bottom_right'
+          assign badge_classes = 'bottom-1 right-1'
+        endif
+      %}
+
+      <div class="absolute flex items-center justify-center text-xs font-bold uppercase overflow-hidden {{ badge_classes }} {% if settings.corners == "rounded" %} rounded-sm {% endif %}">
+        {% render 'badges', product: card_product %}
+      </div>
     </div>
 
     <div class="flex flex-col py-4 px-2">
@@ -105,7 +128,7 @@
             <div class="my-2 flex gap-2 flex-wrap">
               {% for value in option.values %}
                 <div
-                  class="h-4 w-4 rounded-md"
+                  class="h-4 w-4"
                   style="background-color: {{- value -}};"
                 ></div>
               {% endfor %}
@@ -113,24 +136,6 @@
           {% endif %}
         {% endfor %}
       {% endif %}
-    </div>
-
-    {% comment %} For card badges {% endcomment %}
-
-    <div class="absolute top-1 right-1 text-xs font-bold uppercase rounded-sm overflow-hidden">
-      {%- if card_product.available == false -%}
-        <span
-          class="bg-red-400 px-1 py-2"
-        >
-          Sold out
-        </span>
-      {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-        <span
-          class="bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]  px-2 py-2"
-        >
-          Sale
-        </span>
-      {%- endif -%}
     </div>
   </div>
 </div>

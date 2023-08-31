@@ -426,7 +426,7 @@
                     },
                     {
                         "label": "Bottom right",
-                        "value": "bottomright"
+                        "value": "bottom_right"
                     }
                 ]
             },
@@ -546,13 +546,13 @@
                 "type": "color",
                 "id": "sale_background",
                 "label": "Sale background color",
-                "default": "#ff0000"
+                "default": "#00ff00"
             },
             {
                 "type": "color",
                 "id": "sale_text",
-                "label": "Sale background color",
-                "default": "#ff0000"
+                "label": "Sale text color",
+                "default": "#000000"
             }
         ]
     },

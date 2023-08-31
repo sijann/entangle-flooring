@@ -36,7 +36,7 @@
 
   <div class="w-full">
     {% paginate collections by paginate_by %}
-      <div class="grid {{ mobile_columns_class }} md:grid-cols-2 {{ desktop_columns_class }} gap-3">
+      <div class="grid en-grid-gap {{ mobile_columns_class }} md:grid-cols-2 {{ desktop_columns_class }}">
         {% for collection in collections %}
           {% render 'collection-card', collection: collection, count: section.settings.show_count %}
         {% endfor %}

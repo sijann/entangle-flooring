@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="md:basis-[65%] relative flex flex-col justify-center">
-      <div class=" border-2 bg-gray-300 w-[55%] object-cover relative mb-16 left-[45%] overflow-hidden rounded-lg ">
+      <div class=" border-2 bg-gray-300 w-[55%] object-cover relative mb-16 left-[45%] overflow-hidden {% if settings.corners == "rounded" %} rounded-lg {% endif %}">
         <div class="relative group w-full">
           <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
             {% if section.settings.image_1 %}
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="border-2 bg-gray-300 w-[55%] object-cover top-8  md:top-16 absolute z-10 overflow-hidden rounded-lg">
+      <div class="border-2 bg-gray-300 w-[55%] object-cover top-8  md:top-16 absolute z-10 overflow-hidden {% if settings.corners == "rounded" %} rounded-lg {% endif %}">
         <div class="relative group w-full object-cover">
           <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
             {% if section.settings.image_2 %}

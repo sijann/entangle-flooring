@@ -20,7 +20,7 @@
       {% render 'facets', collection: collection, position: 'left' %}
     </div>
     <div class="w-full">
-      <div class="grid grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }} gap-4">
+      <div class="grid en-grid-gap grid-cols-1 md:grid-cols-2 {{ desktop_columns_class }}">
         {% for product in collection.products %}
           {% render 'product-card', card_product: product, show_vendor: true %}
         {% else %}

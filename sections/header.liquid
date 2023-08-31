@@ -1,42 +1,42 @@
+{% style %}
+  en-header{
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+{% endstyle %}
+
+{% liquid
+  assign grid_classes = 'grid grid-cols-3'
+  assign logo_classes = 'flex items-center justify-center flex-grow'
+  if section.settings.menu_style == 'left_center'
+    assign grid_classes = 'flex items-center justify-between'
+    assign logo_classes = 'flex'
+  elsif section.settings.menu_style == 'left_left'
+    assign grid_classes = 'flex items-center'
+    assign logo_classes = 'flex'
+  endif
+%}
+
 <en-header
   data-headertype="hideonscroll"
-  class="fixed left-0 top-0 w-full transition-all duration-500 bg-[rgba(var(--headerBackgroundColor))] text-[rgba(var(--headerTextColor))] z-[10]"
+  class="fixed left-0 top-0 w-full transition-all duration-500 z-[10] {% if settings.corners == "rounded" %} rounded-lg {% endif %}"
 >
   <div class="en-container relative ">
     <div class="en-width  flex flex-col gap-8 lg:py-6">
-      <div class="grid grid-cols-3">
+      <div class="{{ grid_classes }}">
         <open-drawer
           data-drawer="menu"
           class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} lg:hidden {% endunless %}"
         >
           {% render 'icon-bars' %}
         </open-drawer>
-        {% unless section.settings.menu_style == 'drawer' %}
-          <div class="hidden lg:flex items-center">
-            <div class="relative">
-              <form action="{{ routes.search_url }}">
-                <input
-                  type="text"
-                  name="q"
-                  value="{{ search.terms | escape }}"
-                  class="en-input bg-transparent placeholder:uppercase placeholder:text-sm"
-                  placeholder="Search"
-                >
-                <input type="hidden" name="type" value="product,page">
-                <input type="hidden" name="options[unavailable_products]" value="hide">
-                <input type="hidden" name="options[prefix]" value="last">
-                <button type="submit">
-                  <div class="en-search-small absolute top-0 right-1 translate-y-2 pr-1">
-                    {% render 'icon-search' %}
-                  </div>
-                </button>
-              </form>
-            </div>
-          </div>
-        {% endunless %}
 
-        <div class="flex items-center justify-center flex-grow">
-          <a href="{{ routes.root_url }}" class="">
+        {% if section.settings.menu_style == 'top_bottom' %}
+          <div></div>
+        {% endif %}
+
+        <div class="{{ logo_classes }} shrink-0">
+          <a href="{{ routes.root_url }}">
             {%- if settings.logo != blank -%}
               {% if settings.logo_mobile != blank %}
                 <div class="md:hidden">
@@ -84,7 +84,11 @@
           </a>
         </div>
 
-        <div class="icons flex items-center justify-end gap-2">
+        {% if section.settings.menu_style == 'left_center' or section.settings.menu_style == 'left_left' %}
+          {% render 'mega-menu', menu: section.settings.menu %}
+        {% endif %}
+
+        <div class="icons flex items-center justify-end gap-2 shrink-0 {% if section.settings.menu_style == 'left_left' %} ml-auto {% endif %} ">
           {% if section.settings.enable_language_selector %}
             {% render 'language-localization' %}
           {% endif %}
@@ -114,9 +118,9 @@
           {% endif %}
         </div>
       </div>
-      {% unless section.settings.menu_style == 'drawer' %}
+      {% if section.settings.menu_style == 'top_bottom' %}
         {% render 'mega-menu', menu: section.settings.menu %}
-      {% endunless %}
+      {% endif %}
       {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
     </div>
   </div>
@@ -141,12 +145,20 @@
     {
       "type": "select",
       "id": "menu_style",
-      "default": "standard",
+      "default": "left_center",
       "label": "Menu style",
       "options": [
         {
-          "label": "Standard",
-          "value": "standard"
+          "label": "Logo top, menu bottom",
+          "value": "top_bottom"
+        },
+        {
+          "label": "Logo left, menu center",
+          "value": "left_center"
+        },
+        {
+          "label": "Logo left, menu left",
+          "value": "left_left"
         },
         {
           "value": "drawer",
@@ -179,6 +191,22 @@
       "id": "enable_language_selector",
       "default": false,
       "label": "Enable language selector"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#000000",
+      "label": "Text color"
     }
   ]
 }

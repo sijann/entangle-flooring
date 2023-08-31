@@ -34,6 +34,11 @@ button:disabled {
     padding: 10px;
 }
 
+.en-grid-gap{
+    row-gap: var(--grid-gap-horizontal);
+    column-gap: var(--grid-gap-horizontal);
+}
+
 /*---- Collapsible content start -----*/
 
 collapsible-content {

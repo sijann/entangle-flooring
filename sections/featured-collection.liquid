@@ -19,7 +19,7 @@
     {% assign collection_handle = section.settings.collection %}
     {% assign collection = collections[collection_handle] %}
 
-    <div class=" featured-collection-slider grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-x-4 md:gap-y-2">
+    <div class="en-grid-gap grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
       {% for product in collection.products limit: section.settings.max_products_to_show %}
         {% render 'product-card', card_product: product, quick_add: section.settings.enable_quick_add %}
 

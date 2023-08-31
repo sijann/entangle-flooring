@@ -18,7 +18,7 @@
       <div class="w-full flex flex-col md:flex-row md:gap-4">
         {% render 'filters-new', collection: collection, type: 'drawer' %}
         <div
-          class="grid relative grid-cols-1 {% unless section.settings.display_style == 'list' %}  md:grid-cols-2 {{ desktop_columns_class }} {% endunless %} flex gap-4 w-full"
+          class="grid en-grid-gap relative grid-cols-1 {% unless section.settings.display_style == 'list' %}  md:grid-cols-2 {{ desktop_columns_class }} {% endunless %} flex w-full"
           id="products-grid"
         >
           <div
