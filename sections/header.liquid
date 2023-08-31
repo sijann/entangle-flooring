@@ -19,7 +19,7 @@
                   type="text"
                   name="q"
                   value="{{ search.terms | escape }}"
-                  class="en-input px-2 py-2 text-sm bg-transparent placeholder:uppercase placeholder:text-sm"
+                  class="en-input bg-transparent placeholder:uppercase placeholder:text-sm"
                   placeholder="Search"
                 >
                 <input type="hidden" name="type" value="product,page">
@@ -38,7 +38,29 @@
         <div class="flex items-center justify-center flex-grow">
           <a href="{{ routes.root_url }}" class="">
             {%- if settings.logo != blank -%}
-              <div class="">
+              {% if settings.logo_mobile != blank %}
+                <div class="md:hidden">
+                  {%- assign logo_alt = settings.logo_mobile.alt | default: shop.name | escape -%}
+                  {%- assign logo_height = settings.logo_width_mobile
+                    | divided_by: settings.logo_mobile.aspect_ratio
+                  -%}
+                  {% capture sizes %}(max-width: {{ settings.logo_width_mobile | times: 2 }}px) 50vw, {{ settings.logo_width_mobile }}px{% endcapture %}
+                  {% capture widths %}{{ settings.logo_width_mobile }}, {{ settings.logo_width_mobile | times: 1.5 | round }}, {{ settings.logo_width_mobile | times: 2 }}{% endcapture %}
+                  {{
+                    settings.logo_mobile
+                    | image_url: width: 600
+                    | image_tag:
+                      class: 'logo',
+                      widths: widths,
+                      height: logo_height,
+                      width: settings.logo_width_mobile,
+                      alt: logo_alt,
+                      sizes: sizes,
+                      preload: true
+                  }}
+                </div>
+              {% endif %}
+              <div class="{% if settings.logo_mobile != blank %} hidden md:block {% endif %}">
                 {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
                 {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
                 {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}

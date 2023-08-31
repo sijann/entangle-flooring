@@ -42,16 +42,16 @@ https://flickity.metafizzy.co
 
 .flickity-button {
     position: absolute;
-    background-color: rgba(var(--backgroundColor), 0.8) !important;
+    background-color: rgba(var(--primary-background), 0.8) !important;
     ;
     border: none;
-    color: rgba(var(--textColor)) !important;
+    color: rgba(var(--primary-text)) !important;
     ;
     transition: all ease 300ms;
 }
 
 .flickity-button:hover {
-    background-color: rgba(var(--backgroundColor)) !important;
+    background-color: rgba(var(--primary-background)) !important;
     cursor: pointer
 }
 
