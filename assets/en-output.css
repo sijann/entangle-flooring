@@ -1558,6 +1558,19 @@ video {
   background-color: transparent;
 }
 
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-\[rgba\(var\(--backgroundColor\)\)\]\/50 {
+  background-color: rgba(var(--backgroundColor), 0.5);
+}
+
+.bg-\[rgba\(var\(--backgroundColor\)\)\]\/70 {
+  background-color: rgba(var(--backgroundColor), 0.7);
+}
+
 .bg-cover {
   background-size: cover;
 }

@@ -1,87 +1,103 @@
-<div class="en-width px-4 reveal">
-  <h1 class="text-2xl font-bold py-4">Image Hotspots</h1>
-  <div class="w-full flex items-center">
-    <div class="w-full relative rounded-lg overflow-hidden{%- if section.settings.image == blank %} bg-gray-300 {% endif %} ">
-      {% if section.settings.image %}
-        {{
-          section.settings.image
-          | image_url: width: section.settings.image.width
-          | image_tag: class: 'block h-full w-full object-scale-down', loading: 'lazy'
-        }}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
 
-      {% else %}
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'block h-full w-full object-scale-down' }}
-      {% endif %}
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
-      {% if section.settings.image == blank %}
-        {% for i in (1..3) %}
+<section class="">
+  <div class="en-width reveal section-{{ section.id }}-padding">
+    <h1 class="text-2xl font-bold py-4">Image Hotspots</h1>
+    <div class="w-full flex items-center">
+      <div class="w-full relative rounded-lg overflow-hidden{%- if section.settings.image == blank %} bg-gray-300 {% endif %} ">
+        {% if section.settings.image %}
+          {{
+            section.settings.image
+            | image_url: width: section.settings.image.width
+            | image_tag: class: 'block h-full w-full object-scale-down', loading: 'lazy'
+          }}
+
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'block h-full w-full object-scale-down' }}
+        {% endif %}
+
+        {% if section.settings.image == blank %}
+          {% for i in (1..3) %}
+            {% liquid
+              assign x = 10
+              assign y = 20
+              assign hotspot_class = 'top-left'
+              if forloop.index == 3
+                assign x = 40
+                assign y = 65
+                assign hotspot_class = 'top-right'
+              elsif forloop.index == 2
+                assign x = 80
+                assign y = 75
+                assign hotspot_class = 'top-right'
+              endif
+            %}
+            <div
+              style="top: {{ y }}%; left: {{ x }}%;"
+              class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
+            >
+              <div
+                class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
+              ></div>
+              <div class="lg-hotspot__label absolute bg-[rgba(var(--backgroundColor))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] rounded-lg opacity-0 hidden transition-all duration-500">
+                <h4 class="font-bold pb-2 mb-2">Product title</h4>
+                <p>This is some text that goes in the label. It describes the item.</p>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% for block in section.blocks %}
           {% liquid
-            assign x = 10
-            assign y = 20
+            assign x = block.settings.xposition
+            assign y = block.settings.yposition
+
             assign hotspot_class = 'top-left'
-            if forloop.index == 3
-              assign x = 40
-              assign y = 65
+            if x > 40 and y <= 50
               assign hotspot_class = 'top-right'
-            elsif forloop.index == 2
-              assign x = 80
-              assign y = 75
-              assign hotspot_class = 'top-right'
+            elsif x < 60 and y > 50
+              assign hotspot_class = 'bottom-left'
+            elsif x > 40 and y > 50
+              assign hotspot_class = 'bottom-right'
             endif
           %}
           <div
-            style="top: {{ y }}%; left: {{ x }}%;"
+            style="top: {{ block.settings.yposition }}%; left: {{ block.settings.xposition }}%;"
             class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
           >
             <div
               class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
             ></div>
             <div class="lg-hotspot__label absolute bg-[rgba(var(--backgroundColor))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] rounded-lg opacity-0 hidden transition-all duration-500">
-              <h4 class="font-bold pb-2 mb-2">Product title</h4>
-              <p>This is some text that goes in the label. It describes the item.</p>
+              {% if block.settings.product != blank %}
+                <h4 class="font-bold pb-2 ">{{ block.settings.product.title }}</h4>
+                <p class="pb-2">{{ block.settings.description }}</p>
+                <div class="flex items-center gap-2">
+                  <button class="en-button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
+                </div>
+              {% else %}
+                <h4 class="font-bold pb-2 mb-2">Product title</h4>
+                <p>This is some text that goes in the label. It describes the item.</p>
+              {% endif %}
             </div>
           </div>
         {% endfor %}
-      {% endif %}
-
-      {% for block in section.blocks %}
-        {% liquid
-          assign x = block.settings.xposition
-          assign y = block.settings.yposition
-
-          assign hotspot_class = 'top-left'
-          if x > 40 and y <= 50
-            assign hotspot_class = 'top-right'
-          elsif x < 60 and y > 50
-            assign hotspot_class = 'bottom-left'
-          elsif x > 40 and y > 50
-            assign hotspot_class = 'bottom-right'
-          endif
-        %}
-        <div
-          style="top: {{ block.settings.yposition }}%; left: {{ block.settings.xposition }}%;"
-          class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
-        >
-          <div
-            class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
-          ></div>
-          <div class="lg-hotspot__label absolute bg-[rgba(var(--backgroundColor))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] rounded-lg opacity-0 hidden transition-all duration-500">
-            {% if block.settings.product != blank %}
-              <h4 class="font-bold pb-2 ">{{ block.settings.product.title }}</h4>
-              <p class="pb-2">{{ block.settings.description }}</p>
-              <div class="flex items-center gap-2">
-                <button class="en-button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
-              </div>
-            {% else %}
-              <h4 class="font-bold pb-2 mb-2">Product title</h4>
-              <p>This is some text that goes in the label. It describes the item.</p>
-            {% endif %}
-          </div>
-        </div>
-      {% endfor %}
+      </div>
     </div>
   </div>
-</div>
+</section>
 <style>
   :root {
     --buttonRadius: 24px;
@@ -188,6 +204,26 @@
       "id": "hotspot_color",
       "label": "Hotspot Color",
       "default": "#952E31"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "default": 25,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "default": 25,
+      "step": 1,
+      "unit": "px"
     }
   ],
   "blocks": [

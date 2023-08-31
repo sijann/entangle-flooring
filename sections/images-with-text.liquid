@@ -1,4 +1,18 @@
-<div class="reveal en-width px-4">
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="reveal en-width section-{{ section.id }}-padding">
   <div class="flex flex-col-reverse md:flex-row my-6 md:my-16 gap-8 md:gap-4">
     <div class="md:basis-[40%] pr-8 flex flex-col gap-4 justify-center">
       <h1 class="font-bold text-2xl">Images with text</h1>
@@ -67,6 +81,26 @@
       "type": "image_picker",
       "id": "image_2",
       "label": "Second Image"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "default": 25,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "default": 25,
+      "step": 1,
+      "unit": "px"
     }
   ]
 }

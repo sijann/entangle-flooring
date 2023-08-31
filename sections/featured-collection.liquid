@@ -1,6 +1,20 @@
-<div class="en-width ">
-  <div class="mx-auto px-4 py-10 my-12">
-    <h2 class="text-2xl font-semibold mb-4">{{ section.settings.heading }}</h2>
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="en-width section-{{ section.id }}-padding">
+  <div class="flex flex-col">
+    <h2 class="text-2xl font-semibold py-2">{{ section.settings.heading }}</h2>
 
     {% assign collection_handle = section.settings.collection %}
     {% assign collection = collections[collection_handle] %}
@@ -14,17 +28,6 @@
           {% render 'product-card-empty', index: forloop.index %}
         {% endfor %}
       {% endfor %}
-    </div>
-
-    <div class="md:hidden">
-      {% if section.settings.display_type == 'sliderr' %}
-        <script>
-          document.addEventListener('DOMContentLoaded', function () {
-            var elem = document.querySelector('.featured-collection-slider');
-            var flkty = new Flickity(elem, {});
-          });
-        </script>
-      {% endif %}
     </div>
   </div>
 </div>
@@ -85,6 +88,26 @@
       "default": 8,
       "min": 1,
       "max": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "default": 25,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "default": 25,
+      "step": 1,
+      "unit": "px"
     }
   ],
   "presets": [

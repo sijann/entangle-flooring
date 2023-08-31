@@ -341,7 +341,8 @@ collapsible-content::-webkit-scrollbar-thumb {
 
 @media screen and (min-width: 750px) {
     .en-width {
-        padding: 0 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
 }
