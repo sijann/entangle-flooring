@@ -6,6 +6,12 @@
   quick_add: true
 {% endcomment %}
 
+{% style %}
+  .en-product-image--padding {
+    padding: var(--product-card-image-padding);
+  }
+{% endstyle %}
+
 {% liquid
   assign imageclass = 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out transform hover:scale-105'
 
@@ -14,10 +20,10 @@
   endif
 %}
 <div
-  class=" {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.corners == "rounded" %} rounded-lg {% endif %} w-full my-4 overflow-hidden duration-300 hover:shadow-md"
+  class=" {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.corners == "rounded" %} rounded-lg {% endif %} w-full my-4 overflow-hidden duration-300 hover:shadow-md "
 >
-  <div class="relative w-full overflow-hidden {% if type == 'list' %} flex{% endif %}">
-    <div class="relative group w-full {% if type == 'list' %} max-w-[200px]{% endif %}">
+  <div class="relative w-full overflow-hidden  group {% if type == 'list' %} flex{% endif %}">
+    <div class="en-product-image--padding relative w-full {% if type == 'list' %} max-w-[200px]{% endif %}">
       <a href="{{ card_product.url }}">
         {% if card_product.featured_image %}
           <div class=" group w-full overflow-hidden relative before:content-[''] before:block before:pt-[100%]">
@@ -39,57 +45,54 @@
           endif
         -%}
 
-        <div class="transition duration-500 absolute bottom-1 right-1 overflow-hidden">
-          {%- if card_product.variants.size > 1 or qty_rules -%}
-            <quick-add-opener
-              target-quickadd-id="QuickAdd-{{ card_product.id }}"
-              data-product-url="{{ card_product.url }}"
-              data-id="{{ card_product.id }}"
-              data-section-id="{{ section.id }}"
-            >
-              <div class="flex items-center justify-center p-2 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))] overflow-hidden">
-                <span class="cursor-pointer flex group">
-                  <span class="icon-link">
-                    {% render 'icon-plus' %}
-                  </span>
-                  {% render 'spinner' %}
-                  <span class="grid grid-cols-[0fr] transition-all ease duration-700 overflow-hidden group-hover:grid-cols-[1fr]">
-                    <span class="line-clamp-1 overflow-hidden  transition-all delay-700 duration-700">
-                      Add to cart
+        <div class="transition-all ease duration-500 absolute bottom-1 right-1 grid grid-cols-[0fr] overflow-hidden group-hover:grid-cols-[1fr]">
+          <div class="overflow-hidden">
+            {%- if card_product.variants.size > 1 or qty_rules -%}
+              <quick-add-opener
+                target-quickadd-id="QuickAdd-{{ card_product.id }}"
+                data-product-url="{{ card_product.url }}"
+                data-id="{{ card_product.id }}"
+                data-section-id="{{ section.id }}"
+              >
+                <div class="flex items-center justify-center p-2 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]">
+                  <span class="cursor-pointer flex overflow-hidden">
+                    <span class="icon-link">
+                      {% render 'icon-plus' %}
                     </span>
+                    {% render 'spinner' %}
                   </span>
-                </span>
-              </div>
-            </quick-add-opener>
+                </div>
+              </quick-add-opener>
 
-          {% else %}
-            <product-form data-type="quick-add">
-              {% form 'product',
-                card_product,
-                id: product_form_id,
-                class: 'flex items-center justify-center',
-                novalidate: 'novalidate'
-              -%}
-                <input
-                  type="hidden"
-                  name="id"
-                  value="{{ card_product.selected_or_first_available_variant.id }}"
-                >
+            {% else %}
+              <product-form data-type="quick-add">
+                {% form 'product',
+                  card_product,
+                  id: product_form_id,
+                  class: 'flex items-center justify-center',
+                  novalidate: 'novalidate'
+                -%}
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="{{ card_product.selected_or_first_available_variant.id }}"
+                  >
 
-                <button
-                  class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]"
-                  {% if card_product.selected_or_first_available_variant.available == false %}
-                    disabled
-                  {% endif %}
-                >
-                  <span class="icon-plus">
-                    {% render 'icon-plus' %}
-                  </span>
-                  {% render 'spinner' %}
-                </button>
-              {%- endform -%}
-            </product-form>
-          {% endif %}
+                  <button
+                    class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]"
+                    {% if card_product.selected_or_first_available_variant.available == false %}
+                      disabled
+                    {% endif %}
+                  >
+                    <span class="icon-plus">
+                      {% render 'icon-plus' %}
+                    </span>
+                    {% render 'spinner' %}
+                  </button>
+                {%- endform -%}
+              </product-form>
+            {% endif %}
+          </div>
         </div>
       {% endif %}
 
