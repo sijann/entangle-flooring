@@ -44,6 +44,18 @@ function reveal() {
   }
 }
 
-scroll();
-window.addEventListener('scroll', scroll);
+function initialize() {
+  scroll();
+}
 
+function setupMutationObserver() {
+  const container = document.body; // Change this to the appropriate container
+  const observer = new MutationObserver(scroll);
+  observer.observe(container, { childList: true, subtree: true });
+}
+
+initialize();
+setupMutationObserver();
+
+window.addEventListener('load', initialize);
+window.addEventListener('scroll', scroll);
