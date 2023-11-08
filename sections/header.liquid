@@ -13,8 +13,6 @@
 
       }
 
-
-
     .en-menu {
       grid-area: menu;
     }
@@ -29,7 +27,7 @@
       grid-area: search;
     }
 
-    .drawer{
+    .drawer-icon{
       grid-area: drawer;
     }
 
@@ -45,14 +43,19 @@
   @media screen and (min-width: 1024px){
     .header {
       grid-template-areas: "logo menu icons";
-      grid-template-columns: 1fr 4fr 1fr;
+      grid-template-columns: min-content 1fr auto;
     }
 
     .header.twocol {
       grid-template-areas:
         "language-selector logo icons"
         "menu menu menu";
-      grid-template-columns: auto auto auto;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .header.drawer {
+      grid-template-areas: "drawer logo icons";
+      grid-template-columns: 1fr 1fr 1fr;
     }
       }
 {% endstyle %}
@@ -63,10 +66,10 @@
 >
   <div class="en-container relative ">
     <div class="en-width  flex flex-col gap-8 lg:py-6">
-      <div class="header grid gap-3 items-center {% if section.settings.menu_style == 'top_bottom' %} twocol {%- endif %}">
+      <div class="header grid gap-3 items-center {% if section.settings.menu_style == 'top_bottom' %} twocol {% elsif section.settings.menu_style == 'drawer' -%}drawer  {%- endif %}">
         <open-drawer
           data-drawer="menu"
-          class="drawer en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} lg:hidden {% endunless %}"
+          class="drawer-icon en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} lg:hidden {% endunless %}"
         >
           {% render 'icon-bars' %}
         </open-drawer>
@@ -125,14 +128,18 @@
         {% endunless %}
 
         {% if section.settings.menu_style == 'top_bottom' %}
-          <div class="language-selector">
+          <div class="language-selector hidden lg:flex gap-1 ">
             {% render 'language-localization' %}
+            {% render 'country-localization' %}
           </div>
         {% endif %}
 
         <div class="icons flex items-center justify-end gap-2 ml-auto">
           {% if section.settings.enable_language_selector and section.settings.menu_style != 'top_bottom' %}
-            {% render 'language-localization' %}
+            <div class="language-selector hidden lg:flex gap-1 ">
+              {% render 'language-localization' %}
+              {% render 'country-localization' %}
+            </div>
           {% endif %}
           <div class="en-menu-icon">
             {% render 'icon-search' %}
