@@ -1,21 +1,61 @@
 {% style %}
-  en-header{
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
-  }
-{% endstyle %}
+      en-header{
+        {% if section.settings.gradient_background != blank %}
+          background: {{ section.settings.gradient_background }};
+        {% else %}
+        background-color: {{ section.settings.background_color }};
+        {% endif %}
+        color: {{ section.settings.text_color }};
+      }
 
-{% liquid
-  assign grid_classes = 'grid grid-cols-3'
-  assign logo_classes = 'flex items-center justify-center flex-grow'
-  if section.settings.menu_style == 'left_center'
-    assign grid_classes = 'flex items-center justify-between'
-    assign logo_classes = 'flex'
-  elsif section.settings.menu_style == 'left_left'
-    assign grid_classes = 'flex items-center'
-    assign logo_classes = 'flex'
-  endif
-%}
+      .logo {
+      grid-area: logo;
+
+      }
+
+
+
+    .en-menu {
+      grid-area: menu;
+    }
+
+    .icons {
+      grid-area: icons;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .search{
+      grid-area: search;
+    }
+
+    .drawer{
+      grid-area: drawer;
+    }
+
+    .language-selector{
+      grid-area: language-selector;
+    }
+
+
+    .header {
+      grid-template-areas: "drawer logo icons";
+    }
+
+  @media screen and (min-width: 1024px){
+    .header {
+      grid-template-areas: "logo menu icons";
+      grid-template-columns: 1fr 4fr 1fr;
+    }
+
+    .header.twocol {
+      grid-template-areas:
+        "language-selector logo icons"
+        "menu menu menu";
+      grid-template-columns: auto auto auto;
+    }
+      }
+{% endstyle %}
 
 <en-header
   data-headertype="hideonscroll"
@@ -23,19 +63,15 @@
 >
   <div class="en-container relative ">
     <div class="en-width  flex flex-col gap-8 lg:py-6">
-      <div class="{{ grid_classes }}">
+      <div class="header grid gap-3 items-center {% if section.settings.menu_style == 'top_bottom' %} twocol {%- endif %}">
         <open-drawer
           data-drawer="menu"
-          class="en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} lg:hidden {% endunless %}"
+          class="drawer en-menu-icon w-[30px] cursor-pointer flex flex-col items-center justify-center gap-1 {% unless section.settings.menu_style == 'drawer' %} lg:hidden {% endunless %}"
         >
           {% render 'icon-bars' %}
         </open-drawer>
 
-        {% if section.settings.menu_style == 'top_bottom' %}
-          <div></div>
-        {% endif %}
-
-        <div class="{{ logo_classes }} shrink-0">
+        <div class="logo flex justify-center {% if section.settings.menu_style == 'left_center' or section.settings.menu_style == 'left_left' %} lg:justify-start {% endif %}">
           <a href="{{ routes.root_url }}">
             {%- if settings.logo != blank -%}
               {% if settings.logo_mobile != blank %}
@@ -84,15 +120,21 @@
           </a>
         </div>
 
-        {% if section.settings.menu_style == 'left_center' or section.settings.menu_style == 'left_left' %}
-          {% render 'mega-menu', menu: section.settings.menu %}
+        {% unless section.settings.menu_style == 'drawer' %}
+          {% render 'mega-menu', menu: section.settings.menu, menu_style: section.settings.menu_style %}
+        {% endunless %}
+
+        {% if section.settings.menu_style == 'top_bottom' %}
+          <div class="language-selector">
+            {% render 'language-localization' %}
+          </div>
         {% endif %}
 
-        <div class="icons flex items-center justify-end gap-2 shrink-0 {% if section.settings.menu_style == 'left_left' %} ml-auto {% endif %} ">
-          {% if section.settings.enable_language_selector %}
+        <div class="icons flex items-center justify-end gap-2 ml-auto">
+          {% if section.settings.enable_language_selector and section.settings.menu_style != 'top_bottom' %}
             {% render 'language-localization' %}
           {% endif %}
-          <div class="en-menu-icon lg:hidden">
+          <div class="en-menu-icon">
             {% render 'icon-search' %}
           </div>
 
@@ -118,9 +160,7 @@
           {% endif %}
         </div>
       </div>
-      {% if section.settings.menu_style == 'top_bottom' %}
-        {% render 'mega-menu', menu: section.settings.menu %}
-      {% endif %}
+
       {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
     </div>
   </div>
@@ -207,6 +247,11 @@
       "id": "text_color",
       "default": "#000000",
       "label": "Text color"
+    },
+    {
+      "type": "color_background",
+      "id": "gradient_background",
+      "label": "Gradient Background"
     }
   ]
 }

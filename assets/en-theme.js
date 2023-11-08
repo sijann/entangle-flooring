@@ -604,9 +604,25 @@ class SliderComponent extends HTMLElement {
     this.sliderElement = this.querySelector(".main-carousel");
     this.flickity = new Flickity(this.sliderElement, {
       // options
-      cellAlign: 'left',
-      contain: true
+      cellAlign: 'center',
+          contain: true,
+          pageDots: false,
+          wrapAround: true,
+          prevNextButtons: true,
+          draggable: false,
     });
+
+    this.thumbnailsElement = this.querySelector(".carousel-thumbnails");
+
+    if (this.thumbnailsElement) {
+      this.flickity1 = new Flickity(this.thumbnailsElement, {
+        asNavFor: '.main-carousel',
+        pageDots: false,
+        contain: true,
+        prevNextButtons: false,
+      });
+    }
+
   }
 
 }
@@ -618,9 +634,15 @@ class EnHeader extends HTMLElement {
   constructor() {
     super();
     this.headerType = this.getAttribute("data-headertype");
-    document.querySelector("main").style.paddingTop = `${this.offsetHeight}px`;
+    // document.querySelector("main").style.paddingTop = `${this.offsetHeight}px`;
     if (this.headerType === "sticky") this.stickyHeader.bind(this)();
     else if (this.headerType === "hideonscroll") this.hideOnScroll.bind(this)();
+    window.matchMedia('(max-width: 1024px)').addEventListener('change', this.setHeaderHeight.bind(this));
+    document.documentElement.style.setProperty('--header-height', `${this.offsetHeight}px`);;
+  }
+
+  setHeaderHeight() {
+    document.documentElement.style.setProperty('--header-height', `${this.offsetHeight}px`);
   }
 
   stickyHeader() {
@@ -628,10 +650,10 @@ class EnHeader extends HTMLElement {
   }
 
   hideOnScroll() {
-    var prevScrollpos = window.pageYOffset;
+    var prevScrollpos = window.scrollY;
     var headerHeight = this.offsetHeight;
     window.onscroll = function () {
-      var currentScrollPos = window.pageYOffset;
+      var currentScrollPos = window.scrollY;
       if (prevScrollpos > currentScrollPos) {
         this.style.top = "0";
 
@@ -647,6 +669,8 @@ class EnHeader extends HTMLElement {
 }
 
 customElements.define("en-header", EnHeader);
+
+
 
 
 
@@ -734,3 +758,6 @@ window.addEventListener("beforeunload", function () {
 
 
 
+document.addEventListener('shopify:section:load', () => {
+  document.documentElement.style.setProperty('--header-height', `${document.querySelector("en-header").offsetHeight}px`);
+});

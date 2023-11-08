@@ -3,7 +3,7 @@
     {{
       media
       | image_url: width: media.width
-      | image_tag: class: 'h-full w-full object-cover transition duration-700 ease-in-out'
+      | image_tag: class: 'h-full w-full object-contain transition duration-700 ease-in-out'
     }}
   </div>
 {% else %}
@@ -14,7 +14,7 @@
           media
           | image_url: width: media.width
           | image_tag:
-            class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out',
+            class: 'h-full w-full object-contain absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out',
             loading: 'lazy'
         }}
       </div>
@@ -24,7 +24,7 @@
         {{
           media
           | external_video_tag:
-            class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
+            class: 'h-full w-full object-contain absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
         }}
       </div>
     {% when 'video' %}
@@ -33,7 +33,7 @@
           media
           | video_tag:
             controls: true,
-            class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
+            class: 'h-full w-full object-contain absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
         }}
       </div>
 
@@ -47,7 +47,7 @@
           {{
             media
             | model_viewer_tag:
-              class: 'h-full w-full object-cover absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
+              class: 'h-full w-full object-contain absolute left-1/2 top-0 -translate-x-1/2 transition duration-700 ease-in-out'
           }}
 
           <div

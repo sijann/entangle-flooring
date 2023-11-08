@@ -1,10 +1,16 @@
 <script src="{{ 'localization.js' | asset_url }}" defer></script>
-{% if localization.available_languages.size > 1 %}
+{% if localization.available_languages.size >= 1 %}
   <localization-form>
     {% form 'localization' %}
       <div class="">
-        <button type="button" class="" aria-expanded="false" aria-controls="LanguageList">
-          {{ localization.language.endonym_name | capitalize }}
+        <button
+          type="button"
+          class="flex items-center gap-2 border-2 px-3 py-1"
+          aria-expanded="false"
+          aria-controls="LanguageList"
+        >
+          <span>{{ localization.language.endonym_name | capitalize }}</span>
+          {% render 'icon-caret', class: 'w-3 h-3' %}
         </button>
 
         <ul id="LanguageList" role="list" class="absolute" hidden>

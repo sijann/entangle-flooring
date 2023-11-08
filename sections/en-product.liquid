@@ -35,19 +35,21 @@
           {% endcomment %}
 
           <div class="flex flex-col gap-8">
-            <div class="en-images-slider">
-              {% for media in product.media %}
-                {% render 'product-media', media: media, variant_images: variant_images %}
-              {% endfor %}
-            </div>
-
-            {% if product.media.size > 1 %}
-              <div class="en-images-slider-thumbnail">
+            <slider-component>
+              <div class="main-carousel">
                 {% for media in product.media %}
-                  {% render 'product-media', media: media, thumbnail: true %}
+                  {% render 'product-media', media: media, variant_images: variant_images %}
                 {% endfor %}
               </div>
-            {% endif %}
+
+              {% if product.media.size > 1 %}
+                <div class="carousel-thumbnails">
+                  {% for media in product.media %}
+                    {% render 'product-media', media: media, thumbnail: true %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </slider-component>
           </div>
         </div>
 

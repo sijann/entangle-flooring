@@ -66,30 +66,21 @@
 
             {% else %}
               <product-form data-type="quick-add">
-                {% form 'product',
-                  card_product,
-                  id: product_form_id,
-                  class: 'flex items-center justify-center',
-                  novalidate: 'novalidate'
-                -%}
-                  <input
-                    type="hidden"
-                    name="id"
-                    value="{{ card_product.selected_or_first_available_variant.id }}"
-                  >
-
-                  <button
-                    class="flex items-center justify-center p-4 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]"
-                    {% if card_product.selected_or_first_available_variant.available == false %}
-                      disabled
-                    {% endif %}
-                  >
-                    <span class="icon-plus">
-                      {% render 'icon-plus' %}
+                <quick-add-opener
+                  target-quickadd-id="QuickAdd-{{ card_product.id }}"
+                  data-product-url="{{ card_product.url }}"
+                  data-id="{{ card_product.id }}"
+                  data-section-id="{{ section.id }}"
+                >
+                  <div class="flex items-center justify-center p-2 cursor-pointer bg-[rgba(var(--primary-button-background))] text-[rgba(var(--primary-button-text))]">
+                    <span class="cursor-pointer flex overflow-hidden">
+                      <span class="icon-link">
+                        {% render 'icon-plus' %}
+                      </span>
+                      {% render 'spinner' %}
                     </span>
-                    {% render 'spinner' %}
-                  </button>
-                {%- endform -%}
+                  </div>
+                </quick-add-opener>
               </product-form>
             {% endif %}
           </div>

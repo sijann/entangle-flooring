@@ -1,8 +1,9 @@
 {% comment %}theme-check-disable UndefinedObject{% endcomment %}
 <style>
-  .section-{{ section.id }}{
+  .section-{{ section.id }}-padding{
     padding-top: {{ section.settings.padding }}px;
     padding-bottom: {{ section.settings.padding }}px;
+    background: {{ section.settings.background_gradient }};
   }
 </style>
 
@@ -367,6 +368,11 @@
       "info": "Padding top and bottom",
       "step": 1,
       "unit": "px"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Gradient Background"
     }
   ],
   "default": {

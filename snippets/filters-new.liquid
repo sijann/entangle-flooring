@@ -1,6 +1,6 @@
 {{ 'en-filters.css' | asset_url | stylesheet_tag }}
 
-<div class="relative w-full left-0 md:w-auto">
+<div class="relative w-full left-0 md:w-auto flex flex-col gap-4">
   <collapsible-button target-id="filters" class=" flex gap-2 md:hidden md:max-w-[50%]">
     {% render 'icon-adjustments' -%}
     Sort and Filters
@@ -10,7 +10,7 @@
     data-id="filters"
     class=" bg-[rgba(var(--primary-background))] w-full md:flex z-[9] md:relative md:px-0 md:max-h-full"
   >
-    <div id="en-filters" class="collapsible-inner my-6 ">
+    <div id="en-filters" class="collapsible-inner ">
       <div class="sort border-b mb-2 pb-2 md:hidden">
         <collapsible-button target-id="sort-by" class="flex justify-between ">
           <h2>Sort By</h2>
@@ -21,7 +21,7 @@
         <collapsible-content data-id="sort-by" class="">
           <div class="collapsible-inner">
             <sort-by>
-              <select id="sort-by--mobile" class=" px-2 py-2 w-full cursor-pointer bg-transparent border-2">
+              <select id="sort-by--mobile" class=" px-2 py-2 my-2 w-full cursor-pointer bg-transparent border-2">
                 {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
 
                 {% for option in collection.sort_options %}
@@ -93,7 +93,7 @@
                     {%- when 'price_range' -%}
                       <price-range>
                         <div class="flex flex-col gap-4 mt-3">
-                          <div class="flex justify-between gap-4 items-center">
+                          <div class="flex justify-between items-center">
                             <label for="range1" class="hidden">Min Price</label>
                             <input
                               name="{{ filter.min_value.param_name }}"
@@ -107,7 +107,7 @@
                               placeholder="0"
                               min="0"
                               max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                              class="px-2 py-2"
+                              class="px-2 py-2 max-w-[40%]"
                             >
                             <span>-</span>
                             <label for="range2" class="hidden">Max Price</label>
@@ -123,7 +123,7 @@
                               placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                               min="0"
                               max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                              class="px-2 py-2"
+                              class="px-2 py-2 max-w-[40%]"
                             >
                           </div>
                           <div class="wrapper">
@@ -160,15 +160,10 @@
                           </div>
 
                           <div class="flex justify-between">
-                            <span>$0</span>
+                            <span>{{ filter.range_max | money }}</span>
                             <span> </span>
-                            <span
-                              >$
-                              {%- if uses_comma_decimals -%}
-                                {{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}
-                              {%- else -%}
-                                {{ filter.range_max | money_without_currency | replace: ',', '' }}
-                              {% endif %}
+                            <span>
+                              {{ filter.range_max | money }}
                             </span>
                           </div>
                         </div>

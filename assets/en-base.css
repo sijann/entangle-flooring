@@ -5,6 +5,10 @@ html {
     font-size: calc(var(--font-scale) * 100%);
 }
 
+main{
+    margin-top: var(--header-height);
+}
+
 body,
 button,
 input,
