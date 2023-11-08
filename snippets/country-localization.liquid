@@ -1,16 +1,18 @@
-<script src="{{ 'localization.js' | asset_url }}" defer></script>
-{% if localization.available_languages.size >= 1 %}
+{% if localization.available_countries.size > 1 %}
   <localization-form class="relative">
     {% form 'localization' %}
       <collapsible-button
-        target-id="language-localization"
         class="inline-block"
+        target-id="country-localization"
       >
         <button
           type="button"
           class="flex items-center gap-2 px-3 py-1"
         >
-          <span>{{ localization.language.endonym_name | capitalize }}</span>
+          <span>
+            {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+            {{ localization.country.currency.symbol }})
+          </span>
           <span class="en-collapsible-caret text-sm">
             {% render 'icon-caret' %}
           </span>
@@ -18,31 +20,29 @@
       </collapsible-button>
 
       <collapsible-content
-        data-id="language-localization"
+        data-id="country-localization"
         class="absolute top-full bg-[rgba(var(--primary-background))] shadow-md"
       >
         <div class="collapsible-inner">
-          <ul id="LanguageList" class="p-3">
-            {% for language in localization.available_languages %}
+          <ul id="CountryList" role="list" class="p-3">
+            {% for country in localization.available_countries %}
               <li class="px-2 py-1" tabindex="-1">
                 <a
                   href="#"
-                  {% if language.iso_code == localization.language.iso_code %}
+                  {% if country.iso_code == localization.country.iso_code %}
                     aria-current="true"
                   {% endif %}
-                  hreflang="{{ language.iso_code }}"
-                  lang="{{ language.iso_code }}"
-                  data-value="{{ language.iso_code }}"
+                  data-value="{{ country.iso_code }}"
                 >
-                  {{ language.endonym_name | capitalize }}
+                  {{ country.name }} ({{ country.currency.iso_code }}
+                  {{ country.currency.symbol }})
                 </a>
               </li>
             {% endfor %}
           </ul>
         </div>
       </collapsible-content>
-
-      <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
     {% endform %}
   </localization-form>
 {% endif %}

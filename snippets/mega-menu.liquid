@@ -1,4 +1,4 @@
-<div class="menu en-menu hidden lg:flex flex-wrap gap-8 {% unless menu_style == 'left_left' %} justify-center {% endunless %} items-center">
+<div class="menu en-menu hidden lg:flex flex-wrap {% unless menu_style == 'left_left' %} justify-center {% endunless %} items-center">
   {%- for link in menu.links -%}
     {%- if link.links != blank -%}
       {% comment %} Links level 1  {% endcomment %}
