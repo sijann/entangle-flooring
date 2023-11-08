@@ -9,7 +9,7 @@
   }
 {% endstylesheet %}
 
-<section id="en-cart">
+<div id="en-cart">
   {% if cart.item_count > 0 %}
     <div class="cart-has-item p-4" data-money-format="{{ shop.money_format }}">
       <div class="max-w-6xl flex flex-col my-10 mx-auto">
@@ -212,7 +212,7 @@
       >
     </div>
   </div>
-</section>
+</div>
 {% schema %}
 {
   "name": "Template Cart",

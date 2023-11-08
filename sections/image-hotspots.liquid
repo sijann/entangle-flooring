@@ -12,7 +12,7 @@
   }
 {%- endstyle -%}
 
-<section class="">
+<div class="">
   <div class="en-width section-{{ section.id }}-padding {% if settings.reveal_on_scroll %} reveal {% endif %}">
     <h1 class="text-2xl font-bold py-4">Image Hotspots</h1>
     <div class="w-full flex items-center">
@@ -97,7 +97,7 @@
       </div>
     </div>
   </div>
-</section>
+</div>
 <style>
   :root {
     --buttonRadius: 24px;
@@ -193,6 +193,7 @@
 {% schema %}
 {
   "name": "Image Hotspots",
+  "tag": "section",
   "settings": [
     {
       "type": "image_picker",

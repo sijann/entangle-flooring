@@ -1,4 +1,4 @@
-<section
+<div
   id="MainProduct-{{ section.id }}"
   class="page-width section-{{ section.id }}-padding bg-[rgba(var(--primary-background))]"
   data-section="{{ section.id }}"
@@ -281,10 +281,11 @@
       }
     });
   </script>
-</section>
+</div>
 {% schema %}
 {
   "name": "Product",
+  "tag": "section",
   "settings": [
     {
       "type": "select",
