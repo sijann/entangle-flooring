@@ -5,7 +5,7 @@
   }
 </style>
 
-<section class="newsletter en-width" id="section-{{ section.id }}">
+<div class="newsletter en-width" id="section-{{ section.id }}">
   <div class="flex flex-col gap-4">
     <h1 class="en-title text-center">Newsletter</h1>
     <p class="text-center">Sign up for exclusive deals and early access to new products.</p>
@@ -13,11 +13,12 @@
       {% render 'newsletter-form' %}
     </div>
   </div>
-</section>
+</div>
 
 {% schema %}
 {
   "name": "Newsletter",
+  "tag": "section",
   "settings": [
     {
       "type": "range",
