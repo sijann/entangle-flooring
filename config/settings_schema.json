@@ -84,12 +84,80 @@
                 "default": "nunito_n4",
                 "label": "Font"
             }
-            
         ]
     },
     {
         "name": "Colors",
         "settings": [
+            {
+                "type": "header",
+                "content": "Color Scheme"
+            },
+          
+                  {
+                    "type": "color_scheme_group",
+                    "id": "color_schemes",
+                    "definition": [
+                      {
+                        "type": "color",
+                        "id": "background",
+                        "label": "Background",
+                        "default": "#FFFFFF"
+                      },
+                      {
+                        "type": "color_background",
+                        "id": "background_gradient",
+                        "label": "Background Gradient",
+                        "info": "Background gradient replaces background where possible."
+                      },
+                      {
+                        "type": "color",
+                        "id": "text",
+                        "label": "Text",
+                        "default": "#121212"
+                      },
+                      {
+                        "type": "color",
+                        "id": "button",
+                        "label": "Button",
+                        "default": "#121212"
+                      },
+                      {
+                        "type": "color",
+                        "id": "button_label",
+                        "label": "Button label",
+                        "default": "#FFFFFF"
+                      },
+                      {
+                        "type": "color",
+                        "id": "secondary_button_label",
+                        "label": "Secondary button label",
+                        "default": "#121212"
+                      },
+                      {
+                        "type": "color",
+                        "id": "secondary_button",
+                        "label": "Secondary button",
+                        "default": "#121212"
+                      }
+                    ],
+                    "role": {
+                      "text": "text",
+                      "background": {
+                        "solid": "background",
+                        "gradient": "background_gradient"
+                      },
+                      "links": "secondary_button_label",
+                      "icons": "text",
+                      "primary_button": "button",
+                      "on_primary_button": "button_label",
+                      "primary_button_border": "button",
+                      "secondary_button": "background",
+                      "on_secondary_button": "secondary_button_label",
+                      "secondary_button_border": "secondary_button_label"
+                    }
+                  },
+               
             {
                 "type": "header",
                 "content": "General"
@@ -295,7 +363,7 @@
                 "step": 1,
                 "unit": "px",
                 "label": "Border radius",
-                "default": 1
+                "default": 8
             },
             {
                 "type": "range",
@@ -339,7 +407,7 @@
                 "step": 1,
                 "unit": "px",
                 "label": "Border radius",
-                "default": 1
+                "default": 8
             },
             {
                 "type": "range",
@@ -458,21 +526,19 @@
             },
             {
                 "type": "header",
-                "content" : "Colors"
+                "content": "Colors"
             },
             {
-                "type" : "color",
-                "id" : "product_card_background",
-                "label" : "Product card background",
-                "default" : "#ffffff"
-
+                "type": "color",
+                "id": "product_card_background",
+                "label": "Product card background",
+                "default": "#ffffff"
             },
             {
-                "type" : "color",
-                "id" : "product_card_text",
-                "label" : "Product card text",
-                "default" : "#000000"
-
+                "type": "color",
+                "id": "product_card_text",
+                "label": "Product card text",
+                "default": "#000000"
             }
         ]
     },

@@ -12,8 +12,8 @@
   }
 {%- endstyle -%}
 
-<div class="en-width section-{{ section.id }}-padding">
-  <div class="flex flex-col">
+<div class="color-{{ section.settings.color_scheme }}">
+  <div class="en-width section-{{ section.id }}-padding flex flex-col">
     <h2 class="text-2xl font-semibold py-2">{{ section.settings.heading }}</h2>
 
     {% assign collection_handle = section.settings.collection %}
@@ -109,6 +109,12 @@
       "default": 25,
       "step": 1,
       "unit": "px"
+    },
+    {
+      "type": "color_scheme",
+      "label": "Color Scheme",
+      "id": "color_scheme",
+      "default": "background-2"
     }
   ],
   "presets": [

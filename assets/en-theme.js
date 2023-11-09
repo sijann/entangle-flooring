@@ -41,7 +41,6 @@ class SortBy extends HTMLElement {
 customElements.define("sort-by", SortBy)
 
 
-
 class CollapsibleContent extends HTMLElement {
   constructor() {
     super();
@@ -61,25 +60,36 @@ class CollapsibleButton extends HTMLElement {
       `;
   }
 
-
   connectedCallback() {
     this.addEventListener("click", () => this.handleClick());
+    if(this.getAttribute('close-on-click')) document.addEventListener("click", (event) => this.handleDocumentClick(event));
   }
+
   disconnectedCallback() {
-    this.addEventListener("click", () => this.handleClick());
+    this.removeEventListener("click", () => this.handleClick());
+    if(this.getAttribute('close-on-click')) document.removeEventListener("click", (event) => this.handleDocumentClick(event));
   }
-
-
 
   handleClick() {
     const targetId = this.getAttribute('target-id');
     const content = document.querySelector(`[data-id="${targetId}"]`);
     if (content) {
       content.classList.toggle('en-active');
-      this.classList.toggle('en-opened')
+      this.classList.toggle('en-opened');
     }
   }
 
+  handleDocumentClick(event) {
+    const isInsideButton = this.contains(event.target);
+    if (!isInsideButton) {
+      const targetId = this.getAttribute('target-id');
+      const content = document.querySelector(`[data-id="${targetId}"]`);
+      if (content && content.classList.contains('en-active')) {
+        content.classList.remove('en-active');
+        this.classList.remove('en-opened');
+      }
+    }
+  }
 }
 
 customElements.define('collapsible-content', CollapsibleContent);

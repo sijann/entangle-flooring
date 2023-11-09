@@ -1,9 +1,10 @@
 {% if localization.available_countries.size > 1 %}
-  <localization-form class="relative">
+  <localization-form class="relative text-sm">
     {% form 'localization' %}
       <collapsible-button
         class="inline-block"
-        target-id="country-localization"
+        close-on-click="true"
+        target-id="{{ "country-localization" | append: section.id }}"
       >
         <button
           type="button"
@@ -13,6 +14,13 @@
             {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
             {{ localization.country.currency.symbol }})
           </span>
+          <img
+            src="https://flagicons.lipis.dev/flags/1x1/{{ localization.country.iso_code |  downcase }}.svg"
+            height="10"
+            width="10"
+            loading="lazy"
+            class="inline-block w-4 h-4"
+          >
           <span class="en-collapsible-caret text-sm">
             {% render 'icon-caret' %}
           </span>
@@ -20,11 +28,15 @@
       </collapsible-button>
 
       <collapsible-content
-        data-id="country-localization"
-        class="absolute top-full bg-[rgba(var(--primary-background))] shadow-md"
+        data-id="{{ "country-localization" | append: section.id }}"
+        class="absolute shadow-md {% if position == 'footer' %} top-0 -translate-y-[100%] {% else %} top-full {% endif %}"
       >
         <div class="collapsible-inner">
-          <ul id="CountryList" role="list" class="p-3">
+          <ul
+            id="CountryList"
+            role="list"
+            class="border p-3 bg-[rgba(var(--primary-background))] {% if settings.corners == 'rounded' %}rounded {% endif %}"
+          >
             {% for country in localization.available_countries %}
               <li class="px-2 py-1" tabindex="-1">
                 <a
@@ -33,9 +45,12 @@
                     aria-current="true"
                   {% endif %}
                   data-value="{{ country.iso_code }}"
+                  class="flex gap-3 items-center"
                 >
-                  {{ country.name }} ({{ country.currency.iso_code }}
-                  {{ country.currency.symbol }})
+                  <span>
+                    {{ country.name }} ({{ country.currency.iso_code }}
+                    {{ country.currency.symbol }})
+                  </span>
                 </a>
               </li>
             {% endfor %}

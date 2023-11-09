@@ -1,9 +1,9 @@
-<script src="{{ 'localization.js' | asset_url }}" defer></script>
 {% if localization.available_languages.size >= 1 %}
-  <localization-form class="relative">
+  <localization-form class="relative  text-sm">
     {% form 'localization' %}
       <collapsible-button
-        target-id="language-localization"
+        target-id="{{ "language-localization" | append: section.id }}"
+        close-on-click="true"
         class="inline-block"
       >
         <button
@@ -18,11 +18,14 @@
       </collapsible-button>
 
       <collapsible-content
-        data-id="language-localization"
-        class="absolute top-full bg-[rgba(var(--primary-background))] shadow-md"
+        data-id="{{ "language-localization" | append: section.id }}"
+        class="absolute shadow-md {% if position == 'footer' %} top-0 -translate-y-[100%] {% else %} top-full {% endif %}"
       >
         <div class="collapsible-inner">
-          <ul id="LanguageList" class="p-3">
+          <ul
+            id="LanguageList"
+            class="border p-3 bg-[rgba(var(--primary-background))] {% if settings.corners == 'rounded' %}rounded {% endif %}"
+          >
             {% for language in localization.available_languages %}
               <li class="px-2 py-1" tabindex="-1">
                 <a

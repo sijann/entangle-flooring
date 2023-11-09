@@ -1,68 +1,57 @@
 {% style %}
-      en-header{
-        {% if section.settings.gradient_background != blank %}
-          background: {{ section.settings.gradient_background }};
-        {% else %}
-        background-color: {{ section.settings.background_color }};
-        {% endif %}
-        color: {{ section.settings.text_color }};
-      }
+  .logo {
+    grid-area: logo;
+  }
 
-      .logo {
-      grid-area: logo;
+  .en-menu {
+    grid-area: menu;
+  }
 
-      }
+  .icons {
+    grid-area: icons;
+    display: flex;
+    justify-content: flex-end;
+  }
 
-    .en-menu {
-      grid-area: menu;
-    }
+  .search {
+    grid-area: search;
+  }
 
-    .icons {
-      grid-area: icons;
-      display: flex;
-      justify-content: flex-end;
-    }
+  .drawer-icon {
+    grid-area: drawer;
+  }
 
-    .search{
-      grid-area: search;
-    }
+  .language-selector {
+    grid-area: language-selector;
+  }
 
-    .drawer-icon{
-      grid-area: drawer;
-    }
+  .header {
+    grid-template-areas: 'drawer logo icons';
+  }
 
-    .language-selector{
-      grid-area: language-selector;
-    }
-
-
+  @media screen and (min-width: 1024px) {
     .header {
-      grid-template-areas: "drawer logo icons";
-    }
-
-  @media screen and (min-width: 1024px){
-    .header {
-      grid-template-areas: "logo menu icons";
+      grid-template-areas: 'logo menu icons';
       grid-template-columns: min-content 1fr auto;
     }
 
     .header.twocol {
       grid-template-areas:
-        "language-selector logo icons"
-        "menu menu menu";
+        'language-selector logo icons'
+        'menu menu menu';
       grid-template-columns: 1fr 1fr 1fr;
     }
 
     .header.drawer {
-      grid-template-areas: "drawer logo icons";
+      grid-template-areas: 'drawer logo icons';
       grid-template-columns: 1fr 1fr 1fr;
     }
-      }
+  }
 {% endstyle %}
 
 <en-header
   data-headertype="hideonscroll"
-  class="fixed left-0 top-0 w-full transition-all duration-500 z-[10] {% if settings.corners == "rounded" %} rounded-lg {% endif %}"
+  class="fixed left-0 top-0 w-full transition-all duration-500 z-[10] gradient color-{{ section.settings.color_scheme }} "
 >
   <div class="en-container relative ">
     <div class="en-width  flex flex-col gap-8 lg:py-6">
@@ -129,16 +118,24 @@
 
         {% if section.settings.menu_style == 'top_bottom' %}
           <div class="language-selector hidden lg:flex gap-1 ">
-            {% render 'language-localization' %}
-            {% render 'country-localization' %}
+            {% if section.settings.enable_country_selector %}
+              {% render 'country-localization' %}
+            {% endif %}
+            {% if section.settings.enable_language_selector %}
+              {% render 'language-localization' %}
+            {% endif %}
           </div>
         {% endif %}
 
         <div class="icons flex items-center justify-end gap-2 ml-auto">
-          {% if section.settings.enable_language_selector and section.settings.menu_style != 'top_bottom' %}
+          {% if section.settings.menu_style != 'top_bottom' %}
             <div class="language-selector hidden lg:flex gap-1 ">
-              {% render 'language-localization' %}
-              {% render 'country-localization' %}
+              {% if section.settings.enable_country_selector %}
+                {% render 'country-localization' %}
+              {% endif %}
+              {% if section.settings.enable_language_selector %}
+                {% render 'language-localization' %}
+              {% endif %}
             </div>
           {% endif %}
           <div class="en-menu-icon">
@@ -192,7 +189,7 @@
     {
       "type": "select",
       "id": "menu_style",
-      "default": "left_center",
+      "default": "top_bottom",
       "label": "Menu style",
       "options": [
         {
@@ -234,6 +231,16 @@
       ]
     },
     {
+      "type": "header",
+      "content": "Localization"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "Enable country selector"
+    },
+    {
       "type": "checkbox",
       "id": "enable_language_selector",
       "default": false,
@@ -244,21 +251,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "default": "#000000",
-      "label": "Text color"
-    },
-    {
-      "type": "color_background",
-      "id": "gradient_background",
-      "label": "Gradient Background"
+      "type": "color_scheme",
+      "label": "Color Scheme",
+      "id": "color_scheme",
+      "default": "inverse"
     }
   ]
 }

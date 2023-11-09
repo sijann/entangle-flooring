@@ -41,7 +41,7 @@
                     <div class="collapsible-inner">
                       {% comment %} Links level 3  {% endcomment %}
                       {%- for grandchildlink in childlink.links -%}
-                        <div class="en-menu-item  {% if grandchildlink.active -%} en-menu-item-active {%- endif %} px-4 py-2">
+                        <div class="en-menu-item  {% if grandchildlink.active -%} en-menu-item-active {%- endif %} py-2">
                           <a href="{{ grandchildlink.url }}">
                             {{- grandchildlink.title | escape -}}
                           </a>
@@ -52,7 +52,7 @@
                 </div>
 
               {% else %}
-                <div class="en-menu-item  {% if link.active -%} en-menu-item-active {%- endif %} px-4 py-2">
+                <div class="en-menu-item  {% if link.active -%} en-menu-item-active {%- endif %} py-2">
                   <a href="{{ link.url }}">
                     {{- link.title | escape -}}
                   </a>
@@ -64,7 +64,7 @@
       </div>
 
     {% else %}
-      <div class="en-menu-item  {% if link.active -%} en-menu-item-active {%- endif %} px-4 py-2">
+      <div class="en-menu-item  {% if link.active -%} en-menu-item-active {%- endif %} py-2">
         <a href="{{ link.url }}">
           {{- link.title | escape -}}
         </a>
