@@ -43,6 +43,13 @@ button:disabled {
     column-gap: var(--grid-gap-horizontal);
 }
 
+
+.gradient {
+    background: rgb(var(--primary-background));
+    background: var(--gradient-background);
+    background-attachment: fixed;
+  }
+
 /*---- Collapsible content start -----*/
 
 collapsible-content {
