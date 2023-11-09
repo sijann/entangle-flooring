@@ -1,7 +1,13 @@
 {
   "current": "Default",
+  "current": {
+    "content_for_index": [
+
+    ]
+  },
   "presets": {
     "Default": {
+    
       "logo_width": 90,
       "color_schemes": {
         "background-1": {

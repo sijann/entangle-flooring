@@ -1,12 +1,21 @@
 {
-    "name": "Header",
-    "type": "header",
-    "sections": {
-        "header": {
-            "type": "header"
-        }
-    },
-    "order": [
-        "header"
-    ]
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "menu_style": "left_center",
+        "icon_style": "standard",
+        "enable_language_selector": true,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "gradient_background": ""
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
 }
