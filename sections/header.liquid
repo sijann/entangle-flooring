@@ -118,16 +118,24 @@
 
         {% if section.settings.menu_style == 'top_bottom' %}
           <div class="language-selector hidden lg:flex gap-1 ">
-            {% render 'language-localization' %}
-            {% render 'country-localization' %}
+            {% if section.settings.enable_country_selector %}
+              {% render 'country-localization' %}
+            {% endif %}
+            {% if section.settings.enable_language_selector %}
+              {% render 'language-localization' %}
+            {% endif %}
           </div>
         {% endif %}
 
         <div class="icons flex items-center justify-end gap-2 ml-auto">
-          {% if section.settings.enable_language_selector and section.settings.menu_style != 'top_bottom' %}
+          {% if section.settings.menu_style != 'top_bottom' %}
             <div class="language-selector hidden lg:flex gap-1 ">
-              {% render 'language-localization' %}
-              {% render 'country-localization' %}
+              {% if section.settings.enable_country_selector %}
+                {% render 'country-localization' %}
+              {% endif %}
+              {% if section.settings.enable_language_selector %}
+                {% render 'language-localization' %}
+              {% endif %}
             </div>
           {% endif %}
           <div class="en-menu-icon">
@@ -181,7 +189,7 @@
     {
       "type": "select",
       "id": "menu_style",
-      "default": "left_center",
+      "default": "top_bottom",
       "label": "Menu style",
       "options": [
         {
@@ -223,6 +231,16 @@
       ]
     },
     {
+      "type": "header",
+      "content": "Localization"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "Enable country selector"
+    },
+    {
       "type": "checkbox",
       "id": "enable_language_selector",
       "default": false,
@@ -236,7 +254,7 @@
       "type": "color_scheme",
       "label": "Color Scheme",
       "id": "color_scheme",
-      "default": "accent-1"
+      "default": "inverse"
     }
   ]
 }
