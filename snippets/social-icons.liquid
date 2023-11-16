@@ -1,4 +1,9 @@
-<ul class="list-none flex gap-4 p-0">
+{% style %}
+  .social_icons path {
+    fill: currentColor;
+  }
+{% endstyle %}
+<ul class="social_icons list-none flex gap-4 p-0">
   {%- if settings.social_facebook_link != blank -%}
     <li class="">
       <a href="{{ settings.social_facebook_link }}" class="ent-social-icon-wrapper">

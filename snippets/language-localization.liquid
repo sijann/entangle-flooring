@@ -3,6 +3,7 @@
     {% form 'localization' %}
       <collapsible-button
         target-id="{{ "language-localization" | append: section.id }}"
+        close-on-click="true"
         class="inline-block"
       >
         <button
@@ -35,6 +36,7 @@
                   hreflang="{{ language.iso_code }}"
                   lang="{{ language.iso_code }}"
                   data-value="{{ language.iso_code }}"
+                  class="transition-all duration-300 hover:underline"
                 >
                   {{ language.endonym_name | capitalize }}
                 </a>
