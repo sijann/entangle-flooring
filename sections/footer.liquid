@@ -33,7 +33,7 @@
       -%}
         <div class="flex flex-col gap-8">
           <div
-            class="flex flex-wrap justify-between gap-x-8 gap-y-8"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8"
           >
             {%- for block in section.blocks -%}
               <div
@@ -136,67 +136,67 @@
               </div>
             {%- endfor -%}
           </div>
-
-          <div
-            class="flex flex-col items-center gap-4"
-          >
-            {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
-              <div class="footer__follow-on-shop">
-                {% comment %} TODO: enable theme-check once `login_button` is accepted as valid filter {% endcomment %}
-                {% # theme-check-disable %}
-                {{ shop | login_button: action: 'follow' }}
-                {% # theme-check-enable %}
-              </div>
-            {%- endif -%}
-
-            {%- if section.settings.show_social and has_social_icons -%}
-              {%- render 'social-icons' -%}
-            {%- endif -%}
-
-            {%- if section.settings.show_policy -%}
-              <ul class="flex items-center justify-center flex-wrap ">
-                {%- for policy in shop.policies -%}
-                  {%- if policy != blank -%}
-                    <li class="[&:not(:last-child)]:after:content-['|']">
-                      <small class="px-2"
-                        ><a class="hover:underline" href="{{ policy.url }}">{{ policy.title }}</a></small
-                      >
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </div>
         </div>
       {%- endif -%}
     </div>
 
-    <div class="footer-bottom en-width flex flex-wrap gap-6 justify-around {% if settings.corners == 'rounded' %} rounded-md {% endif %} color-{{ section.settings.bottom_color_scheme }} gradient">
-      <div class="flex gap-3 flex-wrap">
-        {% if section.settings.enable_country_selector %}
-          {% render 'country-localization', position: 'footer' %}
-        {% endif %}
-        {% if section.settings.enable_language_selector %}
-          {% render 'language-localization', position: 'footer' %}
-        {% endif %}
-      </div>
+    <div class="footer-bottom en-width flex flex-col gap-8">
+      <div
+        class="flex flex-col items-center gap-4"
+      >
+        {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
+          <div class="footer__follow-on-shop">
+            {% comment %} TODO: enable theme-check once `login_button` is accepted as valid filter {% endcomment %}
+            {% # theme-check-disable %}
+            {{ shop | login_button: action: 'follow' }}
+            {% # theme-check-enable %}
+          </div>
+        {%- endif -%}
 
-      {%- if section.settings.payment_enable -%}
-        <div class="footer__payment">
-          <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
-          <ul class="flex flex-wrap gap-2" role="list">
-            {%- for type in shop.enabled_payment_types -%}
-              <li class="list-payment__item">
-                {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
-              </li>
+        {%- if section.settings.show_social and has_social_icons -%}
+          {%- render 'social-icons' -%}
+        {%- endif -%}
+
+        {%- if section.settings.show_policy -%}
+          <ul class="flex items-center justify-center flex-wrap ">
+            {%- for policy in shop.policies -%}
+              {%- if policy != blank -%}
+                <li class="[&:not(:last-child)]:after:content-['|']">
+                  <a class="text-xs px-2 hover:underline" href="{{ policy.url }}">{{ policy.title }}</a>
+                </li>
+              {%- endif -%}
             {%- endfor -%}
           </ul>
-        </div>
-      {%- endif -%}
+        {%- endif -%}
+      </div>
 
-      <div class="copyright text-center">
-        <small class="">&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}</small>
-        <small class="">{{ powered_by_link }}</small>
+      <div class="flex flex-wrap gap-6 justify-around {% if settings.corners == 'rounded' %} rounded-md {% endif %} color-{{ section.settings.bottom_color_scheme }} gradient">
+        <div class="flex gap-3 flex-wrap">
+          {% if section.settings.enable_country_selector %}
+            {% render 'country-localization', position: 'footer' %}
+          {% endif %}
+          {% if section.settings.enable_language_selector %}
+            {% render 'language-localization', position: 'footer' %}
+          {% endif %}
+        </div>
+
+        {%- if section.settings.payment_enable -%}
+          <div class="footer__payment">
+            <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+            <ul class="flex flex-wrap gap-2" role="list">
+              {%- for type in shop.enabled_payment_types -%}
+                <li class="list-payment__item">
+                  {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="copyright text-center">
+          <small class="">&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}</small>
+          <small class="">{{ powered_by_link }}</small>
+        </div>
       </div>
     </div>
   </div>
@@ -321,7 +321,7 @@
       "label": "Padding Top",
       "min": 0,
       "max": 100,
-      "default": 25,
+      "default": 55,
       "step": 1,
       "unit": "px"
     },
@@ -345,7 +345,7 @@
       "type": "color_scheme",
       "label": "Color Scheme (Bottom)",
       "id": "bottom_color_scheme",
-      "default": "background-1"
+      "default": "inverse"
     }
   ],
   "default": {
