@@ -138,9 +138,11 @@
               {% endif %}
             </div>
           {% endif %}
-          <div class="en-menu-icon">
-            {% render 'icon-search' %}
-          </div>
+          <collapsible-button target-id="header-search">
+            <div class="en-menu-icon">
+              {% render 'icon-search' %}
+            </div>
+          </collapsible-button>
 
           {% if settings.cart_type == 'drawer' %}
             <open-drawer data-drawer="cart-drawer" class="cursor-pointer">
@@ -168,6 +170,26 @@
       {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
     </div>
   </div>
+  <collapsible-content
+    data-id="header-search"
+    class="absolute top-full w-full bg-[rgba(var(--primary-background))] mt-2"
+  >
+    <div class="collapsible-inner w-full">
+      <form action="{{ routes.search_url }}" class="max-w-xs mx-auto py-2 flex items-center relative">
+        <input
+          type="text"
+          placeholder="Search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          class="en-input w-full bg-[rgba(var(--primary-background))] border-2"
+        >
+
+        <button type="submit" value="Search" class="absolute right-2 -translate-x-[100%]">
+          {% render 'icon-search' %}
+        </button>
+      </form>
+    </div>
+  </collapsible-content>
 </en-header>
 
 <div

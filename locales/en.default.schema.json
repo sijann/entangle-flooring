@@ -59,6 +59,9 @@
                                 "label": "Background Gradient",
                                 "info": "Background gradient replaces background where possible."
                             },
+                            "heading": {
+                                "label": "Heading"
+                            },
                             "text": {
                                 "label": "Text"
                             },
@@ -157,10 +160,29 @@
                         "label": "Grid gap horizontal"
                     },
                     "icons_style": {
-                        "label": "Icons style"
+                        "label": "Icons style",
+                        "options": {
+                            "option__1" : {
+                                "label" : "Light"
+                            },
+                            "option__2" : {
+                                "label" : "Medium"
+                            },
+                            "option__3" : {
+                                "label" : "Bold"
+                            }
+                        }
                     },
                     "corners": {
-                        "label": "Corners"
+                        "label": "Corners",
+                        "options": {
+                            "option__1" : {
+                                "label" : "Square"
+                            },
+                            "option__2" : {
+                                "label" : "Rounded"
+                            }
+                        }
                     }
                 }
             },

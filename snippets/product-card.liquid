@@ -20,7 +20,7 @@
   endif
 %}
 <div
-  class="{% if settings.reveal_on_scroll %} reveal {% endif %} {% if settings.product_card_style == 'card' %} en-product-card {% endif %} {% if settings.corners == "rounded" %} rounded-lg {% endif %} w-full my-4 overflow-hidden duration-300 hover:shadow-md "
+  class="{% if settings.reveal_on_scroll %} reveal {% endif %} {% if settings.product_card_style == 'card' %} product-card {% endif %} {% if settings.corners == "rounded" %} rounded-lg {% endif %} w-full my-4 overflow-hidden duration-300 hover:shadow-md "
 >
   <div class="relative w-full overflow-hidden  group {% if type == 'list' %} flex{% endif %}">
     <div class="en-product-image--padding relative w-full {% if type == 'list' %} max-w-[200px]{% endif %}">

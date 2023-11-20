@@ -633,7 +633,7 @@ video {
 
 .en-button-primary:hover {
   border-color: rgba(var(--primary-button-background), 0.9);
-  background-color: rgba(var(--primary-button-text), 0.7);
+  background-color: rgba(var(--primary-button-text));
   color: rgba(var(--primary-button-background), 0.9);
 }
 
@@ -755,7 +755,7 @@ video {
   transition-duration: 500ms;
 }
 
-.en-product-card {
+.product-card {
   background-color: rgba(var(--product-card-background));
   color: rgba(var(--product-card-text));
 }

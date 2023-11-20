@@ -16,7 +16,7 @@
     }
 
     .en-button-primary{
-        @apply inline-block  text-sm font-medium text-[rgba(var(--primary-button-text))] bg-[rgba(var(--primary-button-background))] border border-[rgba(var(--primary-button-background))] active:text-[rgba(var(--primary-button-background))] hover:bg-[rgba(var(--primary-button-text))]/[0.7] hover:text-[rgba(var(--primary-button-background))]/[0.9] hover:border-[rgba(var(--primary-button-background))]/[0.9]  focus:outline-none focus:ring duration-300
+        @apply inline-block  text-sm font-medium text-[rgba(var(--primary-button-text))] bg-[rgba(var(--primary-button-background))] border border-[rgba(var(--primary-button-background))] active:text-[rgba(var(--primary-button-background))] hover:bg-[rgba(var(--primary-button-text))] hover:text-[rgba(var(--primary-button-background))]/[0.9] hover:border-[rgba(var(--primary-button-background))]/[0.9]  focus:outline-none focus:ring duration-300
     }
 
     .en-button-secondary{
@@ -48,7 +48,7 @@
 
     }
 
-    .en-product-card{
+    .product-card{
         @apply bg-[rgba(var(--product-card-background))] text-[rgba(var(--product-card-text))];
     }
 
