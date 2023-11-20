@@ -54,7 +54,7 @@
   class="fixed left-0 top-0 w-full transition-all duration-500 z-[10] gradient color-{{ section.settings.color_scheme }} "
 >
   <div class="en-container relative ">
-    <div class="en-width  flex flex-col gap-8 lg:py-6">
+    <div class="page-width  flex flex-col gap-8 lg:py-6">
       <div class="header grid gap-3 items-center {% if section.settings.menu_style == 'top_bottom' %} twocol {% elsif section.settings.menu_style == 'drawer' -%}drawer  {%- endif %}">
         <open-drawer
           data-drawer="menu"
@@ -172,10 +172,10 @@
   </div>
   <collapsible-content
     data-id="header-search"
-    class="absolute top-full w-full bg-[rgba(var(--primary-background))] mt-2"
+    class="absolute top-full w-full bg-[rgba(var(--primary-background))]"
   >
     <div class="collapsible-inner w-full">
-      <form action="{{ routes.search_url }}" class="max-w-xs mx-auto py-2 flex items-center relative">
+      <form action="{{ routes.search_url }}" class="max-w-xs mx-auto pt-2 pb-4 flex items-center relative">
         <input
           type="text"
           placeholder="Search"
@@ -184,7 +184,7 @@
           class="en-input w-full bg-[rgba(var(--primary-background))] border-2"
         >
 
-        <button type="submit" value="Search" class="absolute right-2 -translate-x-[100%]">
+        <button type="submit" value="Search" class="absolute right-2">
           {% render 'icon-search' %}
         </button>
       </form>

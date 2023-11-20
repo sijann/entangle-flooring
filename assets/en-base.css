@@ -33,7 +33,7 @@ button:disabled {
     opacity: 0.5;
 }
 
-.en-width {
+.page-width {
     max-width: var(--page-width);
     margin: 0 auto;
     padding: 10px;
@@ -109,7 +109,7 @@ collapsible-button {
 
 
 @media screen and (min-width: 750px) {
-    .en-width {
+    .page-width {
         padding-left: 1rem;
         padding-right: 1rem;
     }
