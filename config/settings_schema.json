@@ -111,6 +111,12 @@
                     },
                     {
                         "type": "color",
+                        "id": "heading",
+                        "label": "t:settings_schema.colors.settings.color_schemes.definition.heading.label",
+                        "default": "#121212"
+                    },
+                    {
+                        "type": "color",
                         "id": "text",
                         "label": "t:settings_schema.colors.settings.color_schemes.definition.text.label",
                         "default": "#121212"
@@ -241,11 +247,11 @@
         ]
     },
     {
-        "name": "Appearance",
+        "name": "t:settings_schema.appearance.name",
         "settings": [
             {
                 "type": "header",
-                "content": "Sections"
+                "content": "t:settings_schema.appearance.settings.header__0.content"
             },
             {
                 "type": "range",
@@ -254,12 +260,12 @@
                 "max": 2400,
                 "step": 100,
                 "unit": "px",
-                "label": "Max width",
+                "label": "t:settings_schema.appearance.settings.max_width.label",
                 "default": 1600
             },
             {
                 "type": "header",
-                "content": "Styles"
+                "content": "t:settings_schema.appearance.settings.header__1.content"
             },
             {
                 "type": "range",
@@ -268,7 +274,7 @@
                 "max": 50,
                 "step": 2,
                 "unit": "px",
-                "label": "Grid gap vertical",
+                "label": "t:settings_schema.appearance.settings.grid_gap_vertical.label",
                 "default": 20
             },
             {
@@ -278,25 +284,25 @@
                 "max": 50,
                 "step": 2,
                 "unit": "px",
-                "label": "Grid gap horizontal",
+                "label": "t:settings_schema.appearance.settings.grid_gap_horizontal.label",
                 "default": 20
             },
             {
                 "type": "select",
                 "id": "icons_style",
                 "default": "normal",
-                "label": "Icons style",
+                "label": "t:settings_schema.appearance.settings.icons_style.label",
                 "options": [
                     {
-                        "label": "light",
-                        "value": "Light"
+                        "label": "t:settings_schema.appearance.settings.icons_style.options.option__1.label",
+                        "value": "light"
                     },
                     {
-                        "label": "Normal",
+                        "label": "t:settings_schema.appearance.settings.icons_style.options.option__2.label",
                         "value": "normal"
                     },
                     {
-                        "label": "bold",
+                        "label": "t:settings_schema.appearance.settings.icons_style.options.option__3.label",
                         "value": "Bold"
                     }
                 ]
@@ -305,14 +311,14 @@
                 "type": "select",
                 "id": "corners",
                 "default": "rounded",
-                "label": "Corners",
+                "label": "t:settings_schema.appearance.settings.corners.label",
                 "options": [
                     {
-                        "label": "Square",
+                        "label": "t:settings_schema.appearance.settings.corners.options.option__1.label",
                         "value": "square"
                     },
                     {
-                        "label": "Rounded",
+                        "label": "t:settings_schema.appearance.settings.corners.options.option__2.label",
                         "value": "rounded"
                     }
                 ]
@@ -320,18 +326,18 @@
         ]
     },
     {
-        "name": "Animations",
+        "name": "t:settings_schema.animations.name",
         "settings": [
             {
                 "type": "checkbox",
                 "id": "reveal_on_scroll",
-                "label": "Reveal on scroll",
+                "label": "t:settings_schema.animations.settings.reveal_on_scroll.label",
                 "default": true
             },
             {
                 "type": "checkbox",
                 "id": "fade_page_transition",
-                "label": "Enable fade page transition",
+                "label": "t:settings_schema.animations.settings.fade_page_transition.label",
                 "default": true
             }
         ]
@@ -371,7 +377,7 @@
                 "step": 1,
                 "unit": "px",
                 "label": "t:settings_schema.inputs-and-buttons.settings.input_vertical_offset.label",
-                "default": 6
+                "default": 8
             },
             {
                 "type": "range",
@@ -381,7 +387,7 @@
                 "step": 1,
                 "unit": "px",
                 "label": "t:settings_schema.inputs-and-buttons.settings.input_horizontal_offset.label",
-                "default": 6
+                "default": 10
             },
             {
                 "type": "header",

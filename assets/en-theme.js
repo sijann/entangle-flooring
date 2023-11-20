@@ -575,7 +575,8 @@ class QuickAddOpener extends HTMLElement {
         .then((response) => response.text())
         .then((responseText) => {
           const responseHTML = new DOMParser().parseFromString(responseText, 'text/html');
-          const productElement = responseHTML.querySelector('section[id^="MainProduct-"]');
+          const productElement = responseHTML.querySelector('[id^="MainProduct-"]');
+          console.log(responseHTML)
           let id = "QuickAddInfo-" + opener.getAttribute('data-id').replace(" ", "");
           const targetElement = document.getElementById(id);
           targetElement.innerHTML = productElement.innerHTML;
