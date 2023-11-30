@@ -1,5 +1,7 @@
 {
   "current": {
+    "reveal_on_scroll": true,
+    "fade_page_transition": false,
     "content_for_index": [
 
     ]
