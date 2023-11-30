@@ -1,46 +1,73 @@
 {
-    "sections": {
-        "main_product": {
-            "type": "en-product",
-            "blocks": {
-                "title": {
-                    "type": "title"
-                },
-                "vendor": {
-                    "type": "vendor"
-                },
-                "price": {
-                    "type": "price"
-                },
-                "variant_selector": {
-                    "type": "variant_selector"
-                },
-                "quantity": {
-                    "type": "quantity"
-                },
-                "sku": {
-                    "type": "sku"
-                },
-                "checkout_buttons": {
-                    "type": "checkout_buttons"
-                }
-            },
-            "block_order": [
-                "title",
-                "vendor",
-                "price",
-                "variant_selector",
-                "quantity",
-                "sku",
-                "checkout_buttons"
-            ]
+  "sections": {
+    "main_product": {
+      "type": "en-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+          }
         },
-        "recommended_products": {
-            "type": "product-recommendations"
+        "vendor": {
+          "type": "vendor",
+          "settings": {
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+          }
+        },
+        "ec32b341-80ad-4104-bda2-f7a389fb2237": {
+          "type": "description",
+          "settings": {
+          }
+        },
+        "variant_selector": {
+          "type": "variant_selector",
+          "settings": {
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {
+          }
+        },
+        "sku": {
+          "type": "sku",
+          "settings": {
+          }
+        },
+        "checkout_buttons": {
+          "type": "checkout_buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
         }
+      },
+      "block_order": [
+        "title",
+        "vendor",
+        "price",
+        "ec32b341-80ad-4104-bda2-f7a389fb2237",
+        "variant_selector",
+        "quantity",
+        "sku",
+        "checkout_buttons"
+      ],
+      "settings": {
+        "media_position": "left",
+        "media_width": "medium"
+      }
     },
-    "order": [
-        "main_product",
-        "recommended_products"
-    ]
+    "recommended_products": {
+      "type": "product-recommendations",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main_product",
+    "recommended_products"
+  ]
 }
