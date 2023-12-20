@@ -62,12 +62,12 @@ class CollapsibleButton extends HTMLElement {
 
   connectedCallback() {
     this.addEventListener("click", () => this.handleClick());
-    if(this.getAttribute('close-on-click')) document.addEventListener("click", (event) => this.handleDocumentClick(event));
+    if (this.getAttribute('close-on-click')) document.addEventListener("click", (event) => this.handleDocumentClick(event));
   }
 
   disconnectedCallback() {
     this.removeEventListener("click", () => this.handleClick());
-    if(this.getAttribute('close-on-click')) document.removeEventListener("click", (event) => this.handleDocumentClick(event));
+    if (this.getAttribute('close-on-click')) document.removeEventListener("click", (event) => this.handleDocumentClick(event));
   }
 
   handleClick() {
@@ -493,7 +493,7 @@ class ProductForm extends HTMLElement {
         const newMainNavContent = html.getElementById("main-nav").innerHTML;
         mainNav.innerHTML = newMainNavContent;
         const cartButton = document.querySelector('open-drawer[data-drawer="cart-drawer" ]');
-        if(cartButton){
+        if (cartButton) {
           cartButton.click()
         }
       })
@@ -616,11 +616,11 @@ class SliderComponent extends HTMLElement {
     this.flickity = new Flickity(this.sliderElement, {
       // options
       cellAlign: 'center',
-          contain: true,
-          pageDots: false,
-          wrapAround: true,
-          prevNextButtons: true,
-          draggable: false,
+      contain: true,
+      pageDots: false,
+      wrapAround: true,
+      prevNextButtons: true,
+      draggable: false,
     });
 
     this.thumbnailsElement = this.querySelector(".carousel-thumbnails");
@@ -726,16 +726,16 @@ customElements.define('open-drawer', class extends HTMLElement {
 });
 
 
-class DropdownMenu extends HTMLElement{
-  constructor(){
+class DropdownMenu extends HTMLElement {
+  constructor() {
     super();
-    this.addEventListener("mouseenter", ()=>{
+    this.addEventListener("mouseenter", () => {
       this.id = this.getAttribute("data-id");
       this.target = this.nextElementSibling;
       this.target.classList.remove("scale-y-0")
     })
 
-    this.addEventListener("mouseleave", ()=>{
+    this.addEventListener("mouseleave", () => {
       this.id = this.getAttribute("data-id");
       this.target = this.nextElementSibling;
       this.target.classList.add("scale-y-0")

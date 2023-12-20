@@ -175,18 +175,21 @@
     class="absolute top-full w-full bg-[rgba(var(--primary-background))]"
   >
     <div class="collapsible-inner w-full">
-      <form action="{{ routes.search_url }}" class="max-w-xs mx-auto pt-2 pb-4 flex items-center relative">
+      <form action="{{ routes.search_url }}" class="">
+        <div class="max-w-xs mx-auto flex items-center border-b-[1px] border-b-black">
         <input
           type="text"
           placeholder="Search"
           name="q"
           value="{{ search.terms | escape }}"
-          class="en-input w-full bg-[rgba(var(--primary-background))] border-2"
+          class="en-input w-full bg-[rgba(var(--primary-background))] border-none"
+          autofocus
         >
 
-        <button type="submit" value="Search" class="absolute right-2">
-          {% render 'icon-search' %}
+        <button type="submit" value="Search" class="">
+          {% render 'icon-search', class: 'opacity-[.6]' %}
         </button>
+      </div>
       </form>
     </div>
   </collapsible-content>
@@ -211,7 +214,7 @@
     {
       "type": "select",
       "id": "menu_style",
-      "default": "top_bottom",
+      "default": "left_left",
       "label": "Menu style",
       "options": [
         {
@@ -236,7 +239,7 @@
       "type": "select",
       "id": "icon_style",
       "default": "standard",
-      "label": "Icon style",
+      "label": "Icon style", 
       "options": [
         {
           "label": "Standard",
@@ -276,7 +279,7 @@
       "type": "color_scheme",
       "label": "Color Scheme",
       "id": "color_scheme",
-      "default": "inverse"
+      "default": "background-1"
     }
   ]
 }

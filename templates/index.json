@@ -1,8 +1,7 @@
 {
   "sections": {
-    "images_with_text": {
-      "type": "images-with-text",
-      "settings": {}
+    "slideshow": {
+      "type": "slideshow"
     },
     "featured_collection": {
       "type": "featured-collection"
@@ -12,7 +11,7 @@
     }
   },
   "order": [
-    "images_with_text",
+    "slideshow",
     "featured_collection",
     "hotspots"
   ]
