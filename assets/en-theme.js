@@ -611,34 +611,75 @@ customElements.define("quick-add-opener", QuickAddOpener);
 class SliderComponent extends HTMLElement {
   constructor() {
     super();
-    this.sliderData = this.getAttribute("data-slider");
+    // Parse the JSON string from the data-slider attribute
+    try {
+      this.sliderData = JSON.parse(this.getAttribute("data-slider")) || {};
+      console.log(this.sliderData)
+    } catch (error) {
+      console.error("Error parsing data-slider attribute:", error);
+      this.sliderData = {};
+    }
+  }
+
+  connectedCallback() {
     this.sliderElement = this.querySelector(".main-carousel");
-    this.flickity = new Flickity(this.sliderElement, {
-      // options
+
+    if (!this.sliderElement) {
+      console.error("Slider element not found. Make sure you have an element with class 'main-carousel'");
+      return;
+    }
+
+    // Merge user-defined options with default options
+    const flickityOptions = {
       cellAlign: 'center',
       contain: true,
       pageDots: false,
-      wrapAround: true,
+      wrapAround: false,
       prevNextButtons: true,
-      draggable: false,
-    });
+      draggable: true,
+      ...this.sliderData.options,
+    };
+
+    this.flickity = new Flickity(this.sliderElement, flickityOptions);
 
     this.thumbnailsElement = this.querySelector(".carousel-thumbnails");
 
     if (this.thumbnailsElement) {
-      this.flickity1 = new Flickity(this.thumbnailsElement, {
+      const thumbnailOptions = {
         asNavFor: '.main-carousel',
         pageDots: false,
         contain: true,
         prevNextButtons: false,
-      });
-    }
+        ...this.sliderData.thumbnailOptions,
+      };
 
+      this.flickity1 = new Flickity(this.thumbnailsElement, thumbnailOptions);
+    }
   }
 
+  disconnectedCallback() {
+    // Clean up resources if needed
+    if (this.flickity) {
+      this.flickity.destroy();
+    }
+
+    if (this.flickity1) {
+      this.flickity1.destroy();
+    }
+  }
 }
 
-customElements.define("slider-component", SliderComponent)
+customElements.define("slider-component", SliderComponent);
+
+class SlideshowComponent extends SliderComponent {
+  constructor() {
+    super();
+  }
+}
+
+customElements.define("slideshow-component", SlideshowComponent);
+
+
 
 
 class EnHeader extends HTMLElement {

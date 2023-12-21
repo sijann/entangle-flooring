@@ -5,7 +5,7 @@ html {
     font-size: calc(var(--font-scale) * 100%);
 }
 
-main{
+main {
     margin-top: var(--header-height);
 }
 
@@ -28,6 +28,17 @@ h6 {
     color: rgba(var(--primary-heading));
 }
 
+.button-primary {
+    background: rgba(var(--primary-button-background));
+    background: linear-gradient(to left, rgba(var(--primary-button-background)) 50%, rgba(var(--primary-button-text)) 50%) right;
+    background-size: 200%;
+    transition: .3s ease-out;
+}
+
+.button-primary:hover {
+    background-position: left;
+}
+
 button:disabled {
     cursor: not-allowed;
     opacity: 0.5;
@@ -39,7 +50,7 @@ button:disabled {
     padding: 10px;
 }
 
-.en-grid-gap{
+.en-grid-gap {
     row-gap: var(--grid-gap-horizontal);
     column-gap: var(--grid-gap-horizontal);
 }
@@ -49,9 +60,9 @@ button:disabled {
     background: rgb(var(--primary-background));
     background: var(--gradient-background);
     background-attachment: fixed;
-  }
+}
 
- 
+
 
 /*---- Collapsible content start -----*/
 
