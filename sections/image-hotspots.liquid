@@ -25,7 +25,7 @@
           }}
 
         {% else %}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'block h-full w-full object-scale-down' }}
+          {{ 'hero-apparel-1' | placeholder_svg_tag: 'block h-full w-full object-scale-down' }}
         {% endif %}
 
         {% if section.settings.image == blank %}
@@ -85,7 +85,7 @@
                 <h4 class="font-bold pb-2 ">{{ block.settings.product.title }}</h4>
                 <p class="pb-2">{{ block.settings.description }}</p>
                 <div class="flex items-center gap-2">
-                  <button class="en-button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
+                  <button class="button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
                 </div>
               {% else %}
                 <h4 class="font-bold pb-2 mb-2">Product title</h4>

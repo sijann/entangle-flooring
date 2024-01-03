@@ -188,7 +188,7 @@
                 {%- if filter.min_value.value != null or filter.max_value.value != null -%}
                   {% if filter.range_max != filter.max_value.value or filter.min_value.value != 0 %}
                     <remove-filter
-                      class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
+                      class="active-filters__remove-filter cursor-pointer button-outline button my-2 rounded-full inline-block px-2"
                       data-url="{{ filter.url_to_remove }}"
                     >
                       {{ filter.range_min }}
@@ -201,7 +201,7 @@
               {%- else -%}
                 {%- for filter_value in filter.active_values -%}
                   <remove-filter
-                    class="active-filters__remove-filter cursor-pointer en-button-outline en-button my-2 rounded-full inline-block px-2"
+                    class="active-filters__remove-filter cursor-pointer button-outline button my-2 rounded-full inline-block px-2"
                     data-url="{{ filter_value.url_to_remove }}"
                   >
                     {{ filter.label }}: {{ filter_value.label }} X

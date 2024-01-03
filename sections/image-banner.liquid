@@ -9,11 +9,11 @@
   assign buttonText = section.settings.button_text
   assign buttonUrl = section.settings.button_url
   assign buttonType = section.settings.button_type
-  assign buttonClass = 'en-button-primary'
+  assign buttonClass = 'button-primary'
   if buttonType == 'outline'
-    assign buttonClass = 'en-button-outline'
+    assign buttonClass = 'button-outline'
   elsif buttonType == 'secondary'
-    assign buttonClass = 'en-button-secondary'
+    assign buttonClass = 'button-secondary'
   endif
   assign contentPosition = section.settings.content_position
   assign alignment = section.settings.alignment
@@ -58,7 +58,7 @@
     }}
 
   {% else %}
-    {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover absolute top-0 left-0 z-[9]' }}
+    {{ 'hero-apparel-1' | placeholder_svg_tag: 'w-full h-full object-cover absolute top-0 left-0 z-[9]' }}
   {% endif %}
 
   <div

@@ -5,7 +5,7 @@ html {
     font-size: calc(var(--font-scale) * 100%);
 }
 
-main{
+main {
     margin-top: var(--header-height);
 }
 
@@ -18,6 +18,21 @@ input::placeholder {
     font-family: var(--body-font-family);
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
 h1,
 h2,
 h3,
@@ -26,6 +41,17 @@ h5,
 h6 {
     font-family: var(--heading-font-family);
     color: rgba(var(--primary-heading));
+}
+
+.button-primary {
+    background: rgba(var(--primary-button-background));
+    background: linear-gradient(to left, rgba(var(--primary-button-background)) 50%, rgba(var(--primary-button-text)) 50%) right;
+    background-size: 200%;
+    transition: .3s ease-out;
+}
+
+.button-primary:hover {
+    background-position: left;
 }
 
 button:disabled {
@@ -39,7 +65,7 @@ button:disabled {
     padding: 10px;
 }
 
-.en-grid-gap{
+.en-grid-gap {
     row-gap: var(--grid-gap-horizontal);
     column-gap: var(--grid-gap-horizontal);
 }
@@ -49,9 +75,9 @@ button:disabled {
     background: rgb(var(--primary-background));
     background: var(--gradient-background);
     background-attachment: fixed;
-  }
+}
 
- 
+
 
 /*---- Collapsible content start -----*/
 

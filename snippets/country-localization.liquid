@@ -29,9 +29,9 @@
 
       <collapsible-content
         data-id="{{ "country-localization" | append: section.id }}"
-        class="absolute shadow-md {% if position == 'footer' %} top-0 -translate-y-[100%] {% else %} top-full {% endif %}"
+        class="absolute shadow-md {% if position == 'footer' %} top-0 -translate-y-[100%] {% else %} top-full {% endif %} "
       >
-        <div class="collapsible-inner">
+        <div class="collapsible-inner max-h-[30rem] overflow-scroll">
           <ul
             id="CountryList"
             role="list"

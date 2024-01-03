@@ -7,7 +7,7 @@
         {% if index > 4 %}
           {% assign index = index | modulo: 4 %}
         {% endif %}
-        {% assign product = 'product-' | append: index %}
+        {% assign product = 'product-apparel-' | append: index %}
         {{
           product
           | placeholder_svg_tag: 'w-full h-full object-cover transform duration-300 group-hover:scale-[1.03]'

@@ -62,12 +62,12 @@ class CollapsibleButton extends HTMLElement {
 
   connectedCallback() {
     this.addEventListener("click", () => this.handleClick());
-    if(this.getAttribute('close-on-click')) document.addEventListener("click", (event) => this.handleDocumentClick(event));
+    if (this.getAttribute('close-on-click')) document.addEventListener("click", (event) => this.handleDocumentClick(event));
   }
 
   disconnectedCallback() {
     this.removeEventListener("click", () => this.handleClick());
-    if(this.getAttribute('close-on-click')) document.removeEventListener("click", (event) => this.handleDocumentClick(event));
+    if (this.getAttribute('close-on-click')) document.removeEventListener("click", (event) => this.handleDocumentClick(event));
   }
 
   handleClick() {
@@ -493,7 +493,7 @@ class ProductForm extends HTMLElement {
         const newMainNavContent = html.getElementById("main-nav").innerHTML;
         mainNav.innerHTML = newMainNavContent;
         const cartButton = document.querySelector('open-drawer[data-drawer="cart-drawer" ]');
-        if(cartButton){
+        if (cartButton) {
           cartButton.click()
         }
       })
@@ -611,34 +611,77 @@ customElements.define("quick-add-opener", QuickAddOpener);
 class SliderComponent extends HTMLElement {
   constructor() {
     super();
-    this.sliderData = this.getAttribute("data-slider");
+    // Parse the JSON string from the data-slider attribute
+    try {
+      this.sliderData = JSON.parse(this.getAttribute("data-slider")) || {};
+      console.log(this.sliderData)
+    } catch (error) {
+      console.error("Error parsing data-slider attribute:", error);
+      this.sliderData = {};
+    }
+  }
+
+  connectedCallback() {
     this.sliderElement = this.querySelector(".main-carousel");
-    this.flickity = new Flickity(this.sliderElement, {
-      // options
+
+    if (!this.sliderElement) {
+      // console.error("Slider element not found. Make sure you have an element with class 'main-carousel'");
+      return;
+    }
+
+    // Merge user-defined options with default options
+    const flickityOptions = {
       cellAlign: 'center',
-          contain: true,
-          pageDots: false,
-          wrapAround: true,
-          prevNextButtons: true,
-          draggable: false,
-    });
+      contain: true,
+      pageDots: true,
+      wrapAround: false,
+      prevNextButtons: false,
+      draggable: true,
+      ...this.sliderData.options,
+    };
+
+    const responsive = { ... this.sliderData.responsive }
+
+    this.flickity = new Flickity(this.sliderElement, flickityOptions);
 
     this.thumbnailsElement = this.querySelector(".carousel-thumbnails");
 
     if (this.thumbnailsElement) {
-      this.flickity1 = new Flickity(this.thumbnailsElement, {
+      const thumbnailOptions = {
         asNavFor: '.main-carousel',
         pageDots: false,
         contain: true,
         prevNextButtons: false,
-      });
-    }
+        ...this.sliderData.thumbnailOptions,
+      };
 
+      this.flickity1 = new Flickity(this.thumbnailsElement, thumbnailOptions);
+    }
   }
 
+  disconnectedCallback() {
+    // Clean up resources if needed
+    if (this.flickity) {
+      this.flickity.destroy();
+    }
+
+    if (this.flickity1) {
+      this.flickity1.destroy();
+    }
+  }
 }
 
-customElements.define("slider-component", SliderComponent)
+customElements.define("slider-component", SliderComponent);
+
+class SlideshowComponent extends SliderComponent {
+  constructor() {
+    super();
+  }
+}
+
+customElements.define("slideshow-component", SlideshowComponent);
+
+
 
 
 class EnHeader extends HTMLElement {
@@ -726,16 +769,16 @@ customElements.define('open-drawer', class extends HTMLElement {
 });
 
 
-class DropdownMenu extends HTMLElement{
-  constructor(){
+class DropdownMenu extends HTMLElement {
+  constructor() {
     super();
-    this.addEventListener("mouseenter", ()=>{
+    this.addEventListener("mouseenter", () => {
       this.id = this.getAttribute("data-id");
       this.target = this.nextElementSibling;
       this.target.classList.remove("scale-y-0")
     })
 
-    this.addEventListener("mouseleave", ()=>{
+    this.addEventListener("mouseleave", () => {
       this.id = this.getAttribute("data-id");
       this.target = this.nextElementSibling;
       this.target.classList.add("scale-y-0")
@@ -745,6 +788,47 @@ class DropdownMenu extends HTMLElement{
 
 
 customElements.define("dropdown-menu", DropdownMenu)
+
+
+class SplideComponent extends HTMLElement {
+  constructor() {
+    super();
+    try {
+      this.splideData = JSON.parse(this.getAttribute("data-splide")) || {};
+    } catch (error) {
+      console.error("Error parsing data-splide attribute:", error);
+      this.splideData = {};
+    }
+  }
+
+  connectedCallback() {
+    this.splideElement = this.querySelector(".splide");
+
+    if (!this.splideElement) {
+      // console.error("Splide element not found. Make sure you have an element with class 'splide'");
+      return;
+    }
+
+    const splideOptions = {
+      type: 'slide',
+      rewind: 'false',
+      ...this.splideData,
+    };
+
+    this.splide = new Splide(this.splideElement, splideOptions);
+
+    this.splide.mount();
+  }
+
+  disconnectedCallback() {
+    if (this.splide) {
+      this.splide.destroy();
+    }
+  }
+}
+
+customElements.define("splide-component", SplideComponent);
+
 
 
 
