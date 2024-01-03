@@ -538,9 +538,9 @@ video {
   width: 100%;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 480px) {
   .container {
-    max-width: 640px;
+    max-width: 480px;
   }
 }
 
@@ -553,18 +553,6 @@ video {
 @media (min-width: 1024px) {
   .container {
     max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
   }
 }
 
@@ -2108,6 +2096,12 @@ video {
   }
 }
 
+@media (min-width: 480px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 768px) {
   .md\:relative {
     position: relative;
@@ -2384,13 +2378,6 @@ video {
 
   .lg\:text-right {
     text-align: right;
-  }
-}
-
-@media (min-width: 1280px) {
-  .xl\:px-12 {
-    padding-left: 3rem;
-    padding-right: 3rem;
   }
 }
 

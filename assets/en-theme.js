@@ -625,7 +625,7 @@ class SliderComponent extends HTMLElement {
     this.sliderElement = this.querySelector(".main-carousel");
 
     if (!this.sliderElement) {
-      console.error("Slider element not found. Make sure you have an element with class 'main-carousel'");
+      // console.error("Slider element not found. Make sure you have an element with class 'main-carousel'");
       return;
     }
 
@@ -633,12 +633,14 @@ class SliderComponent extends HTMLElement {
     const flickityOptions = {
       cellAlign: 'center',
       contain: true,
-      pageDots: false,
+      pageDots: true,
       wrapAround: false,
-      prevNextButtons: true,
+      prevNextButtons: false,
       draggable: true,
       ...this.sliderData.options,
     };
+
+    const responsive = { ... this.sliderData.responsive }
 
     this.flickity = new Flickity(this.sliderElement, flickityOptions);
 
@@ -786,6 +788,47 @@ class DropdownMenu extends HTMLElement {
 
 
 customElements.define("dropdown-menu", DropdownMenu)
+
+
+class SplideComponent extends HTMLElement {
+  constructor() {
+    super();
+    try {
+      this.splideData = JSON.parse(this.getAttribute("data-splide")) || {};
+    } catch (error) {
+      console.error("Error parsing data-splide attribute:", error);
+      this.splideData = {};
+    }
+  }
+
+  connectedCallback() {
+    this.splideElement = this.querySelector(".splide");
+
+    if (!this.splideElement) {
+      // console.error("Splide element not found. Make sure you have an element with class 'splide'");
+      return;
+    }
+
+    const splideOptions = {
+      type: 'slide',
+      rewind: 'false',
+      ...this.splideData,
+    };
+
+    this.splide = new Splide(this.splideElement, splideOptions);
+
+    this.splide.mount();
+  }
+
+  disconnectedCallback() {
+    if (this.splide) {
+      this.splide.destroy();
+    }
+  }
+}
+
+customElements.define("splide-component", SplideComponent);
+
 
 
 
