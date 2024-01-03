@@ -310,7 +310,7 @@
             {
                 "type": "select",
                 "id": "corners",
-                "default": "rounded",
+                "default": "square",
                 "label": "t:settings_schema.appearance.settings.corners.label",
                 "options": [
                     {

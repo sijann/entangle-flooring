@@ -34,7 +34,7 @@
             <input
               type="text"
               id="Name--{{ unique }}"
-              class="en-input"
+              class="input"
               value="{% if customer %}{{ customer.name }}{% endif %}"
               placeholder="{{ placeholder_name }}"
               name="contact[first_name]"
@@ -52,7 +52,7 @@
         <input
           type="email"
           id="Email--{{ unique }}"
-          class="en-input"
+          class="input"
           value="{% if customer %}{{ customer.email }}{% endif %}"
           placeholder="Email"
           name="contact[email]"

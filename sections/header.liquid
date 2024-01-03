@@ -127,7 +127,7 @@
           </div>
         {% endif %}
 
-        <div class="icons flex items-center justify-end gap-2 ml-auto">
+        <div class="icons flex items-center justify-end gap-4 ml-auto">
           {% if section.settings.menu_style != 'top_bottom' %}
             <div class="language-selector hidden lg:flex gap-1 ">
               {% if section.settings.enable_country_selector %}
@@ -164,6 +164,15 @@
               </a>
             </div>
           {% endif %}
+
+          <a href="{{ routes.account_url }}">
+            {% unless section.settings.icon_style == 'text' %}
+              {% render 'icon-user', style: section.settings.icon_style %}
+            {% else %}
+              Cart
+            {% endunless %}
+          </a>
+        </div>
         </div>
       </div>
 
@@ -182,7 +191,7 @@
           placeholder="Search"
           name="q"
           value="{{ search.terms | escape }}"
-          class="en-input w-full bg-[rgba(var(--primary-background))] border-none"
+          class="input w-full bg-[rgba(var(--primary-background))] border-none"
           autofocus
         >
 
@@ -238,7 +247,7 @@
     {
       "type": "select",
       "id": "icon_style",
-      "default": "standard",
+      "default": "modern",
       "label": "Icon style", 
       "options": [
         {

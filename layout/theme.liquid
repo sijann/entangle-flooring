@@ -110,14 +110,19 @@
         --icons-weight: {{ settings.icons_style }};
 
         --input-border-width: {{ settings.input_border_width }}px;
-        --input-border-radius: {{ settings.input_border_radius }}px;
+       
         --input-padding-x: {{ settings.input_horizontal_offset }}px;
         --input-padding-y: {{ settings.input_vertical_offset }}px;
 
         --button-border-width: {{ settings.button_border_width }}px;
-        --button-border-radius: {{ settings.button_border_radius }}px;
+        
         --button-padding-x: {{ settings.button_horizontal_offset }}px;
         --button-padding-y: {{ settings.button_vertical_offset }}px;
+
+        {% if settings.corners == 'rounded' %}
+        --input-border-radius: {{ settings.input_border_radius }}px;
+        --button-border-radius: {{ settings.button_border_radius }}px;
+        {% endif %}
 
 
         --card-background: {{ settings.card_background_color }};
