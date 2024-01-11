@@ -127,7 +127,7 @@
           </div>
         {% endif %}
 
-        <div class="icons flex items-center justify-end gap-2 ml-auto">
+        <div class="icons flex items-center justify-end gap-4 ml-auto">
           {% if section.settings.menu_style != 'top_bottom' %}
             <div class="language-selector hidden lg:flex gap-1 ">
               {% if section.settings.enable_country_selector %}
@@ -164,25 +164,33 @@
               </a>
             </div>
           {% endif %}
+
+          <a href="{{ routes.account_url }}">
+            {% unless section.settings.icon_style == 'text' %}
+              {% render 'icon-user', style: section.settings.icon_style %}
+            {% else %}
+              Cart
+            {% endunless %}
+          </a>
+        </div>
         </div>
       </div>
 
       {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
     </div>
-  </div>
-  <collapsible-content
+    <collapsible-content
     data-id="header-search"
     class="absolute top-full w-full bg-[rgba(var(--primary-background))]"
   >
     <div class="collapsible-inner w-full">
       <form action="{{ routes.search_url }}" class="">
-        <div class="max-w-xs mx-auto flex items-center border-b-[1px] border-b-black">
+        <div class="max-w-xs mx-auto flex items-center border-b-[1px] border-b-black mb-8">
         <input
           type="text"
           placeholder="Search"
           name="q"
           value="{{ search.terms | escape }}"
-          class="en-input w-full bg-[rgba(var(--primary-background))] border-none"
+          class="input w-full bg-[rgba(var(--primary-background))] border-none"
           autofocus
         >
 
@@ -193,6 +201,8 @@
       </form>
     </div>
   </collapsible-content>
+  </div>
+ 
 </en-header>
 
 <div
@@ -238,7 +248,7 @@
     {
       "type": "select",
       "id": "icon_style",
-      "default": "standard",
+      "default": "modern",
       "label": "Icon style", 
       "options": [
         {

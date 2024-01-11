@@ -11,6 +11,16 @@
     }
   }
 {%- endstyle -%}
+{% liquid
+  assign display_type = section.settings.display_type
+
+  if display_type == 'slider'
+    assign is_slider = true
+    assign item_class = ''
+  else
+    assign wrapper_class = 'en-grid-gap grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+  endif
+%}
 
 <div class="color-{{ section.settings.color_scheme }}">
   <div class="page-width section-{{ section.id }}-padding flex flex-col">
@@ -18,19 +28,28 @@
 
     {% assign collection_handle = section.settings.collection %}
     {% assign collection = collections[collection_handle] %}
-
-    <div class="en-grid-gap grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-      {% for product in collection.products limit: section.settings.max_products_to_show %}
-        {% render 'product-card', card_product: product, quick_add: section.settings.enable_quick_add %}
-
-      {% else %}
-        {% for item in (1..4) %}
-          {% render 'product-card-empty', index: forloop.index %}
-        {% endfor %}
-      {% endfor %}
-    </div>
+    <splide-component data-splide='{"type":"loop","perPage":4, "gap": "{{ settings.grid_gap_horizontal | append: 'px' }}", "breakpoints": {  "1023": { "perPage": 3}, "767": { "perPage": 2},"479": { "perPage": 1} }  }'>
+      <div class="{% if is_slider %}splide{% endif %}">
+        <div class="{% if is_slider %} splide__track {% endif %}">
+          <ul class="{% if is_slider %} splide__list {% endif %} {{ wrapper_class }}">
+            {% for product in collection.products limit: section.settings.max_products_to_show %}
+              <li class="{% if is_slider %} splide__slide {% endif %} {{ item_class }}">
+                {% render 'product-card', card_product: product, quick_add: section.settings.enable_quick_add %}
+              </li>
+            {% else %}
+              {% for item in (1..4) %}
+                <li class="{% if is_slider %} splide__slide {% endif %} {{ item_class }}">
+                  {% render 'product-card-empty', index: forloop.index %}
+                </li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </splide-component>
   </div>
 </div>
+
 
 {% schema %}
 {
@@ -74,7 +93,7 @@
         { "value": "grid", "label": "Grid" },
         { "value": "slider", "label": "Slider" }
       ],
-      "default": "grid"
+      "default": "slider"
     },
     {
       "type": "checkbox",
