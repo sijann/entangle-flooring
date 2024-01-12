@@ -178,14 +178,13 @@
 
       {% render 'menu-drawer', menu: section.settings.menu, menu_style: section.settings.menu_style %}
     </div>
-  </div>
-  <collapsible-content
+    <collapsible-content
     data-id="header-search"
     class="absolute top-full w-full bg-[rgba(var(--primary-background))]"
   >
     <div class="collapsible-inner w-full">
       <form action="{{ routes.search_url }}" class="">
-        <div class="max-w-xs mx-auto flex items-center border-b-[1px] border-b-black">
+        <div class="max-w-xs mx-auto flex items-center border-b-[1px] border-b-black mb-8">
         <input
           type="text"
           placeholder="Search"
@@ -202,6 +201,8 @@
       </form>
     </div>
   </collapsible-content>
+  </div>
+ 
 </en-header>
 
 <div

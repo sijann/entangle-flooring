@@ -44,18 +44,27 @@
                 assign hotspot_class = 'top-right'
               endif
             %}
-            <div
-              style="top: {{ y }}%; left: {{ x }}%;"
-              class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
-            >
+            <collapsible-button close-on-click="true" target-id="hotspot-{{ section.id | append: forloop.index }}">
               <div
-                class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
-              ></div>
-              <div class="lg-hotspot__label absolute bg-[rgba(var(--primary-background))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] opacity-0 hidden transition-all duration-500 {% if settings.corners == "rounded" %} rounded-lg {% endif %}">
-                <h4 class="font-bold pb-2 mb-2">Product title</h4>
-                <p>This is some text that goes in the label. It describes the item.</p>
+                style="top: {{ y }}%; left: {{ x }}%;"
+                class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
+              >
+                <div
+                  class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
+                ></div>
+                <collapsible-content
+                  data-id="hotspot-{{ section.id | append: forloop.index }}"
+                  class="lg-hotspot__label absolute bg-[rgba(var(--primary-background))] text-xs  w-[14em] max-w-[40vw] shadow-lg z-[-1] transition-all duration-500 {% if settings.corners == "rounded" %} rounded-lg {% endif %}"
+                >
+                  <div class="collapsible-inner">
+                    <div class="p-4">
+                      <h4 class="font-bold pb-2 mb-2">Product title</h4>
+                      <p>This is some text that goes in the label. It describes the item.</p>
+                    </div>
+                  </div>
+                </collapsible-content>
               </div>
-            </div>
+            </collapsible-button>
           {% endfor %}
         {% endif %}
 
@@ -77,21 +86,26 @@
             style="top: {{ block.settings.yposition }}%; left: {{ block.settings.xposition }}%;"
             class="lg-hotspot lg-hotspot--{{ hotspot_class }} absolute m-0 p-0 -translate-x-1/2 -translate-y-1/2 z-0 cursor-pointer"
           >
-            <div
+            <collapsible-button
+              target-id="hotspot-{{ section.id | append: forloop.index }}"
               class="lg-hotspot__button h-4 w-4 lg:w-8 lg:h-8 p-0 rounded-full z-[999] after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:pointer-events-none after:block after:rounded-full after:border-2 after:border-white after:bg-[var(--colorHotspotButton)]  "
-            ></div>
-            <div class="lg-hotspot__label absolute bg-[rgba(var(--primary-background))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] opacity-0 hidden transition-all duration-500 {% if settings.corners == "rounded" %} rounded-lg {% endif %}">
-              {% if block.settings.product != blank %}
-                <h4 class="font-bold pb-2 ">{{ block.settings.product.title }}</h4>
-                <p class="pb-2">{{ block.settings.description }}</p>
-                <div class="flex items-center gap-2">
-                  <button class="button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
+            ></collapsible-button>
+            <collapsible-content data-id="hotspot-{{ section.id | append: forloop.index }}">
+              <div class="collapsible-inner">
+                <div class="lg-hotspot__label absolute bg-[rgba(var(--primary-background))] text-xs p-4 w-[14em] max-w-[40vw] shadow-lg z-[-1] opacity-0 hidden transition-all duration-500 {% if settings.corners == "rounded" %} rounded-lg {% endif %}">
+                  {% if block.settings.product != blank %}
+                    <h4 class="font-bold pb-2 ">{{ block.settings.product.title }}</h4>
+                    <p class="pb-2">{{ block.settings.description }}</p>
+                    <div class="flex items-center gap-2">
+                      <button class="button-primary px-0 w-full text-xs py-2 text-center">Quick View</button>
+                    </div>
+                  {% else %}
+                    <h4 class="font-bold pb-2 mb-2">Product title</h4>
+                    <p>This is some text that goes in the label. It describes the item.</p>
+                  {% endif %}
                 </div>
-              {% else %}
-                <h4 class="font-bold pb-2 mb-2">Product title</h4>
-                <p>This is some text that goes in the label. It describes the item.</p>
-              {% endif %}
-            </div>
+              </div>
+            </collapsible-content>
           </div>
         {% endfor %}
       </div>
@@ -166,29 +180,31 @@
   }
 </style>
 
-<script>
-  const selectHotspot = (e) => {
-    const clickedHotspot = e.target.parentElement;
-    const container = clickedHotspot.parentElement;
+{% comment %}
+  <script>
+    const selectHotspot = (e) => {
+      const clickedHotspot = e.target.parentElement;
+      const container = clickedHotspot.parentElement;
 
-    // only include hotspots within same image to allow one open hotspot per image; change "container" to "document" to allow only one open hotspot for entire page:
-    const hotspots = document.querySelectorAll('.lg-hotspot');
-    hotspots.forEach((hotspot) => {
-      if (hotspot === clickedHotspot) {
-        hotspot.classList.toggle('lg-hotspot--selected');
-      } else {
-        hotspot.classList.remove('lg-hotspot--selected');
-      }
-    });
-  };
+      // only include hotspots within same image to allow one open hotspot per image; change "container" to "document" to allow only one open hotspot for entire page:
+      const hotspots = document.querySelectorAll('.lg-hotspot');
+      hotspots.forEach((hotspot) => {
+        if (hotspot === clickedHotspot) {
+          hotspot.classList.toggle('lg-hotspot--selected');
+        } else {
+          hotspot.classList.remove('lg-hotspot--selected');
+        }
+      });
+    };
 
-  (() => {
-    const buttons = document.querySelectorAll('.lg-hotspot__button');
-    buttons.forEach((button) => {
-      button.addEventListener('click', selectHotspot);
-    });
-  })();
-</script>
+    (() => {
+      const buttons = document.querySelectorAll('.lg-hotspot__button');
+      buttons.forEach((button) => {
+        button.addEventListener('click', selectHotspot);
+      });
+    })();
+  </script>
+{% endcomment %}
 
 {% schema %}
 {
